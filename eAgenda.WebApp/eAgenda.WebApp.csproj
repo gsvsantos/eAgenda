@@ -11,4 +11,9 @@
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\eAgenda.Dominio\eAgenda.Dominio.csproj" />
+    <ProjectReference Include="..\eAgenda.Infraestrutura.Arquivos\eAgenda.Infraestrutura.Arquivos.csproj" />
+  </ItemGroup>
+
 </Project>
