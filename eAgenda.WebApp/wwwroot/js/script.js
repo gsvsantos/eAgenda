@@ -26,5 +26,6 @@ minWidth.onchange = (e) => {
     }
     else {
         sidebarShow()
+        hamburguer.addEventListener('click', sidebarShow);
     }
 }
