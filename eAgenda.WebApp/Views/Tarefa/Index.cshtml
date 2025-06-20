@@ -1,0 +1,117 @@
+﻿@using eAgenda.Dominio.ModuloTarefa
+@using eAgenda.WebApp.Extensions
+@model VisualizarTarefasViewModel
+
+@{
+	ViewBag.Titulo = "Visualização de Tarefas";
+	string? statusAtual = Context.Request.Query["status"];
+	string? prioridadeAtual = Context.Request.Query["prioridade"];
+}
+
+<div class="container-fluid my-5 px-4">
+	<div class="d-grid d-lg-flex flex-wrap gap-2 w-50 align-items-center">
+		<a class="btn btn-primary px-5" title="Nova Tarefa" asp-action="Cadastrar"> 
+			<i class="bi bi-plus"></i>
+			Nova Tarefa
+		</a>
+	</div>
+	<form method="get" asp-action="Index" class="d-lg-flex flex-wrap w-50 mt-2 gap-2">
+		<select class="form-select" name="status">
+			<option disabled selected="@(string.IsNullOrEmpty(statusAtual) ? "selected" : "")">Status</option>
+			@foreach (StatusTarefa status in Enum.GetValues(typeof(StatusTarefa)).Cast<StatusTarefa>().OrderBy(s => (int)s))
+			{
+				<option value="@status" selected="@(status.ToString() == statusAtual ? "selected" : "")">
+					@status.GetDisplayName()
+				</option>
+			}
+		</select>
+
+		<select class="form-select" name="prioridade">
+			<option disabled selected="@(string.IsNullOrEmpty(prioridadeAtual) ? "selected" : "")">Prioridade</option>
+			@foreach (NivelPrioridade prioridade in Enum.GetValues(typeof(NivelPrioridade)).Cast<NivelPrioridade>().OrderBy(s => (int)s))
+			{
+				<option value="@prioridade" selected="@(prioridade.ToString() == prioridadeAtual ? "selected" : "")">
+					@prioridade.GetDisplayName()
+				</option>
+			}
+		</select>
+
+		<button type="submit" class="btn btn-primary">
+			Selecionar Filtros
+		</button>
+
+		<a href="/tarefas" class="btn btn-secondary">
+			<i class="bi bi-x-circle"></i>
+			Limpar Filtros
+		</a>
+	</form>
+	<hr />
+	<div class="d-flex flex-wrap gap-2">
+		@if (!Model.Registros.Any())
+		{
+			<p class="fw-semibold mt-3">Ainda não há nenhuma tarefa cadastrada...</p>
+		}
+		@foreach (DetalhesTarefaViewModel tarefa in Model.Registros)
+		{
+			<div class="col-12 col-md-5 col-lg-4 col-xl-3 mb-3">
+				<div class="card rounded-4 border-0">
+					<div class="card-body">
+						<div class="d-flex justify-content-between align-items-start">
+							<h4 class="card-text mb-1 fw-semibold text-truncate overflow-hidden text-nowrap" style="max-width: 70%;">
+								@tarefa.Titulo
+							</h4>
+
+							@if (tarefa.Prioridade == NivelPrioridade.Baixa)
+							{
+								<span class="badge bg-primary">@tarefa.Prioridade.GetDisplayName()</span>
+							}
+							else if (tarefa.Prioridade == NivelPrioridade.Media)
+							{
+								<span class="badge bg-success">@tarefa.Prioridade.GetDisplayName()</span>
+							}
+							else if (tarefa.Prioridade == NivelPrioridade.Alta)
+							{
+								<span class="badge bg-danger">@tarefa.Prioridade.GetDisplayName()</span>
+							}
+						</div>				
+						<p class="card-text mb-1">
+							<span class="fw-semibold">Criação:</span> @tarefa.DataCriacao.ToShortDateString()
+						</p>
+						@if (tarefa.Status == StatusTarefa.Concluida && tarefa.DataConclusao != DateTime.MinValue)
+						{			
+							<p class="card-text mb-1">
+								<span class="fw-semibold">Conclusão:</span> @tarefa.DataConclusao.ToShortDateString()
+							</p>
+						}
+						<p class="card-text mb-1">
+						<span class="fw-semibold">Itens:</span> @tarefa.Itens.Count
+					</p>
+					<p class="card-text mb-1">
+						<span class="fw-semibold">Percentual Concluído:</span> @tarefa.PercentualConcluido.ToString("F0")%
+					</p>
+					<p class="card-text mb-1">
+						<span class="fw-semibold">Status:</span> @tarefa.Status
+					</p>
+					<span class="d-flex gap-1 justify-content-end">
+						<a class="btn btn-primary rounded-circle" title="Detalhes Tarefa" asp-action="Detalhes" asp-route-id="@tarefa.Id">
+							<i class="bi bi-search"></i>
+						</a>
+						@if (tarefa.Status != StatusTarefa.Concluida && tarefa.Status != StatusTarefa.Cancelada)
+						{
+							<a class="btn btn-primary rounded-circle" title="Gerenciar Itens" asp-action="GerenciarItens" asp-route-id="@tarefa.Id">
+								<i class="bi bi-list-check"></i>
+							</a>
+						}
+						<a class="btn btn-primary rounded-circle" title="Editar Tarefa" asp-action="Editar" asp-route-id="@tarefa.Id" asp-route-contexto="Index">
+							<i class="bi bi-pencil-square"></i>
+						</a>
+						<a class="btn btn-outline-danger rounded-circle" title="Excluir Tarefa" asp-action="Excluir" asp-route-id="@tarefa.Id">
+							<i class="bi bi-x"></i>
+						</a>
+					</span>
+				</div>
+			</div>
+		</div>
+		}
+	</div>
+</div>
