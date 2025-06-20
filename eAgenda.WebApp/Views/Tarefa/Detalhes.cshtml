@@ -1,0 +1,126 @@
+﻿@using eAgenda.Dominio.ModuloTarefa
+@using eAgenda.WebApp.Extensions
+@model DetalhesTarefaViewModel
+
+@{
+    ViewBag.Titulo = "Detalhes da Tarefa";
+}
+
+<h3>Detalhes</h3>
+<div class="d-grid gap-2">
+    <div class="card">
+        <div class="card-body d-flex flex-column gap-2 position-relative">
+            <div class="task-title">
+                <h2>@Model.Titulo</h2>
+            </div>
+            <div class="task-dates d-grid position-absolute end-0 me-3">
+                <span><i class="bi bi-calendar-plus" title="Data de criação"></i> @Model.DataCriacao.ToShortDateString()</span>
+                @if (Model.Status == StatusTarefa.Concluida && Model.DataConclusao != DateTime.MinValue)
+                {
+                    <span><i class="bi bi-calendar-check" title="Data de conclusão"></i> @Model.DataConclusao.ToShortDateString()</span>
+                }
+            </div>
+            <div class="task-priority">
+                <span>Prioridade: @Model.Prioridade</span>
+            </div>
+            <div class="task-status">
+                <span>Status: @Model.Status.GetDisplayName()</span>
+            </div>
+            <a class="btn btn-primary rounded-circle position-absolute top-0 end-0 me-3" style="margin-top: 6rem; margin-bottom: auto;" title="Editar Tarefa" asp-action="Editar" asp-route-id="@Model.Id" asp-route-contexto="Detalhes">
+                <i class="bi bi-pencil-square"></i>
+            </a>
+            <div class="task-description mt-3">
+                <span>Descrição</span>
+                <div class="card">
+                    <div class="card-body d-flex flex-column gap-2">
+                        <span>@Model.Descricao</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive card rounded-3">
+        <div class="card-body d-flex flex-column gap-2">
+            <span>Itens</span>
+            <table class="table table-hover table-bordered rounded-3 border overflow-hidden" style="table-layout: fixed;">
+                <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">Título</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ItemTarefaViewModel item in Model.Itens)
+                    {
+                        <tr class="table-light">
+                            <td>@item.Titulo</td>
+                            <td>@item.Status.GetDisplayName()</td>
+                            <td>
+                                @if (item.Status == StatusItemTarefa.EmAndamento)
+                                {
+                                    <form class="d-inline" action="/tarefas/@Model.Id/concluir-item/@item.Id" method="post">
+                                        <button type="submit" class="btn-icon-acao">
+                                            <i class="bi bi-check-circle text-success fs-4"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else if (item.Status == StatusItemTarefa.Concluido)
+                                {
+                                    <form class="d-inline" action="/tarefas/@Model.Id/reabrir-item/@item.Id" method="post">
+                                        <button type="submit" class="btn-icon-acao">
+                                            <i class="bi bi-arrow-clockwise text-primary fs-4"></i>
+                                        </button>
+                                    </form>
+                                }
+                                <form class="d-inline ms-1" action="/tarefas/@Model.Id/remover-item/@item.Id?contexto=Detalhes" method="post">
+                                    <button type="submit" class="btn-icon-acao">
+                                        <i class="bi bi-x-circle text-danger fs-4"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!Model.Itens.Any())
+            {
+                <p class="fw-semibold mt-3">
+                    Ainda não há nenhum item para esta tarefa...
+                    <a class="btn btn-primary rounded-circle me-auto" title="Gerenciar Itens" asp-action="GerenciarItens" asp-route-id="@Model.Id">
+                        <i class="bi bi-list-check"></i>
+                    </a>
+                </p>
+                
+            }
+        </div>
+    </div>
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-end gap-3 mt-5">
+    <a href="/tarefas" class="btn btn-outline-primary rounded-3 px-2">Voltar</a>
+    @if ((Model.Status == StatusTarefa.EmAndamento || Model.Status == StatusTarefa.Pendente) && Model.Itens.Any(i => i.Status == StatusItemTarefa.EmAndamento))
+    {
+        <form class="d-inline ms-1" action="/tarefas/@Model.Id/concluir-tarefa" method="post">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-all fs-4"></i>Concluir Tarefa
+            </button>
+        </form>
+    }
+    else if ((Model.Status == StatusTarefa.Concluida || Model.Status == StatusTarefa.Cancelada) && Model.Itens.All(i => i.Status == StatusItemTarefa.Concluido || i.Status == StatusItemTarefa.Cancelado))
+    {
+        <form class="d-inline ms-1" action="/tarefas/@Model.Id/reabrir-tarefa" method="post">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-all fs-4"></i>Reabrir Tarefa
+            </button>
+        </form>
+    }
+    @if ((Model.Status != StatusTarefa.Concluida && Model.Status != StatusTarefa.Cancelada) && Model.Itens.All(i => i.Status != StatusItemTarefa.Concluido || i.Status != StatusItemTarefa.Cancelado))
+    {
+        <form class="d-inline ms-1" action="/tarefas/@Model.Id/cancelar-tarefa" method="post">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-x fs-4"></i>Cancelar Tarefa
+            </button>
+        </form>
+    } 
+</div>
