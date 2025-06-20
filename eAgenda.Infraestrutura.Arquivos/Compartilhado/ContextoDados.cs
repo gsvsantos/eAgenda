@@ -1,18 +1,19 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using eAgenda.Dominio.ModuloTarefa;
 
 namespace eAgenda.Infraestrutura.Arquivos.Compartilhado;
 
 public class ContextoDados
 {
-    // Espaço para implementar as Listas (Ex: public List<Contato> Contatos { get; set; })
+    public List<Tarefa> Tarefas { get; set; }
     private string pastaArmazenamento = string.Empty;
     private string arquivoArmazenamento = "dados-eAgenda.json";
 
     public ContextoDados()
     {
-        // Espaço para inicializar as Listas (Ex: Contatos = new List<Contato>();)
+        Tarefas = new List<Tarefa>();
     }
 
     public void VerificarSistemaOperacional()
@@ -68,6 +69,6 @@ public class ContextoDados
 
         if (contextoArmazenado == null) return;
 
-        // Espaço para reatribuir as listas conforme o contexto carregado (Ex: Contatos = contextoArmazenado.Contatos;)
+        Tarefas = contextoArmazenado.Tarefas;
     }
 }
