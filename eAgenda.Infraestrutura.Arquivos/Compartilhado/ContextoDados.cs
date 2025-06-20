@@ -1,6 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloDespesa;
 
 namespace eAgenda.Infraestrutura.Arquivos.Compartilhado;
 
@@ -10,9 +12,14 @@ public class ContextoDados
     private string pastaArmazenamento = string.Empty;
     private string arquivoArmazenamento = "dados-eAgenda.json";
 
+    public List<Categoria> Categorias {  get; set; }
+    public List<Despesa> Despesas { get; set; }
+
     public ContextoDados()
     {
         // Espaço para inicializar as Listas (Ex: Contatos = new List<Contato>();)
+        Categorias = new List<Categoria>();
+        Despesas = new List<Despesa>();
     }
 
     public void VerificarSistemaOperacional()
@@ -66,8 +73,14 @@ public class ContextoDados
 
         ContextoDados contextoArmazenado = JsonSerializer.Deserialize<ContextoDados>(json, jsonOptions)!;
 
-        if (contextoArmazenado == null) return;
+        if (contextoArmazenado == null)
+        {
+            return;
+        }
 
         // Espaço para reatribuir as listas conforme o contexto carregado (Ex: Contatos = contextoArmazenado.Contatos;)
+
+        Categorias = contextoArmazenado.Categorias;
+        Despesas = contextoArmazenado.Despesas;
     }
 }
