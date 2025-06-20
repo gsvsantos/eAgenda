@@ -220,6 +220,51 @@ html, body {
     font-size: 0.9rem;
 }
 
+
+.chip {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 30px;
+    padding: .125rem 1rem;
+    font-weight: 600;
+    color: var(--cor-fundo);
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    color: #353a40;
+    border-color: #a2a4ab;
+}
+
+.chip-outline:hover {
+    color: #4c535c;
+    background-color: #eaebef;
+    border-color: #7a7b80;
+}
+
+.btn-icon-acao {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: inherit;
+    font-size: inherit;
+    line-height: 1;
+}
+
+.btn-icon-acao i {
+    color: red;
+}
+
+.btn-icon-acao i:hover {
+    color: darkred;
+}
+
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
