@@ -237,11 +237,12 @@ html, body {
     border-radius: 1rem;
     color: #353a40;
     border-color: #a2a4ab;
+    cursor: pointer;
 }
 
 .chip-outline:hover {
     color: #4c535c;
-    background-color: #eaebef;
+    background-color: #e9ecef;
     border-color: #7a7b80;
 }
 
