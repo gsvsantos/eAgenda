@@ -5,53 +5,61 @@
 	ViewBag.Titulo = "Gerenciar Itens da Tarefa";
 }
 
-<h2>@Model.Tarefa.Titulo</h2>
-<form action="/tarefas/@Model.Tarefa.Id/adicionar-item" method="post">
-	<div class="mb-3">
-		<label class="form-label" asp-for="TituloItem"></label>
-		<input class="form-control" id="inputTitulo" asp-for="TituloItem" type="text" placeholder="Título do Item">
-		<span class="text-danger d-block mt-2" asp-validation-for="TituloItem"></span>
-	</div>
-	<button type="submit" class="btn btn-primary align-self-end col">
-		Adicionar Item
-	</button>
-</form>
-
-<h4 class="my-3">Itens da Tarefa:</h4>
-
-@if (!Model.Tarefa.Itens.Any())
-{
-	<p class="fw-semibold mt-3">Ainda não há nenhum item para esta tarefa...</p>
-}
-else
-{
-	<div class="card rounded-4 border-0">
-		<div class="card-body d-flex flex-wrap gap-2">
-			@foreach (ItemTarefaViewModel item in Model.Tarefa.Itens)
-			{
-				<div class="chip chip-outline chip-input"
-                     data-bs-toggle="modal"
-                     data-bs-target="#detalheItemModal"
-                     data-item-titulo="@item.Titulo"
-                     data-item-status="@item.Status.GetDisplayName()"
-						style="max-width: 350px;">
-					<div class="chip-delete-right">
-						<form action="/tarefas/@Model.Tarefa.Id/remover-item/@item.Id?contexto=GerenciarItens" method="post">
-							<button type="submit" class="btn-icon-acao">
-								<i class="bi bi-x"></i>
-							</button>
-						</form>
+<div class="d-flex flex-wrap justify-content-between my-5 gap-1">
+    <div class="col-12 col-md-6 align-self-center m-auto">
+		<div class="card rounded-4 border-0">
+			<div class="card-body">
+				<h2>@Model.Tarefa.Titulo</h2>
+				<form action="/tarefas/@Model.Tarefa.Id/adicionar-item" method="post">
+					<div class="mb-3">
+						<label class="form-label" asp-for="TituloItem"></label>
+						<input class="form-control" id="inputTitulo" asp-for="TituloItem" type="text" placeholder="Título do Item">
+						<span class="text-danger d-block mt-2" asp-validation-for="TituloItem"></span>
 					</div>
-					<div class="chip-text">
-						@(item.Titulo.Length >= 31 ? item.Titulo.Substring(0, 30) + "..." : item.Titulo)
+					<button type="submit" class="btn btn-primary align-self-end col">
+						Adicionar Item
+					</button>
+				</form>
+
+				<h4 class="my-3">Itens da Tarefa:</h4>
+
+				@if (!Model.Tarefa.Itens.Any())
+				{
+					<p class="fw-semibold mt-3">Ainda não há nenhum item para esta tarefa...</p>
+				}
+				else
+				{
+					<div class="card rounded-4 border-1 bg-light">
+						<div class="card-body d-flex flex-wrap gap-2">
+							@foreach (ItemTarefaViewModel item in Model.Tarefa.Itens)
+							{
+								<div class="chip chip-outline chip-input bg-white"
+									data-bs-toggle="modal"
+									data-bs-target="#detalheItemModal"
+									data-item-titulo="@item.Titulo"
+									data-item-status="@item.Status.GetDisplayName()"
+										style="width: 110px;">
+									<div class="chip-delete-right">
+										<form action="/tarefas/@Model.Tarefa.Id/remover-item/@item.Id?contexto=GerenciarItens" method="post">
+											<button type="submit" class="btn-icon-acao">
+												<i class="bi bi-x text-danger"></i>
+											</button>
+										</form>
+									</div>
+									<div class="chip-text text-truncate overflow-hidden text-nowrap" title="@item.Titulo">
+										@item.Titulo
+									</div>
+								</div>
+							}
+						</div>
 					</div>
+				}
+				<div class="form-group d-flex flex-column align-items-center justify-content-end gap-3 mt-5">
+					<a href="/tarefas" class="btn btn-outline-primary rounded-3 px-2">Voltar</a>
 				</div>
-			}
+			</div>
 		</div>
 	</div>
-}
-<div class="form-group d-flex flex-column align-items-center justify-content-end gap-3 mt-5">
-	<a href="/tarefas" class="btn btn-outline-primary rounded-3 px-2">Voltar</a>
 </div>
 <div class="modal fade" id="detalheItemModal" tabindex="-1" aria-labelledby="detalheItemModalLabel" aria-hidden="true">
     <div class="modal-dialog">

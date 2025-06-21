@@ -202,11 +202,11 @@ html, body {
     border-radius: 5px;
 }
 
-    .nav-dropdown .nav-link {
-        font-size: 0.9rem;
-        padding: 0.6rem 1rem;
-        color: rgba(255, 255, 255, 0.7);
-    }
+.nav-dropdown .nav-link {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+}
 
 .dropdown-arrow {
     font-size: 0.8rem;
@@ -263,13 +263,6 @@ html, body {
     line-height: 1;
 }
 
-.btn-icon-acao i {
-    color: red;
-}
-
-.btn-icon-acao i:hover {
-    color: darkred;
-}
 .table {
     list-style: none;
     padding: 0px;
@@ -332,6 +325,15 @@ html, body {
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.span-wrapper {
+  display: block;
+  max-height: 180px;
+  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 @keyframes fadeIn {
