@@ -23,11 +23,17 @@ html, body {
     border-color: var(--cor-primaria);
 }
 
-    .btn-primary:hover {
-        filter: brightness(0.9);
-        background-color: var(--cor-primaria);
-        border-color: var(--cor-primaria);
-    }
+.btn-primary:hover {
+    filter: brightness(0.9);
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+
+.btn-primary.rounded-circle:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.068);
+    transform: scale(1.02);
+    transition: all 0.2s ease;
+}
 
 .btn-warning {
     background-color: var(--cor-destaque);
@@ -35,23 +41,23 @@ html, body {
     color: var(--cor-texto-principal);
 }
 
-    .btn-warning:hover {
-        filter: brightness(0.95);
-        background-color: var(--cor-destaque);
-        border-color: var(--cor-destaque);
-        color: var(--cor-texto-principal);
-    }
+.btn-warning:hover {
+    filter: brightness(0.95);
+    background-color: var(--cor-destaque);
+    border-color: var(--cor-destaque);
+    color: var(--cor-texto-principal);
+}
 
 .btn-danger {
     background-color: var(--cor-perigo);
     border-color: var(--cor-perigo);
 }
 
-    .btn-danger:hover {
-        filter: brightness(0.9);
-        background-color: var(--cor-perigo);
-        border-color: var(--cor-perigo);
-    }
+.btn-danger:hover {
+    filter: brightness(0.9);
+    background-color: var(--cor-perigo);
+    border-color: var(--cor-perigo);
+}
 
 .card {
     border: 1px solid var(--cor-borda);
@@ -264,7 +270,69 @@ html, body {
 .btn-icon-acao i:hover {
     color: darkred;
 }
+.table {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+}
 
+.table th{
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    font-size: 18px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+}
+
+.table-wrapper {
+    max-height: 150px;
+    overflow: auto;
+    table-layout: fixed;
+}
+
+.table-responsive {
+    max-height: 350px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.table-responsive .table th {
+    position: sticky;
+    top: 0;
+    border: #0055ff;
+    z-index: 2;
+    background-clip: padding-box;
+}
+
+.table-responsive .table th:last-child {
+    border-right: none;
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
 @keyframes fadeIn {
     0% {
