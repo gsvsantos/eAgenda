@@ -5,44 +5,54 @@
 	ViewBag.Titulo = "Cadastro de Tarefa";
 }
 
-<form asp-action="Cadastrar" method="post">
-    <h3>Formulário de Cadastro</h3>
+<div class="container-fluid my-5 px-4">
+	<div class="row justify-content-center">
+		<div class="col-12 col-md-10 col-lg-8 mb-3">
+			<div class="card rounded-4 border-0">
+				<div class="card-body">
+					<form asp-action="Cadastrar" method="post">
+						<h3>Formulário de Cadastro</h3>
 
-	@if (ViewData.ModelState.ContainsKey("CadastroUnico") && ViewData.ModelState["CadastroUnico"]!.Errors.Count > 0)
-	{
-		<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
-			@ViewData.ModelState["CadastroUnico"]!.Errors.First().ErrorMessage
-			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						@if (ViewData.ModelState.ContainsKey("CadastroUnico") && ViewData.ModelState["CadastroUnico"]!.Errors.Count > 0)
+						{
+							<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+								@ViewData.ModelState["CadastroUnico"]!.Errors.First().ErrorMessage
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						}
+
+						<div class="mb-3">
+							<label class="form-label" asp-for="Titulo"></label>
+							<input class="form-control" id="inputTitulo" asp-for="Titulo" type="text" placeholder="Título">
+							<span class="text-danger d-block mt-2" asp-validation-for="Titulo"></span>
+						</div>
+						<div class="mb-3">
+							<label class="form-label" asp-for="Prioridade"></label>
+								<select class="form-control" asp-for="Prioridade" asp-items="@Html.GetEnumSelectList<NivelPrioridade>()">
+									<option value="" selected disabled>Selecione uma Prioridade</option>
+								</select>
+							<span class="text-danger d-block mt-2" asp-validation-for="Prioridade"></span>
+						</div>
+						<div class="mb-3">
+							<label class="form-label" asp-for="DataCriacao"></label>
+							<input class="form-control" id="inputTitulo" asp-for="DataCriacao" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" readonly>
+							<span class="text-danger d-block mt-2" asp-validation-for="DataCriacao"></span>
+						</div>
+						<div class="mb-3">
+							<label class="form-label" asp-for="Descricao"></label>
+							<textarea class="form-control" id="inputTitulo" asp-for="Descricao" type="text" placeholder="Descrição"></textarea>
+							<span class="text-danger d-block mt-2" asp-validation-for="Descricao"></span>
+						</div>
+						<div class="form-group d-flex flex-column align-items-center justify-content-end gap-3 mt-5">
+							<a href="/tarefas" class="btn btn-outline-primary rounded-3 px-2">Cancelar</a>
+							<button type="submit" class="btn btn-primary rounded-4 px-5">Confirmar</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
-	}
-
-	<div class="mb-3">
-		<label class="form-label" asp-for="Titulo"></label>
-		<input class="form-control" id="inputTitulo" asp-for="Titulo" type="text" placeholder="Título">
-		<span class="text-danger d-block mt-2" asp-validation-for="Titulo"></span>
 	</div>
-	<div class="mb-3">
-		<label class="form-label" asp-for="Prioridade"></label>
-			<select class="form-control" asp-for="Prioridade" asp-items="@Html.GetEnumSelectList<NivelPrioridade>()">
-				<option value="" selected disabled>Selecione uma Prioridade</option>
-			</select>
-		<span class="text-danger d-block mt-2" asp-validation-for="Prioridade"></span>
-	</div>
-	<div class="mb-3">
-		<label class="form-label" asp-for="DataCriacao"></label>
-		<input class="form-control" id="inputTitulo" asp-for="DataCriacao" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" readonly>
-		<span class="text-danger d-block mt-2" asp-validation-for="DataCriacao"></span>
-	</div>
-	<div class="mb-3">
-		<label class="form-label" asp-for="Descricao"></label>
-		<textarea class="form-control" id="inputTitulo" asp-for="Descricao" type="text" placeholder="Descrição"></textarea>
-		<span class="text-danger d-block mt-2" asp-validation-for="Descricao"></span>
-	</div>
-	<div class="form-group d-flex flex-column align-items-center justify-content-end gap-3 mt-5">
-		<a href="/tarefas" class="btn btn-outline-primary rounded-3 px-2">Cancelar</a>
-		<button type="submit" class="btn btn-primary rounded-4 px-5">Confirmar</button>
-	</div>
-</form>
+</div>
 @section Scripts {
 	<partial name="_ValidationScriptsPartial">
 }
