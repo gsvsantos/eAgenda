@@ -2,7 +2,7 @@
 @model ExcluirCategoriaViewModel;
 
 @{
-    ViewBag.Titulo = "Exclusão de Garçom";
+    ViewBag.Titulo = "Exclusão de Categoria";
 }
 
 <hr />
@@ -11,6 +11,14 @@
         <div class="card rounded-4 border-0">
             <div class="card-body p-md-5">
                 <h3>Formulário de Exclusão</h3>
+
+                @if (ViewData.ModelState["ExclusaoVinculo"]?.Errors.Count > 0)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                        @ViewData.ModelState["ExclusaoVinculo"]!.Errors.First().ErrorMessage
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                }
 
                 <p class="mt-4">Você deseja realmente excluir a categoria "@Model.Titulo"?</p>
 

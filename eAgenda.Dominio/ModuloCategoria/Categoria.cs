@@ -16,6 +16,15 @@ public class Categoria : EntidadeBase<Categoria>
         Titulo = titulo;
     }
 
+    public void AderirDespesa(Despesa despesa)
+    {
+        Despesas.Add(despesa);
+    }
+
+    public void RemoverDespesa(Despesa despesa)
+    {
+        Despesas.Remove(despesa);
+    }
     public override void AtualizarRegistro(Categoria registroEditado)
     {
         Titulo = registroEditado.Titulo;

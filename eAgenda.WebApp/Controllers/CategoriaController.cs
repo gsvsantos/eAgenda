@@ -68,8 +68,7 @@ public class CategoriaController : Controller
 
         var editarVM = new EditarCategoriaViewModel(
             id,
-            registroSelecionado.Titulo,
-            registroSelecionado.Despesas
+            registroSelecionado.Titulo
         );
 
         return View(editarVM);
@@ -113,22 +112,51 @@ public class CategoriaController : Controller
     [HttpPost("excluir/{id:guid}")]
     public IActionResult ExcluirConfirmado(Guid id)
     {
+        var categoria = repositorioCategoria.SelecionarRegistroPorId(id);
+
+        if (categoria == null)
+            return NotFound();
+
+        if (categoria.Despesas.Any())
+        {
+            ModelState.AddModelError("ExclusaoVinculo", "Não é possível excluir esta categoria, pois há despesas vinculadas a ela.");
+
+            var excluirVM = new ExcluirCategoriaViewModel(categoria.Id, categoria.Titulo);
+
+            return View("Excluir", excluirVM);
+        }
+
         repositorioCategoria.ExcluirRegistro(id);
 
         return RedirectToAction(nameof(Index));
     }
 
-    //[HttpGet("detalhes/{id:guid}")]
-    //public IActionResult Detalhes(Guid id)
-    //{
-    //    var registroSelecionado = repositorioGarcom.SelecionarRegistroPorId(id);
 
-    //    var detalhesVM = new DetalhesGarcomViewModel(
-    //        id,
-    //        registroSelecionado.Nome,
-    //        registroSelecionado.Cpf
-    //    );
+    [HttpGet("detalhes/{id:guid}")]
+    public IActionResult Detalhes(Guid id)
+    {
+        var categoria = repositorioCategoria.SelecionarRegistroPorId(id);
 
-    //    return View(detalhesVM);
-    //}
+        if (categoria == null)
+            return NotFound();
+
+        var detalhesVM = new DetalhesCategoriaViewModel
+        {
+            Id = categoria.Id,
+            Titulo = categoria.Titulo,
+            Despesas = categoria.Despesas.Select(d => new DespesaCategoriaViewModel
+            {
+                Id = d.Id,
+                Titulo = d.Titulo,
+                Descricao = d.Descricao,
+                DataOcorrencia = d.DataOcorrencia, 
+                Valor = d.Valor,
+                FormaPagamento = d.FormaPagamento.ToString()
+            }).ToList()
+        };
+
+        return View(detalhesVM);
+    }
+
+
 }

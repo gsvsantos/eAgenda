@@ -2,28 +2,28 @@
 using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.WebApp.Extensions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eAgenda.WebApp.Models;
 
 public class FormularioCategoriaViewModel
 {
     [Required(ErrorMessage = "O campo \"Titulo\" é obrigatório.")]
-    [MinLength(3, ErrorMessage = "O campo \"Titulo\" precisa conter ao menos 3 caracteres.")]
+    [MinLength(2, ErrorMessage = "O campo \"Titulo\" precisa conter ao menos 2 caracteres.")]
     [MaxLength(100, ErrorMessage = "O campo \"Titulo\" precisa conter no máximo 100 caracteres.")]
     public string Titulo { get; set; }
 
     [Required(ErrorMessage = "O campo \"Despesas\" é obrigatório.")]
-    public List<Despesa> Despesas { get; set; }
+    public List<SelectListItem> Despesas { get; set; } = [];
 }
 
 public class CadastrarCategoriaViewModel : FormularioCategoriaViewModel
 {
     public CadastrarCategoriaViewModel() { }
 
-    public CadastrarCategoriaViewModel(string titulo, List<Despesa> despesas) : this()
+    public CadastrarCategoriaViewModel(string titulo) : this()
     {
         Titulo = titulo;
-        Despesas = despesas;
     }
 }
 
@@ -33,11 +33,10 @@ public class EditarCategoriaViewModel : FormularioCategoriaViewModel
 
     public EditarCategoriaViewModel() { }
 
-    public EditarCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas) : this()
+    public EditarCategoriaViewModel(Guid id, string titulo) : this()
     {
         Id = id;
         Titulo = titulo;
-        Despesas = despesas;
     }
 }
 
@@ -66,28 +65,43 @@ public class VisualizarCategoriasViewModel
     }
 }
 
+public class DespesaCategoriaViewModel
+{
+    public Guid Id { get; set; }
+    public string Titulo { get; set; }
+    public string Descricao { get; set; }
+    public DateTime DataOcorrencia { get; set; }
+    public decimal Valor { get; set; }
+    public string FormaPagamento { get; set; }
+
+    public DespesaCategoriaViewModel() { }
+
+    public DespesaCategoriaViewModel(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento)
+    {
+        Id = id;
+        Titulo = titulo;
+        Descricao = descricao;
+        DataOcorrencia = dataOcorrencia;
+        Valor = valor;
+        FormaPagamento = formaPagamento.ToString();
+    }
+}
+
+
 public class DetalhesCategoriaViewModel
 {
     public Guid Id { get; set; }
     public string Titulo { get; set; } = string.Empty;
-    public List<Despesa> Despesas { get; set; } = [];
+    public List<DespesaCategoriaViewModel> Despesas { get; set; } = [];
 
+    public DetalhesCategoriaViewModel() { }
     public DetalhesCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas)
     {
         Id = id;
         Titulo = titulo;
-        Despesas = despesas;
-    }
-}
-
-public class SelecionarCategoriamViewModel
-{
-    public Guid Id { get; set; }
-    public string Titulo { get; set; }
-
-    public SelecionarCategoriamViewModel(Guid id, string titulo)
-    {
-        Id = id;
-        Titulo = titulo;
+        foreach (var despesa in despesas)
+        {
+            Despesas.Add(new DespesaCategoriaViewModel(despesa.Id, despesa.Titulo, despesa.Descricao, despesa.DataOcorrencia, despesa.Valor, despesa.FormaPagamento));
+        }
     }
 }

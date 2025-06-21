@@ -1,0 +1,85 @@
+﻿@using eAgenda.WebApp.Models
+@model GerenciarCategoriasViewModel
+
+@{
+	ViewBag.Titulo = "Gerenciar Categorias da Despesa";
+}
+
+<hr />
+<div class="row justify-content-center my-5">
+	<div class="col-md-8">
+		<div class="card rounded-4 border-0">
+			<div class="card-body p-md-5">
+				<h3>Gestão de Categorias da Despesa</h3>
+
+				<div class="row my-3">
+					<div class="mt-2">
+						<label class="control-label"><strong>Título:</strong> @Model.Despesa.Titulo</label>
+					</div>
+
+					<div class="mt-2">
+						<label class="control-label"><strong>Valor: R$</strong> @Model.Despesa.Valor</label>
+					</div>
+
+					<div class="mt-2">
+						<label class="control-label"><strong>Forma de Pagamento:</strong> @Model.Despesa.FormaPagamento</label>
+					</div>
+				</div>
+
+				<form class="d-flex flex-wrap gap-2 align-items-center" action="/despesas/@Model.Despesa.Id/adicionar-categoria" method="post">
+					<div class="col-12 col-md-7">
+						<label class="control-label">Categorias: </label>
+
+						<select class="form-select w-100" name="IdCategoria">
+							@foreach (SelectListItem categoria in Model.Categorias)
+							{
+								<option value="@categoria.Value">@categoria.Text</option>
+							}
+						</select>
+					</div>
+
+					<button type="submit" class="btn btn-primary align-self-end col">
+						Adicionar
+					</button>
+				</form>
+
+				<h4 class="my-3">Categorias da Despesa:</h4>
+
+				@if (!Model.Despesa.Categorias.Any())
+				{
+					<p class="fw-semibold mt-3">Ainda não há nenhuma categoria para esta despesa...</p>
+				}
+				else
+				{
+					<div class="card rounded-4 border-0">
+						<div class="card-body d-flex flex-wrap gap-2">
+							@foreach (CategoriaDespesaViewModel categoria in Model.Despesa.Categorias)
+							{
+								<div class="chip chip-outline chip-input"
+									 style="max-width: 350px;">
+									<div class="chip-text">
+										@(categoria.Titulo.Length >= 31 ? categoria.Titulo.Substring(0, 30) + "..." : categoria.Titulo)
+									</div>
+									<div class="chip-delete-right">
+										<form action="/despesas/@Model.Despesa.Id/remover-categoria/@categoria.Id" method="post">
+											<button type="submit" class="btn btn-outline-primary">
+												<i class="bi bi-cup-hot"></i>
+											</button>
+										</form>
+									</div>
+								</div>
+							}
+						</div>
+					</div>
+				}
+				<div class="form-group d-flex flex-column align-items-center justify-content-end gap-3 mt-5">
+					<a href="/despesas" class="btn btn-outline-primary rounded-3 px-2">Voltar</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	}

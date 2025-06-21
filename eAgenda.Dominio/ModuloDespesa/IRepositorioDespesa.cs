@@ -2,5 +2,7 @@
 
 namespace eAgenda.Dominio.ModuloDespesa;
 
-public interface IRepositorioDespesa : IRepositorio<Despesa>;
-
+public interface IRepositorioDespesa : IRepositorio<Despesa>
+{
+    Despesa SelecionarPorId(Guid idRegistro);
+}
