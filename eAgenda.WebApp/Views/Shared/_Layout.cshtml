@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using eAgenda.WebApp.Extensions
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8"/>
@@ -13,6 +14,9 @@
     <div class="wrapper">
         <partial name="_SideBar">
         <div class="main">
+            <div class="breadcrumb">
+                @Html.BuildBreadcrumbNavigation()
+            </div>
             <header class="main-title p-4">
                 <h2>@ViewBag.Titulo</h2>
             </header>
