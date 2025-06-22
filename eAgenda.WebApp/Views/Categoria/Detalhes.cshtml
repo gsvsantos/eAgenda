@@ -6,6 +6,13 @@
 
 <h4 class="mb-3">Despesas vinculadas à categoria <span class="text-warning">@Model.Titulo</span></h4>
 
+<p>
+    <a class="btn btn-cobre px-4 rounded-pill shadow-sm" href="/categorias">
+        <i class="bi bi-plus me-2"></i>
+        Voltar para Categorias
+    </a>
+</p>
+
 @if (!Model.Despesas.Any())
 {
     <p class="fw-semibold mt-3">Ainda não há despesas vinculadas a esta categoria.</p>
