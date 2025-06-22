@@ -1,0 +1,69 @@
+﻿@using eAgenda.Dominio.ModuloDespesa
+@using eAgenda.WebApp.Models
+@model CadastrarDespesaViewModel;
+
+@{
+    ViewBag.Titulo = "Cadastro de Despesa";
+}
+
+<hr />
+<div class="row justify-content-center my-5">
+    <div class="col-md-8">
+        <div class="card rounded-4 border-0">
+            <div class="card-body p-md-5">
+                <form asp-action="Cadastrar">
+                    <h3>Formulário de Cadastro</h3>
+
+                    @if (ViewData.ModelState["CadastroUnico"]?.Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                            @ViewData.ModelState["CadastroUnico"]!.Errors.First().ErrorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="form-group d-grid gap-2 mt-3">
+                        <label asp-for="Titulo" class="control-label fs-5">Titulo:</label>
+                        <input asp-for="Titulo" class="form-control" />
+                        <span asp-validation-for="Titulo" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-grid gap-2 mt-3">
+                        <label asp-for="Descricao" class="control-label fs-5">Descrição:</label>
+                        <input asp-for="Descricao" class="form-control" />
+                        <span asp-validation-for="Descricao" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-grid gap-2 mt-3">
+                        <label class="form-label" asp-for="DataOcorrencia">Data de Ocorrencia</label>
+                        <input class="form-control" id="inputTitulo" asp-for="DataOcorrencia" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")">
+                        <span class="text-danger d-block mt-2" asp-validation-for="DataOcorrencia"></span>
+                    </div>
+
+                    <div class="form-group d-grid gap-2 mt-3">
+                        <label asp-for="Valor" class="control-label fs-5">Valor:</label>
+                        <input asp-for="Valor" class="form-control" step="0.01" pattern="^\d+(?:,\d{1,2})?$" value="0.00" />
+                        <span asp-validation-for="Valor" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-grid gap-2 mt-3">
+                        <label asp-for="FormaPagamento" class="control-label fs-5">Forma Pagamento:</label>
+                        <select asp-for="FormaPagamento" asp-items="@Html.GetEnumSelectList<MeiosPagamento>()" class="form-control">
+                            <option value="" selected disabled>ESCOLHA DINHEIRO QUE GASTO!!!>:)</option>
+                        </select>
+                        <span asp-validation-for="FormaPagamento" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-5">
+                        <a href="/despesas">Voltar para a listagem</a>
+                        <button type="submit" class="btn btn-cobre rounded-3 px-5">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}
