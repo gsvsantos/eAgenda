@@ -11,7 +11,7 @@ public class FormularioCategoriaViewModel
     [Required(ErrorMessage = "O campo \"Titulo\" é obrigatório.")]
     [MinLength(2, ErrorMessage = "O campo \"Titulo\" precisa conter ao menos 2 caracteres.")]
     [MaxLength(100, ErrorMessage = "O campo \"Titulo\" precisa conter no máximo 100 caracteres.")]
-    public string Titulo { get; set; }
+    public string Titulo { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo \"Despesas\" é obrigatório.")]
     public List<SelectListItem> Despesas { get; set; } = [];
@@ -54,11 +54,11 @@ public class ExcluirCategoriaViewModel
 
 public class VisualizarCategoriasViewModel
 {
-    public List<DetalhesCategoriaViewModel> Registros { get; set; }
+    public List<DespesasCategoriaViewModel> Registros { get; set; }
 
     public VisualizarCategoriasViewModel(List<Categoria> categorias)
     {
-        Registros = new List<DetalhesCategoriaViewModel>();
+        Registros = new List<DespesasCategoriaViewModel>();
 
         foreach (var c in categorias)
             Registros.Add(c.ParaDetalhesVM());
@@ -68,11 +68,11 @@ public class VisualizarCategoriasViewModel
 public class DespesaCategoriaViewModel
 {
     public Guid Id { get; set; }
-    public string Titulo { get; set; }
-    public string Descricao { get; set; }
+    public string Titulo { get; set; } = string.Empty;
+    public string Descricao { get; set; } = string.Empty;
     public DateTime DataOcorrencia { get; set; }
     public decimal Valor { get; set; }
-    public string FormaPagamento { get; set; }
+    public string FormaPagamento { get; set; } = string.Empty;
 
     public DespesaCategoriaViewModel() { }
 
@@ -88,14 +88,14 @@ public class DespesaCategoriaViewModel
 }
 
 
-public class DetalhesCategoriaViewModel
+public class DespesasCategoriaViewModel
 {
     public Guid Id { get; set; }
     public string Titulo { get; set; } = string.Empty;
     public List<DespesaCategoriaViewModel> Despesas { get; set; } = [];
 
-    public DetalhesCategoriaViewModel() { }
-    public DetalhesCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas)
+    public DespesasCategoriaViewModel() { }
+    public DespesasCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas)
     {
         Id = id;
         Titulo = titulo;

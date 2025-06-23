@@ -10,9 +10,9 @@ public static class CategoriaExtensions
         return new Categoria(formularioVM.Titulo);
     }
 
-    public static DetalhesCategoriaViewModel ParaDetalhesVM(this Categoria categoria)
+    public static DespesasCategoriaViewModel ParaDetalhesVM(this Categoria categoria)
     {
-        return new DetalhesCategoriaViewModel(
+        return new DespesasCategoriaViewModel(
                 categoria.Id,
                 categoria.Titulo,
                 categoria.Despesas

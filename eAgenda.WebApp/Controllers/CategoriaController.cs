@@ -132,15 +132,15 @@ public class CategoriaController : Controller
     }
 
 
-    [HttpGet("detalhes/{id:guid}")]
-    public IActionResult Detalhes(Guid id)
+    [HttpGet("despesas/{id:guid}")]
+    public IActionResult Despesas(Guid id)
     {
         var categoria = repositorioCategoria.SelecionarRegistroPorId(id);
 
         if (categoria == null)
             return NotFound();
 
-        var detalhesVM = new DetalhesCategoriaViewModel
+        var despesasVM = new DespesasCategoriaViewModel
         {
             Id = categoria.Id,
             Titulo = categoria.Titulo,
@@ -155,7 +155,7 @@ public class CategoriaController : Controller
             }).ToList()
         };
 
-        return View(detalhesVM);
+        return View(despesasVM);
     }
 
 
