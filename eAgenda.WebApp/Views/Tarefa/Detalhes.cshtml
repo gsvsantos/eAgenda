@@ -7,12 +7,13 @@
     bool mostrarScroll = Model.Itens.Count > 6;
 }
 
-<div class="d-flex flex-wrap justify-content-between my-5 gap-1">
+<hr class="border border-dark opacity-25" />
+<div class="d-flex flex-wrap justify-content-between mt-5 gap-1">
     <div class="col-12 col-md-6 col-lg-4 align-self-center m-auto">
         <div class="card">
             <div class="card-body d-flex flex-column gap-2 position-relative">
                 <div class="task-title text-truncate overflow-hidden text-nowrap" style="max-width: 72%;" title="@Model.Titulo">
-                    <span class="fs-4">@Model.Titulo</span>
+                    <span class="fw-bold fs-4">@Model.Titulo</span>
                 </div>
                 <div class="task-dates d-grid position-absolute end-0 me-3">
                     <span><i class="bi bi-calendar-plus" title="Data de criação"></i> @Model.DataCriacao.ToShortDateString()</span>
@@ -22,20 +23,25 @@
                     }
                 </div>
                 <div class="task-priority">
-                    <span>Prioridade: @Model.Prioridade</span>
+                    <span class="fw-semibold">Prioridade:</span> @Model.Prioridade
                 </div>
                 <div class="task-status">
-                    <span>Status: @Model.Status.GetDisplayName()</span>
+                    <span class="fw-semibold">Status:</span> @Model.Status.GetDisplayName()
                 </div>
                 <a class="btn btn-primary rounded-circle position-absolute top-0 end-0 me-3" style="margin-top: 6rem; margin-bottom: auto;" title="Editar Tarefa" asp-action="Editar" asp-route-id="@Model.Id" asp-route-contexto="Detalhes">
                     <i class="bi bi-pencil-square"></i>
                 </a>
                 <div class="task-description mt-3">
-                    <span>Descrição</span>
-                    <div class="card">
-                        <div class="card-body d-flex flex-column p-1">
-                            <span class="span-wrapper">@Model.Descricao</span>
-                        </div>
+                    <span class="fw-semibold">Descrição</span>
+                    <div class="descricao-box">      
+                        @if (!string.IsNullOrWhiteSpace(Model.Descricao))
+                        {
+                            <span class="span-wrapper lh-sm">@Model.Descricao</span>
+                        }
+                        else
+                        {
+                            <span class="fw-semibold">Nenhuma descrição definida.</span>
+                        }
                     </div>
                 </div>
             </div>
@@ -44,7 +50,7 @@
     <div class="col-12 col-md-12 col-lg-7 mb-3">
         <div class="card rounded-3">
             <div class="card-body d-flex flex-column gap-2">
-                <span>Itens</span>
+                <span class="fw-semibold fs-3">Itens</span>
                 <div class="@(mostrarScroll ? "table-responsive" : "")" style="@(mostrarScroll ? "" : "overflow: visible; max-height: none;")">
                     <table class="table table-wrapper table-hover">
                         <thead>
@@ -106,7 +112,7 @@
     <div class="me-3">
         <a href="/tarefas" class="btn btn-outline-primary rounded-3 px-3">Voltar</a>
     </div>
-    <div class="d-flex gap-3 flex-column align-items-center">
+    <div class="d-flex gap-2 flex-column align-items-center">
         @if ((Model.Status == StatusTarefa.EmAndamento || Model.Status == StatusTarefa.Pendente) && Model.Itens.Any(i => i.Status == StatusItemTarefa.EmAndamento))
         {
             <form class="d-flex align-items-center ms-1" action="/tarefas/@Model.Id/concluir-tarefa" method="post">

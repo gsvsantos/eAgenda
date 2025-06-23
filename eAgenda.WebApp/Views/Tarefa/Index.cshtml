@@ -7,73 +7,78 @@
 	string? statusAtual = Context.Request.Query["status"];
 	string? prioridadeAtual = Context.Request.Query["prioridade"];
 }
-<div class="container-fluid my-5 px-4">
-	<div class="d-grid d-lg-flex flex-wrap gap-2 w-50 align-items-center">
+
+<div class="d-flex flex-column flex-lg-row gap-3">
+	<div class="d-grid d-lg-flex flex-wrap gap-2 w-50 align-items-end">
 		<a class="btn btn-primary px-5" title="Nova Tarefa" asp-action="Cadastrar"> 
-			<i class="bi bi-plus"></i>
+			<i class="bi bi-bookmark-plus-fill"></i>
 			Nova Tarefa
 		</a>
 	</div>
-	<div class="row justify-content-start">
-		<div class="col-9 col-md-7 col-lg-5 col-xxl-4">
-			<form method="get" asp-action="Index" class="mt-2">
-				<div class="d-flex flex-wrap gap-2">
-					<select class="form-select" name="status">
-						<option value="" disabled selected="@(string.IsNullOrEmpty(statusAtual) ? "selected" : null)">Status</option>
-						@foreach (StatusTarefa status in Enum.GetValues(typeof(StatusTarefa)).Cast<StatusTarefa>())
-						{
-							<option value="@status" selected="@(status.ToString() == statusAtual ? "selected" : null)">
-								@status.GetDisplayName()
-							</option>
-						}
-					</select>
-					<select class="form-select" name="prioridade">
-						<option value="" disabled selected="@(string.IsNullOrEmpty(prioridadeAtual) ? "selected" : null)">Prioridade</option>
-						@foreach (NivelPrioridade prioridade in Enum.GetValues(typeof(NivelPrioridade)).Cast<NivelPrioridade>().OrderBy(s => (int)s))
-						{
-							<option value="@prioridade" selected="@(prioridade.ToString() == prioridadeAtual ? "selected" : null)">
-								@prioridade.GetDisplayName()
-							</option>
-						}
-					</select>
-					<button type="submit" class="btn btn-primary">
-						Selecionar Filtros
-					</button>
-					<a href="/tarefas" class="btn btn-secondary">
-						<i class="bi bi-x-circle"></i>
-						Limpar Filtros
-					</a>
-				</div>
-			</form>
-		</div>
+	<div class="col-12 col-md-8 col-lg-5 col-xxl-4 ms-lg-auto card-filtos">
+		<form method="get" asp-action="Index" class="mt-2">
+			<div class="d-flex flex-column flex-md-row flex-wrap gap-2">
+				<select class="form-select flex-fill" name="status">
+					<option value="" disabled selected="@(string.IsNullOrEmpty(statusAtual) ? "selected" : null)">Status</option>
+					@foreach (StatusTarefa status in Enum.GetValues(typeof(StatusTarefa)).Cast<StatusTarefa>())
+					{
+						<option value="@status" selected="@(status.ToString() == statusAtual ? "selected" : null)">
+							@status.GetDisplayName()
+						</option>
+					}
+				</select>
+				<select class="form-select flex-fill" name="prioridade">
+					<option value="" disabled selected="@(string.IsNullOrEmpty(prioridadeAtual) ? "selected" : null)">Prioridade</option>
+					@foreach (NivelPrioridade prioridade in Enum.GetValues(typeof(NivelPrioridade)).Cast<NivelPrioridade>().OrderBy(s => (int)s))
+					{
+						<option value="@prioridade" selected="@(prioridade.ToString() == prioridadeAtual ? "selected" : null)">
+							@prioridade.GetDisplayName()
+						</option>
+					}
+				</select>
+			</div>
+		   <div class="d-flex gap-2 mt-2 justify-content-end">
+				<button type="submit" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+					<i class="bi bi-check2-circle"></i>
+					Filtrar
+				</button>
+				<a href="/tarefas" class="btn btn-secondary btn-sm d-flex align-items-center gap-1">
+					<i class="bi bi-x-circle"></i>
+					Limpar
+				</a>
+			</div>
+		</form>
 	</div>
-	<hr />
-	<div class="d-flex flex-wrap gap-2">
-		@if (!Model.Registros.Any())
-		{
-			<p class="fw-semibold mt-3">Ainda não há nenhuma tarefa cadastrada...</p>
-		}
-		@foreach (DetalhesTarefaViewModel tarefa in Model.Registros)
+</div>
+<hr class="border border-dark opacity-25" />
+<div class="row g-2">
+	@if (!Model.Registros.Any())
+	{
+		<p class="fw-semibold mt-3">Ainda não há nenhuma tarefa cadastrada...</p>
+	}
+	else
+	{
+		@foreach (DetalhesTarefaViewModel tarefa in Model.Registros.OrderByDescending(x => x.Prioridade))
 		{
 			<div class="col-12 col-md-5 col-lg-4 col-xl-3 mb-3">
 				<div class="card rounded-4 border-0">
 					<div class="card-body">
 						<div class="d-flex justify-content-between align-items-start">
-							<h4 class="card-text mb-1 fw-semibold text-truncate overflow-hidden text-nowrap" style="max-width: 70%;" title="@tarefa.Titulo">
+							<h4 class="card-title mb-1 fw-semibold text-truncate overflow-hidden text-nowrap" style="max-width: 70%;" title="@tarefa.Titulo">
 								@tarefa.Titulo
 							</h4>
 
 							@if (tarefa.Prioridade == NivelPrioridade.Baixa)
 							{
-								<span class="badge bg-primary">@tarefa.Prioridade.GetDisplayName()</span>
+								<span class="badge bg-baixa">@tarefa.Prioridade.GetDisplayName()</span>
 							}
 							else if (tarefa.Prioridade == NivelPrioridade.Media)
 							{
-								<span class="badge bg-success">@tarefa.Prioridade.GetDisplayName()</span>
+								<span class="badge bg-media">@tarefa.Prioridade.GetDisplayName()</span>
 							}
 							else if (tarefa.Prioridade == NivelPrioridade.Alta)
 							{
-								<span class="badge bg-danger">@tarefa.Prioridade.GetDisplayName()</span>
+								<span class="badge bg-alta">@tarefa.Prioridade.GetDisplayName()</span>
 							}
 						</div>				
 						<p class="card-text mb-1">
@@ -87,7 +92,7 @@
 						}
 						<p class="card-text mb-1">
 						<span class="fw-semibold">Itens:</span> @tarefa.Itens.Count
-					</p>
+						</p>
 					<p class="card-text mb-1">
 						<span class="fw-semibold">Percentual Concluído:</span> @tarefa.PercentualConcluido.ToString("F0")%
 					</p>
@@ -96,7 +101,7 @@
 					</p>
 					<span class="d-flex gap-1 justify-content-end">
 						<a class="btn btn-primary rounded-circle" title="Detalhes Tarefa" asp-action="Detalhes" asp-route-id="@tarefa.Id">
-							<i class="bi bi-search"></i>
+							<i class="bi bi-eye"></i>
 						</a>
 						@if (tarefa.Status != StatusTarefa.Concluida && tarefa.Status != StatusTarefa.Cancelada)
 						{
@@ -108,12 +113,12 @@
 							<i class="bi bi-pencil-square"></i>
 						</a>
 						<a class="btn btn-outline-danger rounded-circle" title="Excluir Tarefa" asp-action="Excluir" asp-route-id="@tarefa.Id">
-							<i class="bi bi-x"></i>
+							<i class="bi bi-bookmark-x-fill"></i>
 						</a>
 					</span>
 				</div>
 			</div>
 		</div>
 		}
-	</div>
+	}
 </div>

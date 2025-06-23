@@ -8,18 +8,22 @@
 <div class="d-flex flex-wrap justify-content-between my-5 gap-1">
     <div class="col-12 col-md-6 align-self-center m-auto">
 		<div class="card rounded-4 border-0">
-			<div class="card-body">
+			<div class="card-body p-md-4">
 				<h2>@Model.Tarefa.Titulo</h2>
-				<form action="/tarefas/@Model.Tarefa.Id/adicionar-item" method="post">
-					<div class="mb-3">
-						<label class="form-label" asp-for="TituloItem"></label>
-						<input class="form-control" id="inputTitulo" asp-for="TituloItem" type="text" placeholder="Título do Item">
-						<span class="text-danger d-block mt-2" asp-validation-for="TituloItem"></span>
-					</div>
-					<button type="submit" class="btn btn-primary align-self-end col">
-						Adicionar Item
-					</button>
-				</form>
+
+				<div class="mb-3">
+					<form action="/tarefas/@Model.Tarefa.Id/adicionar-item" method="post">
+					<div class="mt-3">
+							<label class="form-label" asp-for="TituloItem"></label>
+							<input class="form-control" id="inputTitulo" asp-for="TituloItem" type="text" placeholder="Título do Item">
+							<span class="text-danger d-block mt-2" asp-validation-for="TituloItem"></span>
+						</div>
+						<button type="submit" class="btn btn-primary align-self-end col">
+							<i class="bi bi-journal-plus"></i>
+							Adicionar Item
+						</button>
+					</form>
+				</div>
 
 				<h4 class="my-3">Itens da Tarefa:</h4>
 
@@ -30,7 +34,7 @@
 				else
 				{
 					<div class="card rounded-4 border-1 bg-light">
-						<div class="card-body d-flex flex-wrap gap-2">
+						<div class="card-body d-flex flex-wrap gap-1">
 							@foreach (ItemTarefaViewModel item in Model.Tarefa.Itens)
 							{
 								<div class="chip chip-outline chip-input bg-white"
@@ -38,7 +42,7 @@
 									data-bs-target="#detalheItemModal"
 									data-item-titulo="@item.Titulo"
 									data-item-status="@item.Status.GetDisplayName()"
-										style="width: 110px;">
+									style="width: 110px;">
 									<div class="chip-delete-right">
 										<form action="/tarefas/@Model.Tarefa.Id/remover-item/@item.Id?contexto=GerenciarItens" method="post">
 											<button type="submit" class="btn-icon-acao">
