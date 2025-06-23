@@ -1,6 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
-using eAgenda.Infraestrutura.Arquivos.ModuloTarefa;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +12,13 @@ public class TarefaController : Controller
     private readonly ContextoDados contextoDados;
     private readonly IRepositorioTarefa repositorioTarefa;
 
-    public TarefaController()
+    public TarefaController(ContextoDados contextoDados, IRepositorioTarefa repositorioTarefa)
     {
-        contextoDados = new(true);
-        repositorioTarefa = new RepositorioTarefaEmArquivos(contextoDados);
+        this.contextoDados = contextoDados;
+        this.repositorioTarefa = repositorioTarefa;
     }
 
-    public IActionResult Index(string status, string prioridade)
+    public IActionResult Index(string? status, string? prioridade)
     {
         repositorioTarefa.AtualizarStatusRegistros();
         List<Tarefa> tarefas = repositorioTarefa.SelecionarRegistros();
