@@ -1,0 +1,25 @@
+﻿@using eAgenda.WebApp.Models
+@model DetalhesContatoViewModel
+
+<h2>Detalhes de @Model.Nome #@Model.Id.ToString().Substring(0, 13)...</h2>
+<div>
+    <strong>Email:</strong> @Model.Email
+</div>
+<div>
+    <strong>Telefone:</strong> @Model.Telefone
+</div>
+<div>
+    <strong>Cargo:</strong> @Model.Cargo
+</div>
+<div>
+    <strong>Empresa:</strong> @Model.Empresa
+</div>
+<div>
+    <strong>Compromissos</strong>@(Model.Compromissos.Count() > 0 ? ":" : " não possui compromissos agendados.")
+</div>
+    
+
+
+
+
+

@@ -1,0 +1,11 @@
+﻿@using eAgenda.WebApp.Models
+@model ExcluirContatoViewModel;
+
+<h2>Excluir Contato</h2>
+<p>Tem certeza que deseja excluir o contato <strong>@Model.Nome</strong>?</p>
+
+<form action="/contatos/excluir/@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit">Excluir</button>
+    <a href="/contatos">Cancelar</a>
+</form>

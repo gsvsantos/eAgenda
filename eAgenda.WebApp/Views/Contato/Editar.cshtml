@@ -1,0 +1,26 @@
+﻿@using eAgenda.WebApp.Models
+@model EditarContatoViewModel
+
+<h2>Novo Contato</h2>
+
+<form asp-action="Editar" method="post">
+    <label>Nome:</label>
+    <input asp-for="Nome" required minlength="2" maxlength="100" />
+    <span asp-validation-for="Nome"></span>
+
+    <label>Email:</label>
+    <input asp-for="Email" type="email" required />
+    <span asp-validation-for="Email"></span>
+
+    <label>Telefone:</label>
+    <input asp-for="Telefone" required pattern="\(\d{2}\) \d{4,5}-\d{4}" />
+    <span asp-validation-for="Telefone"></span>
+
+    <label>Cargo:</label>
+    <input asp-for="Cargo" />
+
+    <label>Empresa:</label>
+    <input asp-for="Empresa" />
+
+    <button type="submit">Salvar</button>
+</form>

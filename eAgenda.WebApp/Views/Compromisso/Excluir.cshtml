@@ -1,0 +1,12 @@
+﻿@using eAgenda.WebApp.Models
+@model ExcluirCompromissoViewModel
+
+<h2>Excluir Compromisso</h2>
+
+<p>Tem certeza que deseja excluir o compromisso "<strong>@Model.Assunto</strong>"?</p>
+
+<form asp-action="Excluir" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

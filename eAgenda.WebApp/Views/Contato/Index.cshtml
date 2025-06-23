@@ -1,0 +1,32 @@
+﻿@using eAgenda.WebApp.Models
+@model VisualizarContatosViewModel
+
+<h2>Contatos</h2>
+
+<a href="/contatos/cadastrar"><i class="bi bi-person-fill-add"></i>Novo Contato</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DetalhesContatoViewModel contato in Model.Registros)
+        {
+            <tr>
+                <td>@contato.Nome</td>
+                <td>@contato.Email</td>
+                <td>@contato.Telefone</td>
+                <td>
+                    <a href="/contatos/Detalhes/@contato.Id">Detalhes</a> |
+                    <a href="/contatos/Editar/@contato.Id">Editar</a> |
+                    <a href="/contatos/Excluir/@contato.Id">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

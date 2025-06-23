@@ -1,0 +1,61 @@
+﻿@using eAgenda.Dominio.ModuloCompromisso
+@using eAgenda.WebApp.Models;
+@using static eAgenda.Dominio.ModuloCompromisso.Compromisso
+@model EditarCompromissoViewModel
+
+<h2>Editar Compromisso</h2>
+
+<form asp-action="Editar" method="post">
+    <div>
+        <label>Assunto:</label>
+        <input asp-for="Assunto" class="form-control" />
+        <span asp-validation-for="Assunto" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Data:</label>
+        <input asp-for="DataOcorrencia" type="date" class="form-control" />
+        <span asp-validation-for="DataOcorrencia" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Hora Início:</label>
+        <input asp-for="HoraInicio" type="time" class="form-control" />
+        <span asp-validation-for="HoraInicio" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Hora Término:</label>
+        <input asp-for="HoraTermino" type="time" class="form-control" />
+        <span asp-validation-for="HoraTermino" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Tipo:</label>
+        <select asp-for="TipoCompromisso" asp-items="Html.GetEnumSelectList<TipoCompromisso>()" class="form-control"></select>
+    </div>
+
+    <div>
+        <label>Local:</label>
+        <input asp-for="Local" class="form-control" />
+    </div>
+
+    <div>
+        <label>Link:</label>
+        <input asp-for="Link" class="form-control" />
+    </div>
+
+    <div>
+        <label>Contato:</label>
+        <select asp-for="ContatoId" class="form-control">
+            <option value="">(Nenhum)</option>
+            @foreach (var contato in Model.Contatos)
+            {
+                <option value="@contato.Value">@contato.Text</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirmar</button>
+</form>
+

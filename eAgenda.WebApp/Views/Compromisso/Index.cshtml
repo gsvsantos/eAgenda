@@ -1,0 +1,38 @@
+﻿@using eAgenda.WebApp.Models
+@model VisualizarCompromissosViewModel
+
+<h2>Lista de Compromissos</h2>
+
+<a asp-action="Cadastrar" class="btn btn-success mb-3">Novo Compromisso</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Assunto</th>
+            <th>Data</th>
+            <th>Hora Início</th>
+            <th>Hora Término</th>
+            <th>Tipo</th>
+            <th>Contato</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var compromisso in Model.Registros)
+        {
+            <tr>
+                <td>@compromisso.Assunto</td>
+                <td>@compromisso.DataOcorrencia.ToShortDateString()</td>
+                <td>@compromisso.HoraInicio</td>
+                <td>@compromisso.HoraTermino</td>
+                <td>@compromisso.TipoCompromisso</td>
+                <td>@(compromisso.Contato?.Nome ?? "—")</td>
+                <td>
+                    <a asp-action="Detalhes" asp-route-id="@compromisso.Id" class="btn btn-info btn-sm">Detalhes</a>
+                    <a asp-action="Editar" asp-route-id="@compromisso.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Excluir" asp-route-id="@compromisso.Id" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
