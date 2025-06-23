@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloCategoria;
 
@@ -27,7 +28,7 @@ public class Despesa : EntidadeBase<Despesa>
 
     public void AderirCategoria(Categoria categoria)
     {
-      Categorias.Add(categoria);
+        Categorias.Add(categoria);
     }
 
     public void RemoverCategoria(Categoria categoria)
@@ -47,8 +48,12 @@ public class Despesa : EntidadeBase<Despesa>
 
 public enum MeiosPagamento
 {
+    [Display(Name = "Dinheiro")]
     Dinheiro = 0,
+    [Display(Name = "Débito")]
     Debito = 1,
+    [Display(Name = "Crédito")]
     Credito = 2,
+    [Display(Name = "Parcelado")]
     Parcelado = 3
 }
