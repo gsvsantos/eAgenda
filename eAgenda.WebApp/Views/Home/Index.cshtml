@@ -1,15 +1,115 @@
-﻿@{
-	ViewBag.Titulo = "Home";
+﻿@model HomeViewModel
+
+@{
+    ViewBag.Titulo = "Página Inicial";
 }
 
-<div class="d-flex justify-content-center">
-	<h1 class="my-5">Hello, World!</h1>
+<div class="mb-4 d-flex flex-wrap gap-2">
+    <a href="/tarefas/cadastrar" class="btn btn-primary btn-sm"><i class="bi bi-bookmark-plus-fill"></i> Nova Tarefa</a>
+    <a href="/despesas/cadastrar" class="btn btn-primary btn-sm"><i class="bi bi-cash-coin"></i> Nova Despesa</a>
+    <a href="/contatos/cadastrar" class="btn btn-primary btn-sm"><i class="bi bi-person-fill-add"></i> Novo Contato</a>
+    <a href="/compromissos/cadastrar" class="btn btn-primary btn-sm"><i class="bi bi-calendar-plus"></i> Novo Compromisso</a>
+    <a href="/categorias/cadastrar" class="btn btn-primary btn-sm"><i class="bi bi-folder-plus me-2"></i> Nova Categoria</a>
 </div>
 
-<div class="d-grid d-lg-flex flex-wrap gap-3 mt-3">
-	<a href="/categorias" class="btn fw-semibold px-5 rounded-3">Categoria</a>
+<div class="row mb-4">
+    <div class="col-md-2 col-sm-6 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title">Tarefas</h6>
+                <p class="card-text fs-4">@Model.TotalTarefas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-6 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title">Contatos</h6>
+                <p class="card-text fs-4">@Model.TotalContatos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-6 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title">Despesas</h6>
+                <p class="card-text fs-4">R$ @Model.TotalDespesas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-6 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title">Compromissos</h6>
+                <p class="card-text fs-4">@Model.TotalCompromissos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-6 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title">Categorias</h6>
+                <p class="card-text fs-4">@Model.TotalCategorias</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="d-grid d-lg-flex flex-wrap gap-3 mt-3">
-	<a href="/despesas" class="btn fw-semibold px-5 rounded-3">Despesa</a>
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <span class="fw-bold">Últimas Tarefas Criadas</span>
+        <ul class="list-group small">
+            @if (Model.UltimasTarefas.Count is 0)
+            {
+                <li class="list-group-item">Nenhuma tarefa cadastrada</li>
+            }
+            else
+            {
+                @foreach (string tarefa in Model.UltimasTarefas)
+                {
+                    <li class="list-group-item">@tarefa</li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="col-md-4 mb-3">
+        <span class="fw-bold">Próximos Compromissos</span>
+        <ul class="list-group small">
+            @if (Model.ProximosCompromissos.Count is 0)
+            {
+                <li class="list-group-item">Nenhuma tarefa cadastrada</li>
+            }
+            else
+            {
+                @foreach (string compromisso in Model.ProximosCompromissos)
+                {
+                    <li class="list-group-item">@compromisso</li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="col-md-4 mb-3">
+        <span class="fw-bold">Últimas Despesas</span>
+        <ul class="list-group small">
+            @if (Model.UltimasDespesas.Count is 0)
+            {
+                <li class="list-group-item">Nenhuma tarefa cadastrada</li>
+            }
+            else
+            {
+                @foreach (string despesa in Model.UltimasDespesas)
+                {
+                    <li class="list-group-item">@despesa</li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="mt-4 d-flex flex-wrap gap-2">
+    <a href="/tarefas" class="btn btn-outline-secondary btn-sm">Ver todas as Tarefas</a>
+    <a href="/despesas" class="btn btn-outline-secondary btn-sm">Ver todas as Despesas</a>
+    <a href="/contatos" class="btn btn-outline-secondary btn-sm">Ver todos os Contatos</a>
+    <a href="/compromissos" class="btn btn-outline-secondary btn-sm">Ver todos os Compromissos</a>
+    <a href="/categorias" class="btn btn-outline-secondary btn-sm">Ver todas as Categorias</a>
 </div>
