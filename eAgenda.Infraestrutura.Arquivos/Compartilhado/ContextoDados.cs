@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using eAgenda.Dominio.ModuloCompromisso;
+using eAgenda.Dominio.ModuloContato;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -6,15 +8,16 @@ namespace eAgenda.Infraestrutura.Arquivos.Compartilhado;
 
 public class ContextoDados
 {
-    // Espaço para implementar as Listas (Ex: public List<Contato> Contatos { get; set; })
+    public List<Contato> Contatos { get; set; }
+    public List<Compromisso> Compromissos { get; set; }
     private string pastaArmazenamento = string.Empty;
     private string arquivoArmazenamento = "dados-eAgenda.json";
 
     public ContextoDados()
     {
-        // Espaço para inicializar as Listas (Ex: Contatos = new List<Contato>();)
+        Contatos = new List<Contato>();
+        Compromissos = new List<Compromisso>();
     }
-
     public void VerificarSistemaOperacional()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -68,6 +71,7 @@ public class ContextoDados
 
         if (contextoArmazenado == null) return;
 
-        // Espaço para reatribuir as listas conforme o contexto carregado (Ex: Contatos = contextoArmazenado.Contatos;)
+        Contatos = contextoArmazenado.Contatos;
+        Compromissos = contextoArmazenado.Compromissos;
     }
 }
