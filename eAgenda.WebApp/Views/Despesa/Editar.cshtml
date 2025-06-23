@@ -3,14 +3,14 @@
 @model EditarDespesaViewModel;
 
 @{
-    ViewBag.Titulo = "Edição de Depesa";
+    ViewBag.Titulo = "Edição de Despesa";
 }
 
-<hr />
-<div class="row justify-content-center my-5">
-    <div class="col-md-8">
-        <div class="card rounded-4 border-0">
-            <div class="card-body p-md-5">
+<hr class="border border-dark opacity-25" />
+<div class="d-flex flex-wrap justify-content-between my-5 gap-1">
+    <div class="col-12 col-md-6 align-self-center m-auto">
+		<div class="card rounded-4 border-0">
+            <div class="card-body p-md-4">
                 <form asp-action="Editar" asp-route-id="@Model.Id" method="post">
                     <h3>Formulário de Edição</h3>
 
@@ -22,41 +22,41 @@
                         </div>
                     }
 
-                    <div class="form-group d-grid gap-2 mt-3">
-                        <label asp-for="Titulo" class="control-label fs-5">Titulo:</label>
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="Titulo" class="control-label">Titulo:</label>
                         <input asp-for="Titulo" class="form-control" />
-                        <span asp-validation-for="Titulo" class="text-danger"></span>
+                        <span asp-validation-for="Titulo" class="text-danger d-block mt-2"></span>
                     </div>
 
-                    <div class="form-group d-grid gap-2 mt-3">
-                        <label asp-for="Descricao" class="control-label fs-5">Descrição:</label>
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="Descricao" class="control-label">Descrição:</label>
                         <input asp-for="Descricao" class="form-control" />
-                        <span asp-validation-for="Descricao" class="text-danger"></span>
+                        <span asp-validation-for="Descricao" class="text-danger d-block mt-2"></span>
                     </div>
 
-                    <div class="form-group d-grid gap-2 mt-3">
-                        <label class="form-label" asp-for="DataOcorrencia">Data de Ocorrencia</label>
-                        <input class="form-control" id="inputTitulo" asp-for="DataOcorrencia" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")">
-                        <span class="text-danger d-block mt-2" asp-validation-for="DataOcorrencia"></span>
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="DataOcorrencia" class="form-label">Data de Ocorrencia</label>
+                        <input asp-for="DataOcorrencia" class="form-control" id="inputTitulo" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")">
+                        <span asp-validation-for="DataOcorrencia" class="text-danger d-block mt-2"></span>
                     </div>
 
-                    <div class="form-group d-grid gap-2 mt-3">
-                        <label asp-for="Valor" class="control-label fs-5">Valor:</label>
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="Valor" class="control-label">Valor:</label>
                         <input asp-for="Valor" class="form-control" step="0.01" pattern="^\d+(?:,\d{1,2})?$" value="0.00" />
-                        <span asp-validation-for="Valor" class="text-danger"></span>
+                        <span asp-validation-for="Valor" class="text-danger d-block mt-2"></span>
                     </div>
 
-                    <div class="form-group d-grid gap-2 mt-3">
-                        <label asp-for="FormaPagamento" class="control-label fs-5">Forma Pagamento:</label>
-                        <select asp-for="FormaPagamento" asp-items="@Html.GetEnumSelectList<MeiosPagamento>()" class="form-control">
-                            <option value="" selected disabled>ESCOLHA DINHEIRO QUE GASTO!!!>:)</option>
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="FormaPagamento" class="control-label">Forma Pagamento:</label>
+                        <select asp-for="FormaPagamento" class="form-control" asp-items="@Html.GetEnumSelectList<MeiosPagamento>()">
+                            <option value="" selected disabled>Selecione a forma de Pagamento</option>
                         </select>
-                        <span asp-validation-for="FormaPagamento" class="text-danger"></span>
+                        <span asp-validation-for="FormaPagamento" class="text-danger d-block mt-2"></span>
                     </div>
 
-                    <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-5">
-                        <a href="/despesas">Voltar para a listagem</a>
-                        <button type="submit" class="btn btn-cobre rounded-3 px-5">Confirmar</button>
+                    <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-3">
+						<a href="/despesas" class="btn btn-outline-primary rounded-3 px-2">Cancelar</a>
+						<button type="submit" class="btn btn-primary rounded-4 px-5">Confirmar</button>
                     </div>
                 </form>
             </div>

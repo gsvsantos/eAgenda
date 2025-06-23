@@ -5,64 +5,58 @@
     ViewBag.Titulo = "Visualização de Despesas";
 }
 
-<p>
-    <a class="btn btn-cobre px-4 rounded-pill shadow-sm" href="/despesas/cadastrar">
+<div class="d-grid d-lg-flex flex-wrap gap-2 w-50 align-items-center">
+    <a class="btn btn-primary px-5" title="Nova Despesa" asp-action="Cadastrar">
         <i class="bi bi-plus me-2"></i>
         Cadastrar Novo/a
     </a>
-</p>
-
-<hr class="border border-light opacity-25" />
-
-@if (!Model.Registros.Any())
-{
-    <p class="fw-semibold mt-3">Ainda não há nenhum item para esta tarefa...</p>
-}
-else{
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-    @foreach (var item in Model.Registros)
+</div>
+<hr class="border border-dark opacity-25" />
+<div class="row g-2">
+    @if (!Model.Registros.Any())
     {
-        <div class="col">
-            <div class="card mesa-card-dark h-100 border-0">
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <div>
-                        <h5 class="card-title text-warning">
-                            Titúlo: @item.Titulo
-                        </h5>
-                        <p class="card-text">
-                            <span class="">Descricao: @item.Descricao</span>
+        <p class="fw-semibold mt-3">Ainda não há nenhuma despesa cadastrada...</p>
+    }
+    else{
+        @foreach (var item in Model.Registros)
+        {
+            <div class="col-12 col-md-5 col-lg-4 col-xl-3 mb-3">
+                <div class="card rounded-4 border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h4 class="card-title mb-1 fw-semibold text-truncate overflow-hidden text-nowrap" style="max-width: 70%;" title="@item.Titulo">
+                                @item.Titulo
+                            </h4>
+                        </div>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">Descricao:</span> @item.Descricao
                         </p>
-                        <p class="card-text">
-                            <span class="">DataOcorrencia: @item.DataOcorrencia</span>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">DataOcorrencia:</span> @item.DataOcorrencia.ToShortDateString()
                         </p>
-                        <p class="card-text">
-                            <span class="">Valor: @item.Valor</span>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">Valor:</span> @item.Valor
                         </p>
-                        <p class="card-text">
-                            <span class="">FormaPagamento: @item.FormaPagamento</span>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">FormaPagamento:</span> @item.FormaPagamento
                         </p>
-                            <p class="card-text">
-                                <span class="">Categorias: @item.Categorias.Count</span>
-                            </p>
-                    </div>
-
-                    <div class="d-flex justify-content-end gap-2 mt-3">
-                        
-                        <a class="btn btn-primary rounded-circle" title="Gerenciar Categorias" asp-action="GerenciarCategorias" asp-route-id="@item.Id">
-                            <i class="bi bi-list-check"></i>
-                        </a>
-
-                        <a class="btn btn-primary rounded-circle" title="Editar Despesa" asp-action="Editar" asp-route-id="@item.Id">
-                                <i class="bi bi-pencil-square"></i>
-                        </a>
-
-                        <a class="btn btn-primary rounded-circle" title="Excluir Despesa" asp-action="Excluir" asp-route-id="@item.Id">
-                                <i class="bi bi-trash3"></i>
-                        </a>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">Categorias:</span> @item.Categorias.Count
+                        </p>
+                        <span class="d-flex gap-1 justify-content-end">
+                            <a class="btn btn-primary rounded-circle" title="Gerenciar Categorias" asp-action="GerenciarCategorias" asp-route-id="@item.Id">
+                                <i class="bi bi-list-check"></i>
+                            </a>
+                            <a class="btn btn-primary rounded-circle" title="Editar Despesa" asp-action="Editar" asp-route-id="@item.Id">
+                                    <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a class="btn btn-outline-danger rounded-circle" title="Excluir Despesa" asp-action="Excluir" asp-route-id="@item.Id">
+                                    <i class="bi bi-trash3"></i>
+                            </a>
+                        </span>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     }
 </div>
-}
