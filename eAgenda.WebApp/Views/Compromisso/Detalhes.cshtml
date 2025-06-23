@@ -1,0 +1,50 @@
+﻿@using eAgenda.WebApp.Models
+@using eAgenda.Dominio.ModuloCompromisso
+@using static eAgenda.Dominio.ModuloCompromisso.Compromisso
+
+@model DetalhesCompromissoViewModel
+
+<h2>Detalhes do Compromisso</h2>
+
+<table class="table">
+    <tr>
+        <th>Assunto:</th>
+        <td>@Model.Assunto</td>
+    </tr>
+    <tr>
+        <th>Data:</th>
+        <td>@Model.DataOcorrencia.ToShortDateString()</td>
+    </tr>
+    <tr>
+        <th>Hora Início:</th>
+        <td>@Model.HoraInicio</td>
+    </tr>
+    <tr>
+        <th>Hora Término:</th>
+        <td>@Model.HoraTermino</td>
+    </tr>
+    <tr>
+        <th>Tipo:</th>
+        <td>@Model.TipoCompromisso</td>
+    </tr>
+    @if (Model.TipoCompromisso == TipoCompromisso.Presencial)
+    {
+        <tr>
+            <th>Local:</th>
+            <td>@Model.Local</td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <th>Link:</th>
+            <td>@Model.Link</td>
+        </tr>
+    }
+    <tr>
+        <th>Contato:</th>
+        <td>@(Model.Contato?.Nome ?? "Nenhum")</td>
+    </tr>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Voltar</a>
