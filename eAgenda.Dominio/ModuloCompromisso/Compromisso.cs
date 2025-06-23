@@ -1,6 +1,7 @@
-﻿using eAgenda.Dominio.Compartilhado;
-using eAgenda.Dominio.ModuloContato;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using eAgenda.Dominio.Compartilhado;
+using eAgenda.Dominio.ModuloContato;
 
 namespace eAgenda.Dominio.ModuloCompromisso;
 
@@ -24,7 +25,7 @@ public class Compromisso : EntidadeBase<Compromisso>
     [ExcludeFromCodeCoverage]
     public Compromisso() { }
     public Compromisso(string assunto, DateTime dataOcorrencia, DateTime horaInicio, DateTime horaTermino,
-        TipoCompromisso tipoCompromisso, string local, string link, Contato? contato): this()
+        TipoCompromisso tipoCompromisso, string local, string link, Contato? contato) : this()
     {
         Assunto = assunto;
         DataOcorrencia = dataOcorrencia;
@@ -50,7 +51,7 @@ public class Compromisso : EntidadeBase<Compromisso>
         Local = registroEditado.Local;
         Link = registroEditado.Link;
         Contato = registroEditado.Contato;
-    }    
+    }
     public List<string> Validar()
     {
         var erros = new List<string>();
@@ -65,10 +66,12 @@ public class Compromisso : EntidadeBase<Compromisso>
         if (TipoCompromisso == TipoCompromisso.Remoto && string.IsNullOrWhiteSpace(Link))
             erros.Add("Link é obrigatório para compromissos remotos");
         return erros;
-    }   
+    }
 }
 public enum TipoCompromisso
 {
-Remoto = 0,
-Presencial = 1
+    [Display(Name = "Remoto")]
+    Remoto = 0,
+    [Display(Name = "Presencial")]
+    Presencial = 1
 }

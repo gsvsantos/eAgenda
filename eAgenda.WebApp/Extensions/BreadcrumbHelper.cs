@@ -13,7 +13,9 @@ public static class BreadcrumbHelper
         {
             { "Tarefa", "Tarefas" },
             { "Categoria", "Categorias" },
-            { "Despesa", "Despesas" }
+            { "Despesa", "Despesas" },
+            { "Contato", "Contatos" },
+            { "Compromisso", "Compromissos" }
         };
 
         var viewContext = helper.ViewContext;

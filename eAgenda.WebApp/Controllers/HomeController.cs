@@ -1,10 +1,15 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloCompromisso;
+using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
+using eAgenda.Infra.Dados.Arquivo.ModuloCompromisso;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.Infraestrutura.Arquivos.ModuloCategoria;
+using eAgenda.Infraestrutura.Arquivos.ModuloContato;
 using eAgenda.Infraestrutura.Arquivos.ModuloDespesa;
 using eAgenda.Infraestrutura.Arquivos.ModuloTarefa;
+using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +20,15 @@ namespace eAgenda.WebApp.Controllers
         private readonly ContextoDados contextoDados;
         private readonly IRepositorioTarefa repositorioTarefa;
         private readonly IRepositorioDespesa repositorioDespesa;
-        //private readonly IRepositorioContato repositorioContato;
-        //private readonly IRepositorioCompromisso repositorioCompromisso;
+        private readonly IRepositorioContato repositorioContato;
+        private readonly IRepositorioCompromisso repositorioCompromisso;
         private readonly IRepositorioCategoria repositorioCategoria;
 
         public HomeController()
         {
             contextoDados = new(true);
+            repositorioContato = new RepositorioContatoEmArquivo(contextoDados);
+            repositorioCompromisso = new RepositorioCompromissoEmArquivo(contextoDados);
             repositorioCategoria = new RepositorioCatergoriaEmArquivo(contextoDados);
             repositorioDespesa = new RepositorioDespesaEmArquivo(contextoDados);
             repositorioTarefa = new RepositorioTarefaEmArquivos(contextoDados);
@@ -35,15 +42,18 @@ namespace eAgenda.WebApp.Controllers
                 UltimasDespesas = [.. repositorioDespesa.SelecionarRegistros()
                                 .OrderByDescending(d => d.DataOcorrencia)
                                 .Take(5)
-                                .Select(d => $"{d.Titulo} - R$ {d.Valor}")],
+                                .Select(d => $"{d.Titulo} - R$ {d.Valor} - {d.Categorias[0].Titulo}")],
                 TotalTarefas = repositorioTarefa.SelecionarRegistros().Count,
                 UltimasTarefas = [.. repositorioTarefa.SelecionarRegistros()
                                 .OrderByDescending(t => t.DataCriacao)
                                 .Take(5)
                                 .Select(t => t.Titulo)],
-                TotalCompromissos = 42,
-                TotalContatos = 42,
-                ProximosCompromissos = ["teste", "teste"]
+                TotalCompromissos = repositorioCompromisso.SelecionarRegistros().Count,
+                TotalContatos = repositorioContato.SelecionarRegistros().Count,
+                ProximosCompromissos = [.. repositorioCompromisso.SelecionarRegistros()
+                                .OrderByDescending(c => c.DataOcorrencia)
+                                .Take(5)
+                                .Select(c => $"{c.Assunto} - {c.TipoCompromisso.GetDisplayName()} - {c.DataOcorrencia.ToShortDateString()}")]
             };
 
             return View(homeVM);

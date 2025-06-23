@@ -1,27 +1,26 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Win32;
 
 
 namespace eAgenda.WebApp.Models;
 
 public class CadastrarCompromissoViewModel
 {
-    public string Assunto { get; set; }
+    public string Assunto { get; set; } = string.Empty;
     public DateTime DataOcorrencia { get; set; }
     public DateTime HoraInicio { get; set; }
     public DateTime HoraTermino { get; set; }
     public TipoCompromisso TipoCompromisso { get; set; }
-    public string? Local { get; set; }
-    public string? Link { get; set; }
+    public string? Local { get; set; } = string.Empty;
+    public string? Link { get; set; } = string.Empty;
     public Guid ContatoId { get; set; } = Guid.Empty;
 
     public List<SelectListItem> Contatos { get; set; } = [];
 
     public CadastrarCompromissoViewModel()
     {
-       
+
     }
 
     public CadastrarCompromissoViewModel(List<Contato> contatos)
@@ -73,7 +72,7 @@ public class ExcluirCompromissoViewModel
     {
         Id = id;
         Assunto = assunto;
-    }  
+    }
 }
 public class VisualizarCompromissosViewModel
 {
@@ -112,7 +111,7 @@ public class DetalhesCompromissoViewModel
     public string Link { get; set; } = string.Empty;
 
     public Contato? Contato { get; set; } = null!;
-    public DetalhesCompromissoViewModel(Guid id,string assunto, DateTime dataOcorrencia, DateTime horaInicio, DateTime horaTermino, TipoCompromisso tipoCompromisso, string local, string link, Contato? contato)
+    public DetalhesCompromissoViewModel(Guid id, string assunto, DateTime dataOcorrencia, DateTime horaInicio, DateTime horaTermino, TipoCompromisso tipoCompromisso, string local, string link, Contato? contato)
     {
         Id = id;
         Assunto = assunto;

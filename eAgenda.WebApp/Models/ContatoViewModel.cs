@@ -1,6 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eAgenda.WebApp.Models;
 
@@ -72,7 +71,7 @@ public class ExcluirContatoViewModel : FormularioContatoViewModel
     {
 
     }
-    public ExcluirContatoViewModel(Guid id, string nome)    
+    public ExcluirContatoViewModel(Guid id, string nome)
     {
         Id = id;
         Nome = nome;

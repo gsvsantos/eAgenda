@@ -1,9 +1,8 @@
-﻿using eAgenda.Dominio.ModuloCategoria;
+﻿using System.ComponentModel.DataAnnotations;
+using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.WebApp.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace eAgenda.WebApp.Models;
 
@@ -53,7 +52,7 @@ public class CadastrarDespesaViewModel : FormularioDespesaViewModel
 public class EditarDespesaViewModel : FormularioDespesaViewModel
 {
     public Guid Id { get; set; }
-   
+
     public EditarDespesaViewModel() { }
 
     public EditarDespesaViewModel(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento) : this()
@@ -95,7 +94,7 @@ public class GerenciarCategoriasViewModel
 {
     public DetalhesDespesaViewModel Despesa { get; set; } = null!;
     public List<SelectListItem> Categorias { get; set; } = [];
-    public GerenciarCategoriasViewModel() { } 
+    public GerenciarCategoriasViewModel() { }
 
     public GerenciarCategoriasViewModel(Despesa despesa, List<Categoria> categorias) : this()
     {
@@ -131,8 +130,8 @@ public class CategoriaDespesaViewModel
 public class DetalhesDespesaViewModel
 {
     public Guid Id { get; set; }
-    public string Titulo { get; set; } 
-    public string Descricao { get; set; } 
+    public string Titulo { get; set; }
+    public string Descricao { get; set; }
     public DateTime DataOcorrencia { get; set; }
     public decimal Valor { get; set; }
     public MeiosPagamento FormaPagamento { get; set; }
