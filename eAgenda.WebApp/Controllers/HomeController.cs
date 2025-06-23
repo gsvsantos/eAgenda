@@ -42,7 +42,7 @@ namespace eAgenda.WebApp.Controllers
                 UltimasDespesas = [.. repositorioDespesa.SelecionarRegistros()
                                 .OrderByDescending(d => d.DataOcorrencia)
                                 .Take(5)
-                                .Select(d => $"{d.Titulo} - R$ {d.Valor} - {d.Categorias[0].Titulo}")],
+                                .Select(d => $"{d.Titulo} - R$ {d.Valor}")],
                 TotalTarefas = repositorioTarefa.SelecionarRegistros().Count,
                 UltimasTarefas = [.. repositorioTarefa.SelecionarRegistros()
                                 .OrderByDescending(t => t.DataCriacao)

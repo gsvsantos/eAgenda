@@ -23,31 +23,31 @@ public abstract class FormularioTarefaViewModel
 
     [Required(ErrorMessage = "Selecione uma data.")]
     [DisplayName("Data de Criação ")]
-    public DateTime DataCriacao { get; set; }
+    [DataType(DataType.DateTime)]
+    public DateTime DataCriacao { get; set; } = DateTime.Now;
 }
 
 public class CadastrarTarefaViewModel : FormularioTarefaViewModel
 {
     public CadastrarTarefaViewModel() { }
-    public CadastrarTarefaViewModel(string titulo, NivelPrioridade prioridade, DateTime dataCriacao)
+    public CadastrarTarefaViewModel(string titulo, NivelPrioridade prioridade)
     {
         Titulo = titulo;
         Prioridade = prioridade;
-        DataCriacao = dataCriacao;
     }
 }
 
 public class VisualizarTarefasViewModel
 {
-    public List<DetalhesTarefaViewModel> Registros = [];
+    public Dictionary<NivelPrioridade, List<DetalhesTarefaViewModel>> TarefasPorPrioridade { get; } = [];
 
     public VisualizarTarefasViewModel(List<Tarefa> tarefas)
     {
-        foreach (Tarefa t in tarefas)
+        foreach (NivelPrioridade prioridade in Enum.GetValues(typeof(NivelPrioridade)))
         {
-            DetalhesTarefaViewModel detalheVM = t.ParaDetalhesVM();
-
-            Registros.Add(detalheVM);
+            TarefasPorPrioridade[prioridade] = [.. tarefas
+                .Where(t => t.Prioridade == prioridade)
+                .Select(t => t.ParaDetalhesVM())];
         }
     }
 }

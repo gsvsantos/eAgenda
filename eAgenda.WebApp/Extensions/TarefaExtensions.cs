@@ -10,8 +10,7 @@ public static class TarefaExtensions
         return new(
             formularioVM.Titulo,
             formularioVM.Descricao ?? string.Empty,
-            formularioVM.Prioridade ?? NivelPrioridade.Baixa,
-            formularioVM.DataCriacao);
+            formularioVM.Prioridade ?? NivelPrioridade.Baixa);
     }
     public static DetalhesTarefaViewModel ParaDetalhesVM(this Tarefa tarefa)
     {

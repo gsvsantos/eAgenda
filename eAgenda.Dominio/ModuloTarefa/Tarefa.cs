@@ -9,7 +9,7 @@ public class Tarefa : EntidadeBase<Tarefa>
     public string Titulo { get; set; } = string.Empty;
     public string Descricao { get; set; } = string.Empty;
     public NivelPrioridade Prioridade { get; set; }
-    public DateTime DataCriacao { get; set; }
+    public DateTime DataCriacao { get; set; } = DateTime.Now;
     public DateTime DataConclusao { get; set; }
     public StatusTarefa Status { get; set; }
     public double PercentualConcluido { get; set; }
@@ -19,12 +19,11 @@ public class Tarefa : EntidadeBase<Tarefa>
 
     [ExcludeFromCodeCoverage]
     public Tarefa() { }
-    public Tarefa(string titulo, string descricao, NivelPrioridade prioridade, DateTime dataCriacao) : this()
+    public Tarefa(string titulo, string descricao, NivelPrioridade prioridade) : this()
     {
         Titulo = titulo;
         Descricao = descricao;
         Prioridade = prioridade;
-        DataCriacao = dataCriacao;
         Status = StatusTarefa.Pendente;
         PercentualConcluido = 0;
     }
