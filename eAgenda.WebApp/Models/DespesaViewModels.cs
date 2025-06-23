@@ -12,12 +12,12 @@ public class FormularioDespesaViewModel
     [Required(ErrorMessage = "O campo \"Titúlo\" é obrigatório.")]
     [MinLength(2, ErrorMessage = "O campo \"Titúlo\" precisa conter ao menos 2 caracteres.")]
     [MaxLength(100, ErrorMessage = "O campo \"Titúlo\" precisa conter no máximo 100 caracteres.")]
-    public string Titulo { get; set; }
+    public string Titulo { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo \"Descrição\" é obrigatório.")]
     [MinLength(3, ErrorMessage = "O campo \"Descrição\" precisa conter ao menos 3 caracteres.")]
     [MaxLength(100, ErrorMessage = "O campo \"Descrição\" precisa conter no máximo 100 caracteres.")]
-    public string Descricao { get; set; }
+    public string Descricao { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo \"Data de ocorrencia\" é obrigatória.")]
     public DateTime DataOcorrencia { get; set; }
