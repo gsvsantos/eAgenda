@@ -39,6 +39,24 @@ namespace eAgenda.WebApp.Controllers
         [HttpPost("cadastrar")]
         public IActionResult Cadastrar(CadastrarContatoViewModel cadastrarVM)
         {
+
+            if (repositorioContato.SelecionarRegistros().Any(c => c.Email == cadastrarVM.Email)
+                && repositorioContato.SelecionarRegistros().Any(c => c.Telefone == cadastrarVM.Telefone))
+            {
+                ModelState.AddModelError("CadastroUnico", "E-mail e Telefone já cadastrados!");
+            }
+            else if (repositorioContato.SelecionarRegistros().Any(c => c.Email == cadastrarVM.Email))
+            {
+                ModelState.AddModelError("CadastroUnico", "E-mail já cadastrado!");
+            }
+            else if (repositorioContato.SelecionarRegistros().Any(c => c.Telefone == cadastrarVM.Telefone))
+            {
+                ModelState.AddModelError("CadastroUnico", "Telefone já cadastrado!");
+            }
+
+            if (!ModelState.IsValid)
+                return View(cadastrarVM);
+
             cadastrarVM.Telefone = TelefoneHelper.FormatarTelefone(cadastrarVM.Telefone);
 
             Contato contato = new Contato(cadastrarVM.Nome, cadastrarVM.Email, cadastrarVM.Telefone, cadastrarVM.Cargo!, cadastrarVM.Empresa!);
