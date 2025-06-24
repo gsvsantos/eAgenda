@@ -6,6 +6,7 @@ using eAgenda.Infraestrutura.Arquivos.ModuloDespesa;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eAgenda.WebApp.Controllers;
 
@@ -49,17 +50,30 @@ public class DespesaController : Controller
         var registros = repositorioDespesa.SelecionarRegistros();
         var categoriasDisponiveis = repositorioCategoria.SelecionarRegistros();
 
-        foreach (var item in registros)
+        if (repositorioDespesa.SelecionarRegistros().Any(d => d.Titulo == cadastrarVM.Titulo))
         {
-            if (item.Titulo.Equals(cadastrarVM.Titulo))
-            {
-                ModelState.AddModelError("CadastroUnico", "Já existe uma Despesa registrada com este Titúlo.");
-                break;
-            }
+            ModelState.AddModelError("ConflitoCadastro", "Já existe uma Despesa registrada com este Título.");
+        }
+        else if (cadastrarVM.CategoriasSelecionadas.Count <= 0)
+        {
+            ModelState.AddModelError("ConflitoCadastro", "Selecione ao menos uma categoria.");
         }
 
         if (!ModelState.IsValid)
+        {
+            foreach (Categoria categoria in categoriasDisponiveis)
+            {
+                SelectListItem selecionarVM = new()
+                {
+                    Text = categoria.Titulo,
+                    Value = categoria.Id.ToString()
+                };
+
+                cadastrarVM.Categorias?.Add(selecionarVM);
+            }
+
             return View(cadastrarVM);
+        }
 
         var entidade = cadastrarVM.ParaEntidade();
 

@@ -24,6 +24,8 @@ public class FormularioDespesaViewModel
     public DateTime DataOcorrencia { get; set; }
 
     [Required(ErrorMessage = "O campo \"Valor\" é obrigatório.")]
+    [DataType(DataType.Currency)]
+    [Range(0, double.MaxValue, ErrorMessage = "O valor não pode ser negativo.")]
     public decimal Valor { get; set; }
 
     [Required(ErrorMessage = "O campo \"Forma Pagamento\" é obrigatório.")]
@@ -31,7 +33,9 @@ public class FormularioDespesaViewModel
 
     [Required(ErrorMessage = "O campo \"Categorias Selecionadas\" é necessita de ao menos um valor preenchido.")]
     public List<SelectListItem>? Categorias { get; set; } = [];
-    public List<Guid>? CategoriasSelecionadas { get; set; } = [];
+
+    [Required(ErrorMessage = "Selecione ao menos uma categoria para a Despesa.")]
+    public List<Guid> CategoriasSelecionadas { get; set; } = [];
 }
 
 public class CadastrarDespesaViewModel : FormularioDespesaViewModel
