@@ -1,12 +1,26 @@
 ﻿@using eAgenda.WebApp.Models
 @model ExcluirCompromissoViewModel
 
-<h2>Excluir Compromisso</h2>
+@{
+    ViewBag.Titulo = "Exclusão de Compromisso";
+}
 
-<p>Tem certeza que deseja excluir o compromisso "<strong>@Model.Assunto</strong>"?</p>
+<hr class="border border-dark opacity-25" />
+<div class="d-flex flex-wrap justify-content-between my-5 gap-1">
+    <div class="col-12 col-md-6 align-self-center m-auto">
+        <div class="card rounded-4 border-0">
+            <div class="card-body p-md-4">
+                <h3>Formulário de Exclusão</h3>
 
-<form asp-action="Excluir" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Excluir</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+                <p>Tem certeza que deseja excluir o compromisso '@Model.Assunto'?</p>
+
+                <form asp-action="Excluir" asp-route-id="@Model.Id">
+                    <div class="form-group d-flex flex-column align-items-center justify-content-end gap-3">
+                        <a href="/compromissos" class="btn btn-outline-primary rounded-3 px-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary px-5">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

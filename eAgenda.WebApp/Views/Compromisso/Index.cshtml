@@ -1,38 +1,56 @@
 ﻿@using eAgenda.WebApp.Models
 @model VisualizarCompromissosViewModel
 
-<h2>Lista de Compromissos</h2>
+@{
+    ViewBag.Titulo = "Visualização de Compromissos";
+    bool mostrarScroll = Model.Registros.Count > 12;
+}
 
-<a asp-action="Cadastrar" class="btn btn-success mb-3">Novo Compromisso</a>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Assunto</th>
-            <th>Data</th>
-            <th>Hora Início</th>
-            <th>Hora Término</th>
-            <th>Tipo</th>
-            <th>Contato</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var compromisso in Model.Registros)
-        {
-            <tr>
-                <td>@compromisso.Assunto</td>
-                <td>@compromisso.DataOcorrencia.ToShortDateString()</td>
-                <td>@compromisso.HoraInicio</td>
-                <td>@compromisso.HoraTermino</td>
-                <td>@compromisso.TipoCompromisso</td>
-                <td>@(compromisso.Contato?.Nome ?? "—")</td>
-                <td>
-                    <a asp-action="Detalhes" asp-route-id="@compromisso.Id" class="btn btn-info btn-sm">Detalhes</a>
-                    <a asp-action="Editar" asp-route-id="@compromisso.Id" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Excluir" asp-route-id="@compromisso.Id" class="btn btn-danger btn-sm">Excluir</a>
-                </td>
+<div class="d-grid d-lg-flex flex-wrap gap-2 w-50 align-items-center">
+    <a class="btn btn-primary px-5" title="Novo Compromisso" asp-action="Cadastrar">
+        <i class="bi bi-calendar-plus"></i>
+        Cadastrar Novo/a
+    </a>
+</div>
+<hr class="border border-dark opacity-25" />
+<div class="@(mostrarScroll ? "table-responsive" : "")" style="@(mostrarScroll ? "" : "overflow: visible; max-height: none;")">
+    <table class="table table-wrapper table-hover">
+        <thead>
+            <tr class="table-secondary">
+                <th>Assunto</th>
+                <th>Data</th>
+                <th>Hora Início</th>
+                <th>Hora Término</th>
+                <th>Tipo</th>
+                <th>Contato</th>
+                <th>Ações</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var compromisso in Model.Registros)
+            {
+                    <tr class="table-light">
+                        <td>@compromisso.Assunto</td>
+                        <td>@compromisso.DataOcorrencia.ToShortDateString()</td>
+                        <td>@compromisso.HoraInicio</td>
+                        <td>@compromisso.HoraTermino</td>
+                        <td>@compromisso.TipoCompromisso</td>
+                        <td>@(compromisso.Contato?.Nome ?? "—")</td>
+                        <td>
+                            <span class="d-flex gap-1 justify-content-end">
+                                <a class="btn btn-primary rounded-circle" title="Ver Detalhes" asp-action="Detalhes" asp-route-id="@compromisso.Id">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a class="btn btn-primary rounded-circle" title="Editar Compromisso" asp-action="Editar" asp-route-id="@compromisso.Id">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a class="btn btn-outline-danger rounded-circle" title="Excluir Compromisso" asp-action="Excluir" asp-route-id="@compromisso.Id">
+                                    <i class="bi bi-calendar-x"></i>
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>
