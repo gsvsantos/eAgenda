@@ -8,6 +8,8 @@ namespace eAgenda.WebApp.Models;
 
 public class FormularioDespesaViewModel
 {
+    public Guid Id { get; set; }
+
     [Required(ErrorMessage = "O campo \"Titúlo\" é obrigatório.")]
     [MinLength(2, ErrorMessage = "O campo \"Titúlo\" precisa conter ao menos 2 caracteres.")]
     [MaxLength(100, ErrorMessage = "O campo \"Titúlo\" precisa conter no máximo 100 caracteres.")]
@@ -21,38 +23,34 @@ public class FormularioDespesaViewModel
     [Required(ErrorMessage = "O campo \"Data de ocorrencia\" é obrigatória.")]
     public DateTime DataOcorrencia { get; set; }
 
-    [Required(ErrorMessage = "O campo \"Valor\" é obrigatória.")]
+    [Required(ErrorMessage = "O campo \"Valor\" é obrigatório.")]
     public decimal Valor { get; set; }
 
-    [Required(ErrorMessage = "O campo \"Forma Pagamento\" é obrigatória.")]
+    [Required(ErrorMessage = "O campo \"Forma Pagamento\" é obrigatório.")]
     public MeiosPagamento FormaPagamento { get; set; }
 
-    [Required(ErrorMessage = "O campo \"Categorias\" é obrigatório.")]
-    public List<SelectListItem> Categorias { get; set; } = [];
+    [Required(ErrorMessage = "O campo \"Categorias Selecionadas\" é necessita de ao menos um valor preenchido.")]
+    public List<SelectListItem>? Categorias { get; set; } = [];
+    public List<Guid>? CategoriasSelecionadas { get; set; } = [];
 }
 
 public class CadastrarDespesaViewModel : FormularioDespesaViewModel
 {
     public CadastrarDespesaViewModel() { }
 
-    public CadastrarDespesaViewModel(string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento, List<Categoria> categorias) : this()
+    public CadastrarDespesaViewModel(List<Categoria> categoriasDisponiveis) : this()
     {
-        Titulo = titulo;
-        Descricao = descricao;
-        DataOcorrencia = dataOcorrencia;
-        Valor = valor;
-        FormaPagamento = formaPagamento;
-        foreach (var categoria in categorias)
+        foreach (var c in categoriasDisponiveis)
         {
-            Categorias.Add(new SelectListItem { Text = categoria.Titulo, Value = categoria.Id.ToString() });
+            var selecionarVM = new SelectListItem(c.Titulo, c.Id.ToString());
+
+            Categorias?.Add(selecionarVM);
         }
     }
 }
 
 public class EditarDespesaViewModel : FormularioDespesaViewModel
 {
-    public Guid Id { get; set; }
-
     public EditarDespesaViewModel() { }
 
     public EditarDespesaViewModel(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento) : this()
@@ -66,11 +64,9 @@ public class EditarDespesaViewModel : FormularioDespesaViewModel
     }
 }
 
-public class ExcluirDespesaViewModel
+public class ExcluirDespesaViewModel : FormularioDespesaViewModel
 {
-    public Guid Id { get; set; }
-    public string Titulo { get; set; }
-
+    public ExcluirDespesaViewModel() { }
     public ExcluirDespesaViewModel(Guid id, string titulo)
     {
         Id = id;
@@ -126,7 +122,6 @@ public class CategoriaDespesaViewModel
     }
 }
 
-
 public class DetalhesDespesaViewModel
 {
     public Guid Id { get; set; }
@@ -152,4 +147,3 @@ public class DetalhesDespesaViewModel
         }
     }
 }
-

@@ -35,7 +35,9 @@ public class DespesaController : Controller
     [HttpGet("cadastrar")]
     public IActionResult Cadastrar()
     {
-        var cadastrarVM = new CadastrarDespesaViewModel();
+        List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
+
+        var cadastrarVM = new CadastrarDespesaViewModel(categorias);
 
         return View(cadastrarVM);
     }
@@ -45,6 +47,7 @@ public class DespesaController : Controller
     public IActionResult Cadastrar(CadastrarDespesaViewModel cadastrarVM)
     {
         var registros = repositorioDespesa.SelecionarRegistros();
+        var categoriasDisponiveis = repositorioCategoria.SelecionarRegistros();
 
         foreach (var item in registros)
         {
@@ -59,6 +62,23 @@ public class DespesaController : Controller
             return View(cadastrarVM);
 
         var entidade = cadastrarVM.ParaEntidade();
+
+        var categoriasSelecionadas = cadastrarVM.CategoriasSelecionadas;
+
+        if (categoriasSelecionadas is not null)
+        {
+            foreach (var cs in categoriasSelecionadas)
+            {
+                foreach (var cd in categoriasDisponiveis)
+                {
+                    if (cs.Equals(cd.Id))
+                    {
+                        entidade.AderirCategoria(cd);
+                        break;
+                    }
+                }
+            }
+        }
 
         repositorioDespesa.CadastrarRegistro(entidade);
 
