@@ -1,6 +1,7 @@
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.Infraestrutura.Arquivos.ModuloTarefa;
+using eAgenda.WebApp.ActionFilters;
 
 namespace eAgenda.WebApp
 {
@@ -11,7 +12,7 @@ namespace eAgenda.WebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews((options) => options.Filters.Add<ValidarModeloAttribute>());
             builder.Services.AddScoped((IServiceProvider _) => new ContextoDados(true));
             builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaEmArquivos>();
 
