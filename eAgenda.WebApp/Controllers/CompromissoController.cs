@@ -43,10 +43,10 @@ public class CompromissoController : Controller
     [HttpPost("cadastrar")]
     public IActionResult Cadastrar(CadastrarCompromissoViewModel vm)
     {
-        Contato? contato = null!;
-        if (vm.ContatoId != Guid.Empty)
+        Contato? contato = null;
+        if (vm.ContatoId.HasValue)
         {
-            contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId);
+            contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value);
         }
         var compromisso = new Compromisso(
             vm.Assunto,
@@ -62,7 +62,12 @@ public class CompromissoController : Controller
         var erros = compromisso.Validar();
 
         if (repositorioCompromisso.TemConflito(compromisso))
-            erros.Add("Já existe um compromisso nesse horário.");
+            ModelState.AddModelError("ConflitoHorario", "Há compromisso marcado para esses horário!");
+        else if (vm.HoraInicio > vm.HoraTermino)
+            ModelState.AddModelError("ConflitoHorario", "A hora de início está após o horário final!");
+
+        if (!ModelState.IsValid)
+            return View(vm);
 
         repositorioCompromisso.CadastrarRegistro(compromisso);
 
@@ -85,7 +90,11 @@ public class CompromissoController : Controller
     [HttpPost("editar/{id:Guid}")]
     public IActionResult Editar(Guid id, EditarCompromissoViewModel vm)
     {
-        var contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId);
+        Contato? contato = null;
+        if (vm.ContatoId.HasValue)
+        {
+            contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value);
+        }
 
         var compromissoEditado = new Compromisso(
             vm.Assunto,

@@ -43,7 +43,7 @@ public abstract class FormularioCompromissoViewModel
     public string? Link { get; set; } = string.Empty;
 
     [DisplayName("Contato")]
-    public Guid ContatoId { get; set; } = Guid.Empty;
+    public Guid? ContatoId { get; set; } = Guid.Empty;
     public List<SelectListItem> Contatos { get; set; } = [];
 }
 
