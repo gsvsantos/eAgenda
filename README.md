@@ -85,7 +85,7 @@ git clone https://github.com/Compila-logo-existe/eAgenda
 2. Acesse a pasta do projeto:
    
 ```
-cd PrototypeEAgenda.WebApp
+cd eAgenda.WebApp
 ```
 
 3. Restaure as dependências:
@@ -103,14 +103,11 @@ dotnet build --configuration Release
 5. Execute o projeto:
    
 ```
-dotnet run --project PrototypeEAgenda.WebApp
+dotnet run --project eAgenda.WebApp
 ```
 
-6. Execute o projeto:
-   
-```
-[dotnet run --project PrototypeEAgenda.WebApp](https://localhost:5001)
-```
+#### Após executar, procure pelo link local. Exemplos: [https://localhost:0000 | http://localhost:0000]
+  
 ## Requisitos
 
 - .NET SDK 8.0 ou superior
