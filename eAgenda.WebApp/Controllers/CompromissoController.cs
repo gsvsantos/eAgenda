@@ -41,6 +41,7 @@ public class CompromissoController : Controller
     }
 
     [HttpPost("cadastrar")]
+    [ValidateAntiForgeryToken]
     public IActionResult Cadastrar(CadastrarCompromissoViewModel vm)
     {
         Contato? contato = null;
@@ -88,6 +89,7 @@ public class CompromissoController : Controller
     }
 
     [HttpPost("editar/{id:Guid}")]
+    [ValidateAntiForgeryToken]
     public IActionResult Editar(Guid id, EditarCompromissoViewModel vm)
     {
         Contato? contato = null;
