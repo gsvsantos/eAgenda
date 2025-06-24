@@ -1,32 +1,50 @@
 ﻿@using eAgenda.WebApp.Models
 @model VisualizarContatosViewModel
 
-<h2>Contatos</h2>
+@{
+    ViewBag.Titulo = "Visualização de Contatos";
+    bool mostrarScroll = Model.Registros.Count > 12;
+}
 
-<a href="/contatos/cadastrar"><i class="bi bi-person-fill-add"></i>Novo Contato</a>
-
-<table>
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (DetalhesContatoViewModel contato in Model.Registros)
-        {
-            <tr>
-                <td>@contato.Nome</td>
-                <td>@contato.Email</td>
-                <td>@contato.Telefone</td>
-                <td>
-                    <a href="/contatos/Detalhes/@contato.Id">Detalhes</a> |
-                    <a href="/contatos/Editar/@contato.Id">Editar</a> |
-                    <a href="/contatos/Excluir/@contato.Id">Excluir</a>
-                </td>
+<div class="d-grid d-lg-flex flex-wrap gap-2 w-50 align-items-center">
+    <a class="btn btn-primary px-5" title="Novo Contato" asp-action="Cadastrar">
+        <i class="bi bi-person-fill-add"></i>
+        Cadastrar Novo/a
+    </a>
+</div>
+<hr class="border border-dark opacity-25" />
+<div class="@(mostrarScroll ? "table-responsive" : "")" style="@(mostrarScroll ? "" : "overflow: visible; max-height: none;")">
+    <table class="table table-wrapper table-hover">
+        <thead>
+            <tr class="table-secondary">
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Ações</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (DetalhesContatoViewModel contato in Model.Registros)
+            {
+                <tr class="table-light">
+                    <td>@contato.Nome</td>
+                    <td>@contato.Email</td>
+                    <td>@contato.Telefone</td>
+                    <td>
+                        <span class="d-flex gap-1 justify-content-end">
+                            <a class="btn btn-primary rounded-circle" title="Ver Detalhes" asp-action="Detalhes" asp-route-id="@contato.Id">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a class="btn btn-primary rounded-circle" title="Editar Contato" asp-action="Editar" asp-route-id="@contato.Id">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a class="btn btn-outline-danger rounded-circle" title="Excluir Contato" asp-action="Excluir" asp-route-id="@contato.Id">
+                                <i class="bi bi-person-fill-x"></i>
+                            </a>
+						</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

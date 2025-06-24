@@ -1,4 +1,6 @@
-﻿using eAgenda.Dominio.ModuloCompromisso;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
 
 namespace eAgenda.WebApp.Models;
@@ -6,18 +8,33 @@ namespace eAgenda.WebApp.Models;
 public abstract class FormularioContatoViewModel
 {
     public Guid Id { get; set; }
+
+    [Required(ErrorMessage = "Insira um Nome.")]
+    [DisplayName("Nome")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "O nome do contato deve ter entre 2 e 100 caracteres.")]
     public string Nome { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Insira um Telefone.")]
+    [DisplayName("Telefone")]
+    [RegularExpression("^\\(?\\d{2}\\)?\\s?(9\\d{4}|\\d{4})-?\\d{4}$", ErrorMessage = "Número inválido.")]
     public string Telefone { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Insira um Email.")]
+    [DisplayName("Email")]
+    [EmailAddress(ErrorMessage = "Insira um endereço de email válido.")]
     public string Email { get; set; } = string.Empty;
+
+    [DisplayName("Cargo")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "O nome do item deve ter entre 2 e 100 caracteres.")]
     public string? Cargo { get; set; }
+
+    [DisplayName("Empresa")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "O nome do item deve ter entre 2 e 100 caracteres.")]
     public string? Empresa { get; set; }
 }
 public class CadastrarContatoViewModel : FormularioContatoViewModel
 {
-    public CadastrarContatoViewModel()
-    {
-
-    }
+    public CadastrarContatoViewModel() { }
     public CadastrarContatoViewModel(Guid id, string nome, string telefone, string email, string cargo, string empresa) : this()
     {
         Id = id;
@@ -30,7 +47,6 @@ public class CadastrarContatoViewModel : FormularioContatoViewModel
 }
 public class VisualizarContatosViewModel
 {
-
     public List<DetalhesContatoViewModel> Registros { get; set; } = [];
 
     public VisualizarContatosViewModel(List<Contato> contatos)
@@ -50,10 +66,7 @@ public class VisualizarContatosViewModel
 }
 public class EditarContatoViewModel : FormularioContatoViewModel
 {
-    public EditarContatoViewModel()
-    {
-
-    }
+    public EditarContatoViewModel() { }
     public EditarContatoViewModel(Guid id, string nome, string telefone, string email, string cargo, string empresa) : this()
     {
         Id = id;
@@ -67,10 +80,7 @@ public class EditarContatoViewModel : FormularioContatoViewModel
 
 public class ExcluirContatoViewModel : FormularioContatoViewModel
 {
-    public ExcluirContatoViewModel()
-    {
-
-    }
+    public ExcluirContatoViewModel() { }
     public ExcluirContatoViewModel(Guid id, string nome)
     {
         Id = id;
@@ -113,17 +123,6 @@ public class DetalhesContatoViewModel
 }
 public class CompromissoContatoViewModel
 {
-    public CompromissoContatoViewModel(string assunto, DateTime dataOcorrencia, DateTime horaInicio, DateTime horaTermino, TipoCompromisso tipoCompromisso, string local, string link)
-    {
-        Assunto = assunto;
-        DataOcorrencia = dataOcorrencia;
-        HoraInicio = horaInicio;
-        HoraTermino = horaTermino;
-        TipoCompromisso = tipoCompromisso;
-        Local = local;
-        Link = link;
-    }
-
     public string Assunto { get; set; } = string.Empty;
     public DateTime DataOcorrencia { get; set; }
 
@@ -137,4 +136,14 @@ public class CompromissoContatoViewModel
 
     public string Link { get; set; } = string.Empty;
 
+    public CompromissoContatoViewModel(string assunto, DateTime dataOcorrencia, DateTime horaInicio, DateTime horaTermino, TipoCompromisso tipoCompromisso, string local, string link)
+    {
+        Assunto = assunto;
+        DataOcorrencia = dataOcorrencia;
+        HoraInicio = horaInicio;
+        HoraTermino = horaTermino;
+        TipoCompromisso = tipoCompromisso;
+        Local = local;
+        Link = link;
+    }
 }
