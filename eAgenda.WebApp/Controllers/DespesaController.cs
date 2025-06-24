@@ -175,6 +175,20 @@ public class DespesaController : Controller
         var despesaSelecionada = repositorioDespesa.SelecionarPorId(id);
         var categoriaSelecionado = repositorioCategoria.SelecionarRegistroPorId(adicionarCategoriaVm.IdCategoria);
 
+        if (despesaSelecionada.Categorias.Any(i => i.Titulo == categoriaSelecionado.Titulo))
+        {
+            ModelState.AddModelError("ConflitoCategoria", "A despesa já contém essa categoria!");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            List<Categoria> categoriasDespesa = [.. despesaSelecionada.Categorias];
+
+            return View("GerenciarCategorias", new GerenciarCategoriasViewModel(
+            despesaSelecionada,
+            categoriasDespesa));
+        }
+
         despesaSelecionada.AderirCategoria(categoriaSelecionado);
         categoriaSelecionado.AderirDespesa(despesaSelecionada);
 
