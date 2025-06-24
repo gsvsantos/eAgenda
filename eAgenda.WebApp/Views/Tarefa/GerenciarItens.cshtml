@@ -13,10 +13,10 @@
 
 				@if (ViewData.ModelState["ConflitoItem"]?.Errors.Count > 0)
 				{
-							<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+					<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
 						@ViewData.ModelState["ConflitoItem"]!.Errors.First().ErrorMessage
-								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-							</div>
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
 				}
 
 				<div class="mb-3">

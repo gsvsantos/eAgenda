@@ -12,15 +12,14 @@
             <div class="card-body p-md-4">
 				<form asp-action="Editar" method="post">
 					<input type="hidden" name="contexto" value="@ViewBag.Contexto" />
-
 					<h3>Formulário de Edição</h3>
 
 					@if (ViewData.ModelState.ContainsKey("CadastroUnico") && ViewData.ModelState["CadastroUnico"]!.Errors.Count > 0)
 					{
-							<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+						<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
 							@ViewData.ModelState["CadastroUnico"]!.Errors.First().ErrorMessage
-								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
 					}
 
                     <div class="form-group d-grid mt-2">
