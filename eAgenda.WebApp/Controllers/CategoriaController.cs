@@ -16,7 +16,7 @@ public class CategoriaController : Controller
     public CategoriaController()
     {
         contextoDados = new ContextoDados(true);
-        repositorioCategoria = new RepositorioCatergoriaEmArquivo(contextoDados);
+        repositorioCategoria = new RepositorioCategoriaEmArquivo(contextoDados);
     }
 
     public IActionResult Index()

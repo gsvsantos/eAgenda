@@ -29,7 +29,7 @@ namespace eAgenda.WebApp.Controllers
             contextoDados = new(true);
             repositorioContato = new RepositorioContatoEmArquivo(contextoDados);
             repositorioCompromisso = new RepositorioCompromissoEmArquivo(contextoDados);
-            repositorioCategoria = new RepositorioCatergoriaEmArquivo(contextoDados);
+            repositorioCategoria = new RepositorioCategoriaEmArquivo(contextoDados);
             repositorioDespesa = new RepositorioDespesaEmArquivo(contextoDados);
             repositorioTarefa = new RepositorioTarefaEmArquivos(contextoDados);
         }

@@ -21,7 +21,7 @@ public class DespesaController : Controller
     {
         contextoDados = new ContextoDados(true);
         repositorioDespesa = new RepositorioDespesaEmArquivo(contextoDados);
-        repositorioCategoria = new RepositorioCatergoriaEmArquivo(contextoDados);
+        repositorioCategoria = new RepositorioCategoriaEmArquivo(contextoDados);
     }
 
     public IActionResult Index()
