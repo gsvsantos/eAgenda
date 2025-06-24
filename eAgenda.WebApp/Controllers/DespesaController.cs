@@ -54,7 +54,7 @@ public class DespesaController : Controller
         {
             ModelState.AddModelError("ConflitoCadastro", "Já existe uma Despesa registrada com este Título.");
         }
-        else if (cadastrarVM.CategoriasSelecionadas.Count <= 0)
+        else if (cadastrarVM.CategoriasSelecionadas.Count == 0)
         {
             ModelState.AddModelError("ConflitoCadastro", "Selecione ao menos uma categoria.");
         }
@@ -120,18 +120,32 @@ public class DespesaController : Controller
     public ActionResult Editar(Guid id, EditarDespesaViewModel editarVM)
     {
         var registros = repositorioDespesa.SelecionarRegistros();
+        var categoriasDisponiveis = repositorioCategoria.SelecionarRegistros();
 
-        foreach (var item in registros)
+        if (repositorioDespesa.SelecionarRegistros().Any(d => d.Id != id && d.Titulo == editarVM.Titulo))
         {
-            if (!item.Id.Equals(id) && item.Titulo.Equals(editarVM.Titulo))
-            {
-                ModelState.AddModelError("CadastroUnico", "Já existe uma Despesa registrado com este Titúlo.");
-                break;
-            }
+            ModelState.AddModelError("ConflitoCadastro", "Já existe uma Despesa registrada com este Título.");
+        }
+        else if (editarVM.CategoriasSelecionadas.Count == 0)
+        {
+            ModelState.AddModelError("ConflitoCadastro", "Selecione ao menos uma categoria.");
         }
 
         if (!ModelState.IsValid)
+        {
+            foreach (Categoria categoria in categoriasDisponiveis)
+            {
+                SelectListItem selecionarVM = new()
+                {
+                    Text = categoria.Titulo,
+                    Value = categoria.Id.ToString()
+                };
+
+                editarVM.Categorias?.Add(selecionarVM);
+            }
+
             return View(editarVM);
+        }
 
         var entidadeEditada = editarVM.ParaEntidade();
 

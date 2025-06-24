@@ -13,6 +13,14 @@
                 <form asp-action="Editar" method="post">
                     <h3>Formulário de Edição</h3>
 
+                    @if (ViewData.ModelState["CadastroUnico"]?.Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                            @ViewData.ModelState["CadastroUnico"]!.Errors.First().ErrorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
                     <div class="mb-3">
                         <label asp-for="Nome" class="form-label"></label>
                         <input asp-for="Nome" class="form-control" required minlength="2" maxlength="100" />

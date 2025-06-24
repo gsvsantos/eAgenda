@@ -86,18 +86,24 @@ namespace eAgenda.WebApp.Controllers
         [HttpPost("editar/{id:Guid}")]
         public IActionResult Editar(Guid id, EditarContatoViewModel editarVM)
         {
-            //string? validacao = contato.Validar();
-            //if (!string.IsNullOrEmpty(validacao))
-            //{
-            //    ModelState.AddModelError("", validacao);
-            //    return View(contato);
-            //}
 
-            //if (repositorioContato.ExistePorEmailOuTelefone(contato.Email, contato.Telefone, id))
-            //{
-            //    ModelState.AddModelError("", "Já existe um contato com este e-mail ou telefone");
-            //    return View(contato);
-            //}
+            if (repositorioContato.SelecionarRegistros().Any(c => c.Id != id && c.Email == editarVM.Email)
+                && repositorioContato.SelecionarRegistros().Any(c => c.Id != id && c.Telefone == editarVM.Telefone))
+            {
+                ModelState.AddModelError("CadastroUnico", "E-mail e Telefone já cadastrados!");
+            }
+            else if (repositorioContato.SelecionarRegistros().Any(c => c.Id != id && c.Email == editarVM.Email))
+            {
+                ModelState.AddModelError("CadastroUnico", "E-mail já cadastrado!");
+            }
+            else if (repositorioContato.SelecionarRegistros().Any(c => c.Id != id && c.Telefone == editarVM.Telefone))
+            {
+                ModelState.AddModelError("CadastroUnico", "Telefone já cadastrado!");
+            }
+
+            if (!ModelState.IsValid)
+                return View(editarVM);
+
             Contato contatoEditado = new Contato(
                 editarVM.Nome,
                 editarVM.Email,

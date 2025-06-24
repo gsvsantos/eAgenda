@@ -110,7 +110,13 @@ public class CompromissoController : Controller
         var erros = compromissoEditado.Validar();
 
         if (repositorioCompromisso.TemConflito(compromissoEditado))
-            erros.Add("Já existe um compromisso nesse horário.");
+            ModelState.AddModelError("ConflitoHorario", "Há compromisso marcado para esses horário!");
+        else if (vm.HoraInicio > vm.HoraTermino)
+            ModelState.AddModelError("ConflitoHorario", "A hora de início está após o horário final!");
+
+        if (!ModelState.IsValid)
+            return View(vm);
+
         repositorioCompromisso.EditarRegistro(id, compromissoEditado);
 
         return RedirectToAction("Index");
