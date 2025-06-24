@@ -1,6 +1,7 @@
 ﻿using eAgenda.Dominio.ModuloContato;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.Infraestrutura.Arquivos.ModuloContato;
+using eAgenda.WebApp.Helpers;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,14 +31,16 @@ namespace eAgenda.WebApp.Controllers
         [HttpGet("cadastrar")]
         public IActionResult Cadastrar()
         {
-            
             CadastrarContatoViewModel cadastrarVM = new CadastrarContatoViewModel();
+
             return View(cadastrarVM);
         }
 
         [HttpPost("cadastrar")]
         public IActionResult Cadastrar(CadastrarContatoViewModel cadastrarVM)
         {
+            cadastrarVM.Telefone = TelefoneHelper.FormatarTelefone(cadastrarVM.Telefone);
+
             Contato contato = new Contato(cadastrarVM.Nome, cadastrarVM.Email, cadastrarVM.Telefone, cadastrarVM.Cargo!, cadastrarVM.Empresa!);
 
             repositorioContato.CadastrarRegistro(contato);
@@ -84,7 +87,7 @@ namespace eAgenda.WebApp.Controllers
                 editarVM.Cargo!,
                 editarVM.Empresa!
             );
-            repositorioContato.EditarRegistro(id,contatoEditado);
+            repositorioContato.EditarRegistro(id, contatoEditado);
             return RedirectToAction("Index");
         }
 
