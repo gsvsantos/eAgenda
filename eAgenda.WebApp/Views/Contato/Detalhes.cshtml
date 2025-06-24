@@ -1,0 +1,52 @@
+﻿@using eAgenda.WebApp.Models
+@model DetalhesContatoViewModel
+
+@{
+    ViewBag.Titulo = "Detalhes do Contato";
+}
+
+<hr class="border border-dark opacity-25" />
+
+<div class="container mt-4">
+    <h2 class="mb-4">
+        Detalhes de <strong>@Model.Nome</strong>
+        <small class="text-muted">#@Model.Id.ToString().Substring(0, 13)...</small>
+    </h2>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p><strong>Telefone:</strong> @Model.Telefone</p>
+            <p><strong>Cargo:</strong> @Model.Cargo</p>
+            <p><strong>Empresa:</strong> @Model.Empresa</p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Compromissos</h5>
+
+            @if (Model.Compromissos.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var compromisso in Model.Compromissos)
+                    {
+                        <li class="list-group-item">
+                            <strong>@compromisso.Assunto</strong> -
+                            @compromisso.DataOcorrencia.ToShortDateString()
+                            (@compromisso.HoraInicio.ToShortTimeString() → @compromisso.HoraTermino.ToShortTimeString())
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted mb-0">Não possui compromissos agendados.</p>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-outline-primary">Voltar</a>
+    </div>
+</div>

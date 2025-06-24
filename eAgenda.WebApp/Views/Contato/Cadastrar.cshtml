@@ -1,0 +1,65 @@
+﻿@using eAgenda.WebApp.Models
+@model CadastrarContatoViewModel
+
+@{
+    ViewBag.Titulo = "Cadastro de Contato";
+}
+
+<hr class="border border-dark opacity-25" />
+<div class="d-flex flex-wrap justify-content-between my-5 gap-1">
+    <div class="col-12 col-md-6 align-self-center m-auto">
+        <div class="card rounded-4 border-0">
+            <div class="card-body p-md-4">
+                <form asp-action="Cadastrar">
+                    <h3>Formulário de Cadastro</h3>
+
+                    @if (ViewData.ModelState["CadastroUnico"]?.Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                            @ViewData.ModelState["CadastroUnico"]!.Errors.First().ErrorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="Nome" class="form-label fs-5">Nome:</label>
+                        <input asp-for="Nome" class="form-control" />
+                        <span asp-validation-for="Nome" class="text-danger d-block mt-2"></span>
+                    </div>
+
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="Email" class="form-label fs-5">Email:</label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger d-block mt-2"></span>
+                    </div>
+
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="Telefone" class="form-label fs-5">Telefone:</label>
+                        <input asp-for="Telefone" class="form-control" />
+                        <span asp-validation-for="Telefone" class="text-danger d-block mt-2"></span>
+                    </div>
+
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="Cargo" class="form-label fs-5">Cargo:</label>
+                        <input asp-for="Cargo" class="form-control" />
+                        <span asp-validation-for="Cargo" class="text-danger d-block mt-2"></span>
+                    </div>
+
+                    <div class="form-group d-grid mt-2">
+                        <label asp-for="Empresa" class="form-label fs-5">Empresa:</label>
+                        <input asp-for="Empresa" class="form-control" />
+                        <span asp-validation-for="Empresa" class="text-danger d-block mt-2"></span>
+                    </div>
+
+                    <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-3">
+                        <a href="/contatos" class="btn btn-outline-primary rounded-3 px-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary rounded-4 px-5">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

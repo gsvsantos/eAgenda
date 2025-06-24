@@ -1,0 +1,89 @@
+﻿@using eAgenda.Dominio.ModuloCompromisso
+@using eAgenda.WebApp.Models
+@using static eAgenda.Dominio.ModuloCompromisso.Compromisso
+@model EditarCompromissoViewModel
+
+@{
+    ViewBag.Titulo = "Edição de Compromisso";
+}
+
+<hr class="border border-dark opacity-25" />
+<div class="d-flex flex-wrap justify-content-between my-5 gap-1">
+    <div class="col-12 col-md-6 align-self-center m-auto">
+        <div class="card rounded-4 border-0">
+            <div class="card-body p-md-4">
+                <form asp-action="Editar" method="post">
+                    <h3>Formulário de Edição</h3>
+
+                    @if (ViewData.ModelState["ConflitoHorario"]?.Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                            @ViewData.ModelState["ConflitoHorario"]!.Errors.First().ErrorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="mb-3">
+                        <label asp-for="Assunto" class="form-label"></label>
+                        <input asp-for="Assunto" class="form-control" />
+                        <span asp-validation-for="Assunto" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DataOcorrencia" class="form-label"></label>
+                        <input asp-for="DataOcorrencia" type="date" class="form-control" />
+                        <span asp-validation-for="DataOcorrencia" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="HoraInicio" class="form-label"></label>
+                        <input asp-for="HoraInicio" type="time" class="form-control" />
+                        <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="HoraTermino" class="form-label"></label>
+                        <input asp-for="HoraTermino" type="time" class="form-control" />
+                        <span asp-validation-for="HoraTermino" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TipoCompromisso" class="form-label"></label>
+                        <select asp-for="TipoCompromisso" asp-items="Html.GetEnumSelectList<TipoCompromisso>()" class="form-select"></select>
+                        <span asp-validation-for="TipoCompromisso" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Local" class="form-label"></label>
+                        <input asp-for="Local" class="form-control" />
+                        <span asp-validation-for="Local" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Link" class="form-label"></label>
+                        <input asp-for="Link" class="form-control" />
+                        <span asp-validation-for="Link" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ContatoId" class="form-label"></label>
+                        <select asp-for="ContatoId" class="form-select">
+                            <option value="">(Nenhum)</option>
+                            @foreach (var contato in Model.Contatos)
+                            {
+                                    <option value="@contato.Value">@contato.Text</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ContatoId" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,41 @@
+﻿@using eAgenda.WebApp.Models
+@using eAgenda.Dominio.ModuloCompromisso
+@using static eAgenda.Dominio.ModuloCompromisso.Compromisso
+@model DetalhesCompromissoViewModel
+
+@{
+    ViewBag.Titulo = "Detalhes do Compromisso";
+}
+
+<hr class="border border-dark opacity-25" />
+
+<div class="container mt-4">
+    <h2 class="mb-4">
+        Detalhes de <strong>@Model.Assunto</strong>
+        <small class="text-muted">@Model.DataOcorrencia.ToShortDateString()</small>
+    </h2>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <p><strong>Data:</strong> @Model.DataOcorrencia.ToShortDateString()</p>
+            <p><strong>Hora Início:</strong> @Model.HoraInicio</p>
+            <p><strong>Hora Término:</strong> @Model.HoraTermino</p>
+            <p><strong>Tipo:</strong> @Model.TipoCompromisso</p>
+
+            @if (Model.TipoCompromisso == TipoCompromisso.Presencial)
+            {
+                    <p><strong>Local:</strong> @Model.Local</p>
+            }
+            else
+            {
+                    <p><strong>Link:</strong> @Model.Link</p>
+            }
+
+            <p><strong>Contato:</strong> @(Model.Contato?.Nome ?? "Nenhum")</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-outline-primary">Voltar</a>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@using eAgenda.WebApp.Models
+@model DespesasCategoriaViewModel
+@{
+    ViewBag.Titulo = $"Despesas da Categoria";
+}
+
+<h3 class="mb-3">@Model.Titulo</h3>
+
+<p>
+    <a class="btn btn-primary px-4 rounded-pill shadow-sm" href="/categorias">
+        <i class="bi bi-plus me-2"></i>
+        Voltar para Categorias
+    </a>
+</p>
+
+<div class="row g-2">
+    @if (!Model.Despesas.Any())
+    {
+        <p class="fw-semibold mt-3">Ainda não há despesas vinculadas a esta categoria.</p>
+    }
+    else
+    {
+        @foreach (var despesa in Model.Despesas)
+        {
+            <div class="col-12 col-md-5 col-lg-4 col-xl-3 mb-3">
+                <div class="card rounded-4 border-0">
+                    <div class="card-body">
+                        <h4 class="card-title mb-1 fw-semibold text-truncate overflow-hidden text-nowrap" style="max-width: 70%;" title="@despesa.Titulo">
+                            @despesa.Titulo
+                        </h4>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">Descrição:</span> @despesa.Descricao
+                        </p>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">Data:</span> @despesa.DataOcorrencia.ToShortDateString()
+                        </p>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">Valor:</span> @despesa.Valor
+                        </p>
+                        <p class="card-text mb-1">
+                            <span class="fw-semibold">Forma de Pagamento:</span> @despesa.FormaPagamento
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,116 @@
+﻿@using eAgenda.WebApp.Models
+@model GerenciarCategoriasViewModel
+
+@{
+	ViewBag.Titulo = "Gerenciar Categorias da Despesa";
+}
+
+<hr class="border border-dark opacity-25" />
+<div class="d-flex flex-wrap justify-content-between my-5 gap-1">
+    <div class="col-12 col-md-6 align-self-center m-auto">
+		<div class="card rounded-4 border-0">
+            <div class="card-body p-md-4">
+				<h2>@Model.Despesa.Titulo</h2>
+
+				@if (ViewData.ModelState["ConflitoCategoria"]?.Errors.Count > 0)
+				{
+					<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+						@ViewData.ModelState["ConflitoCategoria"]!.Errors.First().ErrorMessage
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				}
+
+				<div class="mb-3">
+					<div class="mt-3">
+						<label class="control-label"><strong>Valor: R$</strong> @Model.Despesa.Valor</label>
+					</div>
+					<div class="mt-2">
+						<label class="control-label"><strong>Forma de Pagamento:</strong> @Model.Despesa.FormaPagamento</label>
+					</div>
+				</div>
+
+				<form class="d-flex flex-wrap gap-2 align-items-center" action="/despesas/@Model.Despesa.Id/adicionar-categoria" method="post">
+					<div class="col-12 col-md-7">
+						<label class="control-label">Categorias: </label>
+
+						<select class="form-select w-100" name="IdCategoria">
+							@foreach (SelectListItem categoria in Model.Categorias)
+							{
+								<option value="@categoria.Value">@categoria.Text</option>
+							}
+						</select>
+					</div>
+
+					<button type="submit" class="btn btn-primary align-self-end col">
+						Adicionar
+					</button>
+				</form>
+
+				<h4 class="my-3">Categorias da Despesa:</h4>
+
+				@if (!Model.Despesa.Categorias.Any())
+				{
+					<p class="fw-semibold mt-3">Ainda não há nenhuma categoria para esta despesa...</p>
+				}
+				else
+				{
+					<div class="card rounded-4 border-1 bg-light">
+						<div class="card-body d-flex flex-wrap gap-1">
+							@foreach (CategoriaDespesaViewModel categoria in Model.Despesa.Categorias)
+							{
+								<div class="chip chip-outline chip-input bg-white"
+									data-bs-toggle="modal"
+									data-bs-target="#detalheCategoriaModal"
+									data-categoria-titulo="@categoria.Titulo"
+									style="max-width: 110px;">
+									<div class="chip-delete-right">
+										<form action="/despesas/@Model.Despesa.Id/remover-categoria/@categoria.Id" method="post">
+											<button type="submit" class="btn-icon-acao">
+												<i class="bi bi-x text-danger"></i>
+											</button>
+										</form>
+									</div>
+									<div class="chip-text text-truncate overflow-hidden text-nowrap" title="@categoria.Titulo">
+										@categoria.Titulo
+									</div>
+								</div>
+							}
+						</div>
+					</div>
+				}
+				<div class="form-group d-flex flex-column align-items-center justify-content-end gap-3 mt-5">
+					<a href="/despesas" class="btn btn-outline-primary rounded-3 px-2">Voltar</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="detalheCategoriaModal" tabindex="-1" aria-labelledby="detalheCategoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header">
+				<h5 class="modal-title text-break">Detalhes da Categoria</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+				<p><strong>Título:</strong> <span class="text-break" id="modalCategoriaTitulo"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var detalheItemModal = document.getElementById('detalheCategoriaModal');
+
+			detalheItemModal.addEventListener('show.bs.modal', function (event) {
+				var button = event.relatedTarget;
+
+				var categoriaTitulo = button.dataset.categoriaTitulo;
+
+				document.getElementById('modalCategoriaTitulo').textContent = categoriaTitulo;
+			});
+		});
+	</script>
+}

@@ -1,22 +1,31 @@
-﻿<!DOCTYPE html>
+﻿@using eAgenda.WebApp.Extensions
+@using eAgenda.WebApp.Helpers
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="shortcut icon" href="~/assets/logo.ico" type="image/x-icon">
-    <link rel="stylesheet" href="~/lib/bootstrap-dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css" />
-    <link rel="stylesheet" href="~/css/app.css" />
+    <partial name="_Favicons">
+    <link rel="stylesheet" href="~/lib/bootstrap-dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="~/css/app.css"/>
     <title>@ViewBag.Titulo - e-Agenda</title>  
 </head>
 <body>
     <div class="wrapper">
         <partial name="_SideBar">
         <div class="main">
+            <div class="container pt-3">
+                <div class="breadcrumb-bg">
+                    <nav class="breadcrumb">
+                        @Html.BuildBreadcrumbNavigation()
+                    </nav>
+                </div>
+            </div>
             <header class="main-title p-4">
                 <h2>@ViewBag.Titulo</h2>
             </header>
-            <main role="main" class="main-content p-4">
+            <main role="main" class="main-content">
                 <div class="container">
                         @RenderBody()
                 </div>

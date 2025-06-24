@@ -1,15 +1,23 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Boogaloo&family=Roboto:ital,wght@0,100..900;1,100..900&family=Signika:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Boogaloo&family=Roboto:ital,wght@0,100..900;1,100..900&family=Signika:wght@300..700&display=swap');
 
 :root {
-    --cor-primaria: #007BFF;
-    --cor-destaque: #FFC107;
-    --cor-perigo: #DC3545;
-    --cor-fundo: #F4F6F8;
-    --cor-superficie: #FFFFFF;
-    --cor-borda: #CED4DA;
-    --cor-texto-principal: #212529;
-    --cor-texto-suave: #6C757D;
-    --cor-texto-invertido: #FFFFFF;
+    --cor-primaria: #AC5045; 
+    --cor-destaque: #DFA05D; 
+    --cor-perigo: #A1342F; 
+    --cor-fundo: #FEEAD0; 
+    --cor-superficie: #F4D9B5; 
+    --cor-borda: #A28B74;
+    --cor-borda-footer: #a28b7466;
+    --cor-texto-principal: #2B211C; 
+    --cor-texto-suave: #7C6B5B;
+    --cor-texto-invertido: #FEEAD0;
+    --cor-suporte: #658761;
+    --cor-bagde-baixa: #658963 ;
+    --cor-bagde-media: #E0A15E ;
+    --cor-bagde-alta: #AC5045 ;
 }
 
 html, body {
@@ -21,13 +29,19 @@ html, body {
 .btn-primary {
     background-color: var(--cor-primaria);
     border-color: var(--cor-primaria);
+    color: var(--cor-texto-invertido);
 }
 
-    .btn-primary:hover {
-        filter: brightness(0.9);
-        background-color: var(--cor-primaria);
-        border-color: var(--cor-primaria);
-    }
+.btn-primary:hover {
+    filter: brightness(0.95);
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+
+.btn-primary.rounded-circle:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.068);
+    transition: all 0.2s ease;
+}
 
 .btn-warning {
     background-color: var(--cor-destaque);
@@ -35,27 +49,41 @@ html, body {
     color: var(--cor-texto-principal);
 }
 
-    .btn-warning:hover {
-        filter: brightness(0.95);
-        background-color: var(--cor-destaque);
-        border-color: var(--cor-destaque);
-        color: var(--cor-texto-principal);
-    }
+.btn-warning:hover {
+    filter: brightness(0.95);
+    background-color: var(--cor-destaque);
+    border-color: var(--cor-destaque);
+}
 
 .btn-danger {
     background-color: var(--cor-perigo);
     border-color: var(--cor-perigo);
+    color: var(--cor-texto-principal);
 }
 
-    .btn-danger:hover {
-        filter: brightness(0.9);
-        background-color: var(--cor-perigo);
-        border-color: var(--cor-perigo);
-    }
+.btn-danger:hover {
+    filter: brightness(0.95);
+    background-color: var(--cor-perigo);
+    border-color: var(--cor-perigo);
+}
+
+.btn-outline-danger:hover {
+    background-color: #A1342F;
+    color: var(--cor-texto-invertido);
+    border-color: #A1342F;
+    transition: all 0.2s ease;
+}
 
 .card {
     border: 1px solid var(--cor-borda);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    background-color: var(--cor-superficie);
+    box-shadow: 0 0 8px #6b5b4623;
+}
+
+.btn.rounded-circle:hover {
+    transform: scale(1.04);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: all 0.15s ease;
 }
 
 .wrapper {
@@ -73,6 +101,7 @@ html, body {
 .main-header {
     border-bottom: 1px solid var(--cor-borda);
     background-color: var(--cor-superficie);
+    color: var(--cor-texto-principal);
 }
 
 .main-content {
@@ -90,10 +119,10 @@ html, body {
     background-color: var(--cor-primaria);
 }
 
-    .sidebar.expand {
-        width: 260px;
-        min-width: 260px;
-    }
+.sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
 
 .sidebar-header {
     display: flex;
@@ -155,7 +184,7 @@ html, body {
     position: absolute;
     top: 0;
     left: 90px;
-    background-color: #07b9ff;
+    background-color: var(--cor-destaque);
     padding: 0;
     min-width: 15em;
     display: hidden;
@@ -173,7 +202,7 @@ html, body {
 .sidebar .nav-link.active {
     color: var(--cor-texto-invertido);
     background-color: rgba(255, 255, 255, 0.1);
-    border-left: 3px solid #07DAFF;
+    border-left: 3px solid var(--cor-destaque);
 }
 
 .nav-item {
@@ -196,11 +225,11 @@ html, body {
     border-radius: 5px;
 }
 
-    .nav-dropdown .nav-link {
-        font-size: 0.9rem;
-        padding: 0.6rem 1rem;
-        color: rgba(255, 255, 255, 0.7);
-    }
+.nav-dropdown .nav-link {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+}
 
 .dropdown-arrow {
     font-size: 0.8rem;
@@ -212,12 +241,195 @@ html, body {
 }
 
 .footer {
-    border-top: 1px solid var(--cor-borda);
-    background: var(--cor-superficie);
+    border-top: 1px solid var(--cor-borda-footer);
+    background-color: var(--cor-superficie);
     color: var(--cor-texto-suave);
-    padding: 1rem;
+    padding: 1.5rem 1rem 1rem 1rem;
     text-align: center;
     font-size: 0.9rem;
+}
+
+.bg-baixa{
+    background-color: var(--cor-bagde-baixa);
+}
+
+.bg-media{
+    background-color: var(--cor-bagde-media);
+}
+
+.bg-alta{
+    background-color: var(--cor-bagde-alta);
+}
+
+.chip {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 30px;
+    padding: .125rem 1rem;
+    font-weight: 600;
+    color: var(--cor-fundo);
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    color: #353a40;
+    border-color: #a2a4ab;
+    cursor: pointer;
+}
+
+.chip-outline:hover {
+    color: #4c535c;
+    background-color: #e9ecef;
+    border-color: #7a7b80;
+}
+
+.btn-icon-acao {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: inherit;
+    font-size: inherit;
+    line-height: 1;
+}
+
+.card-filtos {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.090);
+}
+
+.table {
+    list-style: none;
+}
+
+.table th{
+    background-color: var(--cor-superficie);
+    color: var(--cor-texto-principal);
+    border-bottom: 2px solid var(--cor-borda);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 16px;
+}
+
+.table td {
+    background-color: #FFF8E6;
+    color: var(--cor-texto-principal);
+    border-top: 1px solid var(--cor-borda);
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+.task-description .descricao-box {
+    background-color: #FFF8E6;
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    color: var(--cor-texto-principal);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.task-description .descricao-box span {
+    white-space: pre-wrap;
+}
+
+.table-wrapper {
+    max-height: 150px;
+    overflow: auto;
+    table-layout: fixed;
+}
+
+.table-responsive {
+    max-height: 350px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.table-responsive .table th {
+    position: sticky;
+    top: 0;
+    border: #0055ff;
+    z-index: 2;
+    background-clip: padding-box;
+}
+
+.table-responsive .table th:last-child {
+    border-right: none;
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    display: none;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.span-wrapper {
+  display: block;
+  max-height: 180px;
+  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.breadcrumb {
+    font-size: 0.85rem;
+    color: var(--cor-texto-suave);
+}
+
+.breadcrumb a {
+    color: var(--cor-primaria);
+    font-weight: 500;
+}
+
+.breadcrumb a:hover {
+    color: var(--cor-perigo);
+    text-decoration: underline;
+}
+
+.breadcrumb::before {
+    content: "";
+    display: block;
+    height: 1px;
+    background-color: var(--cor-borda);
+    margin-bottom: 0.5rem;
+}
+
+.breadcrumb .separador {
+    margin: 0 0.5rem;
+    color: var(--cor-borda);
+    font-weight: normal;
+}
+
+.breadcrumb .separator i {
+    color: var(--cor-borda);
+    opacity: 0.7;
+    font-size: 0.8rem;
+}
+
+.breadcrumb-bg {
+    background-color: #f4d9b55c;
+    padding: 0.5rem 0.5rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
 }
 
 @keyframes fadeIn {
