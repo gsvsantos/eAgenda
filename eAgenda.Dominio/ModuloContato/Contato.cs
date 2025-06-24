@@ -1,21 +1,21 @@
-﻿using eAgenda.Dominio.Compartilhado;
+﻿using System.Diagnostics.CodeAnalysis;
+using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloCompromisso;
-using System.Diagnostics.CodeAnalysis;
 
 namespace eAgenda.Dominio.ModuloContato
 {
     public class Contato : EntidadeBase<Contato>
     {
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Telefone { get; set; }
-        public string Cargo { get; set; }
-        public string Empresa { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Telefone { get; set; } = string.Empty;
+        public string Cargo { get; set; } = string.Empty;
+        public string Empresa { get; set; } = string.Empty;
 
         public List<Compromisso> Compromissos { get; set; } = [];
 
         [ExcludeFromCodeCoverage]
-        public Contato() {}
+        public Contato() { }
 
         public Contato(string nome, string email, string telefone, string cargo, string empresa)
         {
@@ -27,7 +27,7 @@ namespace eAgenda.Dominio.ModuloContato
         }
 
         public void AdicionarCompromisso(Compromisso compromisso)
-        { 
+        {
             Compromissos.Add(compromisso);
         }
         public void RemoverCompromisso(Compromisso compromisso)

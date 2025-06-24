@@ -45,7 +45,7 @@ namespace eAgenda.Infraestrutura.Arquivos.ModuloContato
 
         public Contato SelecionarPorId(Guid id)
         {
-            return contatos.FirstOrDefault(x => x.Id == id);
+            return contatos.FirstOrDefault(x => x.Id == id)!;
         }
 
         public List<Contato> SelecionarTodos()

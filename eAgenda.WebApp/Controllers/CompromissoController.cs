@@ -27,7 +27,7 @@ public class CompromissoController : Controller
     {
         List<Compromisso> compromissos = repositorioCompromisso.SelecionarRegistros();
         var vm = new VisualizarCompromissosViewModel(compromissos);
-        
+
         return View(vm);
     }
 
@@ -93,10 +93,10 @@ public class CompromissoController : Controller
             vm.HoraInicio,
             vm.HoraTermino,
             vm.TipoCompromisso,
-            vm.Local,
-            vm.Link,
+            vm.Local!,
+            vm.Link!,
             contato
-        ); 
+        );
 
         var erros = compromissoEditado.Validar();
 
@@ -132,7 +132,7 @@ public class CompromissoController : Controller
         var compromisso = repositorioCompromisso.SelecionarRegistroPorId(id);
         if (compromisso == null)
             return NotFound();
-        var vm = new DetalhesCompromissoViewModel(id,compromisso.Assunto, compromisso.DataOcorrencia, compromisso.HoraInicio, compromisso.HoraTermino, compromisso.TipoCompromisso,
+        var vm = new DetalhesCompromissoViewModel(id, compromisso.Assunto, compromisso.DataOcorrencia, compromisso.HoraInicio, compromisso.HoraTermino, compromisso.TipoCompromisso,
             compromisso.Local, compromisso.Link, compromisso.Contato);
         return View(vm);
     }
