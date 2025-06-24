@@ -79,7 +79,7 @@ A **Prototype E-Agenda** é um sistema eletrônico desenvolvido para organizaç�
 1. Clone o repositório ou baixe o código fonte.
 
 ```
-git clone https://github.com/seu-usuario/prototype-e-agenda.git
+git clone https://github.com/Compila-logo-existe/eAgenda
 ```
 
 2. Acesse a pasta do projeto:
