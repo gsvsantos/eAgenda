@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace eAgenda.WebApp.Extensions;
+namespace eAgenda.WebApp.Helpers;
 
 public static class BreadcrumbHelper
 {
