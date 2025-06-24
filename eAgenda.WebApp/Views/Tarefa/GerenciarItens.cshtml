@@ -11,6 +11,14 @@
 			<div class="card-body p-md-4">
 				<h2>@Model.Tarefa.Titulo</h2>
 
+				@if (ViewData.ModelState["ConflitoItem"]?.Errors.Count > 0)
+				{
+							<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+						@ViewData.ModelState["ConflitoItem"]!.Errors.First().ErrorMessage
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+				}
+
 				<div class="mb-3">
 					<form action="/tarefas/@Model.Tarefa.Id/adicionar-item" method="post">
 					<div class="mt-3">

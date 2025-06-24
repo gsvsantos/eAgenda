@@ -154,6 +154,20 @@ public class TarefaController : Controller
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
         ItemTarefa novoItem = new(adicionarItemVM.TituloItem);
 
+        if (tarefaSelecionada.Itens.Any(i => i.Titulo == novoItem.Titulo))
+        {
+            ModelState.AddModelError("ConflitoItem", "A tarefa já contém este item!");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            List<ItemTarefa> itens = [.. tarefaSelecionada.Itens];
+
+            return View("GerenciarItens", new GerenciarItensViewModel(
+            tarefaSelecionada,
+            itens));
+        }
+
         tarefaSelecionada.AdicionarItem(novoItem);
 
         contextoDados.Salvar();

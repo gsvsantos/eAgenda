@@ -116,6 +116,7 @@ public class GerenciarItensViewModel
 
     [Required(ErrorMessage = "Escreva um título.")]
     [DisplayName("Título")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "O título da tarefa deve ter entre 2 e 100 caracteres.")]
     public string TituloItem { get; set; } = string.Empty;
 
     public GerenciarItensViewModel() { }
