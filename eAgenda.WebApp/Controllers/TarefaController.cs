@@ -64,6 +64,7 @@ public class TarefaController : Controller
     }
 
     [HttpPost("cadastrar")]
+    [ValidateAntiForgeryToken]
     public IActionResult Cadastrar(CadastrarTarefaViewModel cadastrarVM)
     {
         Tarefa novaTarefa = cadastrarVM.ParaEntidade();
@@ -91,6 +92,7 @@ public class TarefaController : Controller
     }
 
     [HttpPost("editar/{id:guid}")]
+    [ValidateAntiForgeryToken]
     public IActionResult Editar(Guid id, EditarTarefaViewModel editarVM, string contexto)
     {
         Tarefa tarefaEditada = editarVM.ParaEntidade();
