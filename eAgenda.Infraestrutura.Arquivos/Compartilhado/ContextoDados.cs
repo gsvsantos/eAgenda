@@ -1,11 +1,11 @@
-﻿using eAgenda.Dominio.ModuloCompromisso;
-using eAgenda.Dominio.ModuloContato;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloCompromisso;
+using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
+using eAgenda.Dominio.ModuloTarefa;
 
 namespace eAgenda.Infraestrutura.Arquivos.Compartilhado;
 
@@ -14,11 +14,10 @@ public class ContextoDados
     public List<Tarefa> Tarefas { get; set; }
     public List<Contato> Contatos { get; set; }
     public List<Compromisso> Compromissos { get; set; }
+    public List<Categoria> Categorias { get; set; }
+    public List<Despesa> Despesas { get; set; }
     private string pastaArmazenamento = string.Empty;
     private string arquivoArmazenamento = "dados-eAgenda.json";
-
-    public List<Categoria> Categorias {  get; set; }
-    public List<Despesa> Despesas { get; set; }
 
     public ContextoDados()
     {
