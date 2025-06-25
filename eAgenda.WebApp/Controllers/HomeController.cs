@@ -23,8 +23,9 @@ namespace eAgenda.WebApp.Controllers
         private readonly IRepositorioContato repositorioContato;
         private readonly IRepositorioCompromisso repositorioCompromisso;
         private readonly IRepositorioCategoria repositorioCategoria;
+        private readonly ILogger<HomeController> logger;
 
-        public HomeController()
+        public HomeController(ILogger<HomeController> logger)
         {
             contextoDados = new(true);
             repositorioContato = new RepositorioContatoEmArquivo(contextoDados);
@@ -32,9 +33,12 @@ namespace eAgenda.WebApp.Controllers
             repositorioCategoria = new RepositorioCategoriaEmArquivo(contextoDados);
             repositorioDespesa = new RepositorioDespesaEmArquivo(contextoDados);
             repositorioTarefa = new RepositorioTarefaEmArquivos(contextoDados);
+            this.logger = logger;
         }
         public IActionResult Index()
         {
+            logger.LogError(new Exception(), "Teste 12332.-.");
+
             HomeViewModel homeVM = new()
             {
                 TotalCategorias = repositorioCategoria.SelecionarRegistros().Count,
@@ -57,6 +61,12 @@ namespace eAgenda.WebApp.Controllers
             };
 
             return View(homeVM);
+        }
+
+        [HttpGet("erro")]
+        public IActionResult Erro()
+        {
+            return View();
         }
     }
 }
