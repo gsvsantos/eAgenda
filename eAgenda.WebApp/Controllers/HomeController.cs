@@ -35,10 +35,24 @@ namespace eAgenda.WebApp.Controllers
             repositorioTarefa = new RepositorioTarefaEmArquivos(contextoDados);
             this.logger = logger;
         }
+
+        public HomeController(
+            ContextoDados contextoDados, IRepositorioTarefa repositorioTarefa,
+            IRepositorioDespesa repositorioDespesa, IRepositorioContato repositorioContato,
+            IRepositorioCompromisso repositorioCompromisso, IRepositorioCategoria repositorioCategoria,
+            ILogger<HomeController> logger)
+        {
+            this.contextoDados = contextoDados;
+            this.repositorioTarefa = repositorioTarefa;
+            this.repositorioDespesa = repositorioDespesa;
+            this.repositorioContato = repositorioContato;
+            this.repositorioCompromisso = repositorioCompromisso;
+            this.repositorioCategoria = repositorioCategoria;
+            this.logger = logger;
+        }
+
         public IActionResult Index()
         {
-            logger.LogError(new Exception(), "Teste 12332.-.");
-
             HomeViewModel homeVM = new()
             {
                 TotalCategorias = repositorioCategoria.SelecionarRegistros().Count,

@@ -1,6 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
-using eAgenda.Infraestrutura.Arquivos.ModuloCategoria;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +12,10 @@ public class CategoriaController : Controller
     private readonly ContextoDados contextoDados;
     private readonly IRepositorioCategoria repositorioCategoria;
 
-    public CategoriaController()
+    public CategoriaController(ContextoDados contextoDados, IRepositorioCategoria repositorioCategoria)
     {
-        contextoDados = new ContextoDados(true);
-        repositorioCategoria = new RepositorioCategoriaEmArquivo(contextoDados);
+        this.contextoDados = contextoDados;
+        this.repositorioCategoria = repositorioCategoria;
     }
 
     public IActionResult Index()
@@ -149,7 +148,7 @@ public class CategoriaController : Controller
                 Id = d.Id,
                 Titulo = d.Titulo,
                 Descricao = d.Descricao,
-                DataOcorrencia = d.DataOcorrencia, 
+                DataOcorrencia = d.DataOcorrencia,
                 Valor = d.Valor,
                 FormaPagamento = d.FormaPagamento.ToString()
             }).ToList()
