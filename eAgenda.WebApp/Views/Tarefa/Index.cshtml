@@ -52,7 +52,7 @@
 </div>
 <hr class="border border-dark opacity-25" />
 <div class="row g-2">
-	@if (!Model.TarefasPorPrioridade.Any())
+	@if (Model.TarefasPorPrioridade.Values.All(t => !t.Any()))
 	{
 		<p class="fw-semibold mt-3">Ainda não há nenhuma tarefa cadastrada...</p>
 	}
