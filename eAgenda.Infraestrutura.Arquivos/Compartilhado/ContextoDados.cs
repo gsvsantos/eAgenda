@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloCompromisso;
@@ -11,33 +10,26 @@ namespace eAgenda.Infraestrutura.Arquivos.Compartilhado;
 
 public class ContextoDados
 {
-    public List<Tarefa> Tarefas { get; set; }
-    public List<Contato> Contatos { get; set; }
-    public List<Compromisso> Compromissos { get; set; }
     public List<Categoria> Categorias { get; set; }
+    public List<Compromisso> Compromissos { get; set; }
+    public List<Contato> Contatos { get; set; }
     public List<Despesa> Despesas { get; set; }
+    public List<Tarefa> Tarefas { get; set; }
     private string pastaArmazenamento = string.Empty;
-    private string arquivoArmazenamento = "dados-eAgenda.json";
+    private readonly string arquivoArmazenamento = "dados-eAgenda.json";
 
     public ContextoDados()
     {
-        Contatos = new List<Contato>();
-        Compromissos = new List<Compromisso>();
-        // Espaço para inicializar as Listas (Ex: Contatos = new List<Contato>();)
         Categorias = new List<Categoria>();
+        Compromissos = new List<Compromisso>();
+        Contatos = new List<Contato>();
         Despesas = new List<Despesa>();
         Tarefas = new List<Tarefa>();
     }
     public void VerificarSistemaOperacional()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            pastaArmazenamento = @"C:\temp";
-        }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
-            pastaArmazenamento = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "temp");
-        }
+        pastaArmazenamento = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "eAgenda");
     }
 
     public ContextoDados(bool carregarDados) : this()
@@ -51,14 +43,14 @@ public class ContextoDados
         VerificarSistemaOperacional();
         string caminhoCompleto = Path.Combine(pastaArmazenamento, arquivoArmazenamento);
 
+        if (!Directory.Exists(pastaArmazenamento))
+            Directory.CreateDirectory(pastaArmazenamento);
+
         JsonSerializerOptions jsonOptions = new JsonSerializerOptions();
         jsonOptions.WriteIndented = true;
         jsonOptions.ReferenceHandler = ReferenceHandler.Preserve;
 
         string json = JsonSerializer.Serialize(this, jsonOptions);
-
-        if (!Directory.Exists(pastaArmazenamento))
-            Directory.CreateDirectory(pastaArmazenamento);
 
         File.WriteAllText(caminhoCompleto, json);
     }
