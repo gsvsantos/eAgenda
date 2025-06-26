@@ -21,7 +21,11 @@ namespace eAgenda.WebApp
         public static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddControllersWithViews((options) => options.Filters.Add<ValidarModeloAttribute>());
+            builder.Services.AddControllersWithViews((options) =>
+            {
+                options.Filters.Add<ValidarModeloAttribute>();
+                options.Filters.Add<LogarAcaoAttribute>();
+            });
             builder.Services.AddScoped((IServiceProvider _) => new ContextoDados(true));
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmArquivo>();
             builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoEmArquivo>();
@@ -41,8 +45,10 @@ namespace eAgenda.WebApp
             app.UseAntiforgery();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
             app.MapDefaultControllerRoute();
+
             app.Run();
         }
     }
