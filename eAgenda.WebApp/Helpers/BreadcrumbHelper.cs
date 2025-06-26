@@ -9,7 +9,7 @@ public static class BreadcrumbHelper
 {
     public static IHtmlContent BuildBreadcrumbNavigation(this IHtmlHelper helper)
     {
-        var controllerDisplayNames = new Dictionary<string, string>
+        Dictionary<string, string> controllerDisplayNames = new()
         {
             { "Tarefa", "Tarefas" },
             { "Categoria", "Categorias" },
@@ -18,14 +18,14 @@ public static class BreadcrumbHelper
             { "Compromisso", "Compromissos" }
         };
 
-        var viewContext = helper.ViewContext;
-        var routeValues = viewContext.RouteData.Values;
+        ViewContext viewContext = helper.ViewContext;
+        RouteValueDictionary routeValues = viewContext.RouteData.Values;
 
         string controller = routeValues["controller"]?.ToString() ?? "";
         string action = routeValues["action"]?.ToString() ?? "";
 
-        var urlHelperFactory = (IUrlHelperFactory)viewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory))!;
-        var urlHelper = urlHelperFactory.GetUrlHelper(viewContext);
+        IUrlHelperFactory urlHelperFactory = (IUrlHelperFactory)viewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory))!;
+        IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(viewContext);
 
         string controllerDisplay = controllerDisplayNames.ContainsKey(controller)
              ? controllerDisplayNames[controller] : controller;

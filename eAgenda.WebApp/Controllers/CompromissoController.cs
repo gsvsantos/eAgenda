@@ -1,8 +1,6 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
-using eAgenda.Infra.Dados.Arquivo.ModuloCompromisso;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
-using eAgenda.Infraestrutura.Arquivos.ModuloContato;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,15 +9,13 @@ namespace eAgenda.WebApp.Controllers;
 [Route("compromissos")]
 public class CompromissoController : Controller
 {
-    private readonly ContextoDados contextoDados;
     private readonly IRepositorioContato repositorioContato;
     private readonly IRepositorioCompromisso repositorioCompromisso;
 
-    public CompromissoController()
+    public CompromissoController(ContextoDados contextoDados, IRepositorioContato repositorioContato, IRepositorioCompromisso repositorioCompromisso)
     {
-        contextoDados = new ContextoDados(true);
-        repositorioContato = new RepositorioContatoEmArquivo(contextoDados);
-        repositorioCompromisso = new RepositorioCompromissoEmArquivo(contextoDados);
+        this.repositorioContato = repositorioContato;
+        this.repositorioCompromisso = repositorioCompromisso;
     }
 
     [HttpGet("")]
@@ -41,6 +37,7 @@ public class CompromissoController : Controller
     }
 
     [HttpPost("cadastrar")]
+    [ValidateAntiForgeryToken]
     public IActionResult Cadastrar(CadastrarCompromissoViewModel vm)
     {
         Contato? contato = null;
@@ -88,6 +85,7 @@ public class CompromissoController : Controller
     }
 
     [HttpPost("editar/{id:Guid}")]
+    [ValidateAntiForgeryToken]
     public IActionResult Editar(Guid id, EditarCompromissoViewModel vm)
     {
         Contato? contato = null;

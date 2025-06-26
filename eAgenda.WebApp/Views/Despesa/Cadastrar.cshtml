@@ -48,13 +48,23 @@
                             <option value="" selected disabled>Selecione a forma de Pagamento</option>
                         </select>
                         <span asp-validation-for="FormaPagamento" class="text-danger d-block mt-2"></span>
-                    </div
+                    </div>
                     <div class="form-group d-grid gap-2 mt-3">
                         <label class="control-label fs-5">Categorias:</label>
                         <div class="d-flex flex-wrap gap-5 mt-2">
-                            @for (int i = 0; i < Model.Categorias?.Count(); i++)
+                            @if (!Model.Categorias!.Any())
                             {
-                                var categoria = Model.Categorias.ElementAt(i);
+                                <p class="fw-semibold mt-3">Ainda não há nenhuma categoria cadastrada...
+                                    <a class="btn btn-primary rounded-circle me-auto" title="Cadastrar Categoria" asp-controller="Categoria" asp-action="Cadastrar">
+                                        <i class="bi bi-folder-plus"></i>
+                                    </a>
+                                </p>
+                            }
+                            else
+                            {
+                            @for (int i = 0; i < Model.Categorias?.Count(); i++)
+                                {
+                                    SelectListItem? categoria = Model.Categorias.ElementAt(i);
                                     <div class="form-check">
                                         <input class="form-check-input"
                                             type="checkbox"
@@ -66,6 +76,7 @@
                                         @categoria.Text
                                         </label>
                                     </div>
+                                }
                             }
                         </div>
                         <span asp-validation-for="CategoriasSelecionadas" class="text-danger"></span>
