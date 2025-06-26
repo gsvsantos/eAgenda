@@ -77,10 +77,10 @@ public class TarefaController : Controller
     [HttpGet("editar/{id:guid}")]
     public IActionResult Editar(Guid id, string contexto = "Index")
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
         EditarTarefaViewModel editarVM = new(
-            tarefaSelecionada.Id,
+            id,
             tarefaSelecionada.Titulo,
             tarefaSelecionada.Prioridade,
             tarefaSelecionada.DataCriacao,
@@ -108,7 +108,7 @@ public class TarefaController : Controller
     [HttpGet("excluir/{id:guid}")]
     public IActionResult Excluir(Guid id)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
         ExcluirTarefaViewModel excluirVM = new(
             id,

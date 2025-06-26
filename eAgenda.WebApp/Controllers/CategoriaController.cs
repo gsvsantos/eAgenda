@@ -9,12 +9,10 @@ namespace eAgenda.WebApp.Controllers;
 [Route("categorias")]
 public class CategoriaController : Controller
 {
-    private readonly ContextoDados contextoDados;
     private readonly IRepositorioCategoria repositorioCategoria;
 
     public CategoriaController(ContextoDados contextoDados, IRepositorioCategoria repositorioCategoria)
     {
-        this.contextoDados = contextoDados;
         this.repositorioCategoria = repositorioCategoria;
     }
 
@@ -67,7 +65,7 @@ public class CategoriaController : Controller
 
         var editarVM = new EditarCategoriaViewModel(
             id,
-            registroSelecionado.Titulo
+            registroSelecionado!.Titulo
         );
 
         return View(editarVM);
@@ -103,7 +101,7 @@ public class CategoriaController : Controller
     {
         var registroSelecionado = repositorioCategoria.SelecionarRegistroPorId(id);
 
-        var excluirVM = new ExcluirCategoriaViewModel(registroSelecionado.Id, registroSelecionado.Titulo);
+        var excluirVM = new ExcluirCategoriaViewModel(registroSelecionado!.Id, registroSelecionado.Titulo);
 
         return View(excluirVM);
     }

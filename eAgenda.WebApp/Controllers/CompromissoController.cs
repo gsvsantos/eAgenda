@@ -9,13 +9,11 @@ namespace eAgenda.WebApp.Controllers;
 [Route("compromissos")]
 public class CompromissoController : Controller
 {
-    private readonly ContextoDados contextoDados;
     private readonly IRepositorioContato repositorioContato;
     private readonly IRepositorioCompromisso repositorioCompromisso;
 
     public CompromissoController(ContextoDados contextoDados, IRepositorioContato repositorioContato, IRepositorioCompromisso repositorioCompromisso)
     {
-        this.contextoDados = contextoDados;
         this.repositorioContato = repositorioContato;
         this.repositorioCompromisso = repositorioCompromisso;
     }

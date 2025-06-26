@@ -10,5 +10,5 @@ public interface IRepositorio<Tipo> where Tipo : EntidadeBase<Tipo>
 
     public List<Tipo> SelecionarRegistros();
 
-    public Tipo SelecionarRegistroPorId(Guid idRegistro);
+    public Tipo? SelecionarRegistroPorId(Guid idRegistro);
 }
