@@ -23,12 +23,12 @@ public abstract class FormularioCompromissoViewModel
     [Required(ErrorMessage = "Insira o horário de início.")]
     [DisplayName("Hora de Início")]
     [DataType(DataType.DateTime)]
-    public DateTime HoraInicio { get; set; }
+    public TimeSpan HoraInicio { get; set; }
 
     [Required(ErrorMessage = "Insira o horário de término.")]
     [DisplayName("Hora de Término")]
     [DataType(DataType.DateTime)]
-    public DateTime HoraTermino { get; set; }
+    public TimeSpan HoraTermino { get; set; }
 
     [Required(ErrorMessage = "Selecione uma prioridade.")]
     [DisplayName("Prioridade")]
@@ -84,7 +84,7 @@ public class EditarCompromissoViewModel : FormularioCompromissoViewModel
             Contatos.Add(new SelectListItem
             {
                 Value = contato.Id.ToString(),
-                Text = contato.Nome
+                Text = contato.Nome,
             });
         }
     }
@@ -124,9 +124,9 @@ public class DetalhesCompromissoViewModel
     public string Assunto { get; set; } = string.Empty;
     public DateTime DataOcorrencia { get; set; }
 
-    public DateTime HoraInicio { get; set; }
+    public TimeSpan HoraInicio { get; set; }
 
-    public DateTime HoraTermino { get; set; }
+    public TimeSpan HoraTermino { get; set; }
 
     public TipoCompromisso TipoCompromisso { get; set; }
 
@@ -134,8 +134,8 @@ public class DetalhesCompromissoViewModel
 
     public string Link { get; set; } = string.Empty;
 
-    public Contato? Contato { get; set; } = null!;
-    public DetalhesCompromissoViewModel(Guid id, string assunto, DateTime dataOcorrencia, DateTime horaInicio, DateTime horaTermino, TipoCompromisso tipoCompromisso, string local, string link, Contato? contato)
+    public Contato? Contato { get; set; }
+    public DetalhesCompromissoViewModel(Guid id, string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino, TipoCompromisso tipoCompromisso, string local, string link, Contato? contato)
     {
         Id = id;
         Assunto = assunto;

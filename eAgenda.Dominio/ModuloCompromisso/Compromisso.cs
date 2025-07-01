@@ -10,9 +10,9 @@ public class Compromisso : EntidadeBase<Compromisso>
     public string Assunto { get; set; } = string.Empty;
     public DateTime DataOcorrencia { get; set; }
 
-    public DateTime HoraInicio { get; set; }
+    public TimeSpan HoraInicio { get; set; }
 
-    public DateTime HoraTermino { get; set; }
+    public TimeSpan HoraTermino { get; set; }
 
     public TipoCompromisso TipoCompromisso { get; set; }
 
@@ -20,11 +20,11 @@ public class Compromisso : EntidadeBase<Compromisso>
 
     public string Link { get; set; } = string.Empty;
 
-    public Contato? Contato { get; set; } = null!;
+    public Contato? Contato { get; set; }
 
     [ExcludeFromCodeCoverage]
     public Compromisso() { }
-    public Compromisso(string assunto, DateTime dataOcorrencia, DateTime horaInicio, DateTime horaTermino,
+    public Compromisso(string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino,
         TipoCompromisso tipoCompromisso, string local, string link, Contato? contato) : this()
     {
         Assunto = assunto;
@@ -36,14 +36,17 @@ public class Compromisso : EntidadeBase<Compromisso>
         Link = link;
         Contato = contato;
     }
+
     public void Iniciar()
     {
-        HoraInicio = DateTime.Now;
+        HoraInicio = DateTime.Now.TimeOfDay;
     }
+
     public void Terminar()
     {
-        HoraTermino = DateTime.Now;
+        HoraTermino = DateTime.Now.TimeOfDay;
     }
+
     public override void AtualizarRegistro(Compromisso registroEditado)
     {
         Assunto = registroEditado.Assunto;
@@ -52,6 +55,7 @@ public class Compromisso : EntidadeBase<Compromisso>
         Link = registroEditado.Link;
         Contato = registroEditado.Contato;
     }
+
     public List<string> Validar()
     {
         var erros = new List<string>();

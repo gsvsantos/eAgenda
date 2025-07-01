@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
+using eAgenda.WebApp.Extensions;
 
 namespace eAgenda.WebApp.Models;
 
@@ -31,11 +32,12 @@ public abstract class FormularioContatoViewModel
     [DisplayName("Empresa")]
     [StringLength(100, MinimumLength = 2, ErrorMessage = "O nome do item deve ter entre 2 e 100 caracteres.")]
     public string? Empresa { get; set; }
+    public List<CompromissoContatoViewModel> Compromissos { get; set; } = [];
 }
 public class CadastrarContatoViewModel : FormularioContatoViewModel
 {
     public CadastrarContatoViewModel() { }
-    public CadastrarContatoViewModel(Guid id, string nome, string telefone, string email, string cargo, string empresa) : this()
+    public CadastrarContatoViewModel(Guid id, string nome, string telefone, string email, string cargo, string empresa, List<Compromisso> compromissos) : this()
     {
         Id = id;
         Nome = nome;
@@ -43,6 +45,18 @@ public class CadastrarContatoViewModel : FormularioContatoViewModel
         Email = email;
         Cargo = cargo;
         Empresa = empresa;
+        foreach (Compromisso c in compromissos)
+        {
+            Compromissos.Add(new CompromissoContatoViewModel(
+                c.Assunto,
+                c.DataOcorrencia,
+                c.HoraInicio,
+                c.HoraTermino,
+                c.TipoCompromisso,
+                c.Local,
+                c.Link,
+                c.Contato!.Nome));
+        }
     }
 }
 public class VisualizarContatosViewModel
@@ -53,14 +67,7 @@ public class VisualizarContatosViewModel
     {
         foreach (Contato contato in contatos)
         {
-            Registros.Add(new DetalhesContatoViewModel(
-                contato.Id,
-                contato.Nome,
-                contato.Email,
-                contato.Telefone,
-                contato.Cargo,
-                contato.Empresa,
-                contato.Compromissos));
+            Registros.Add(contato.ParaDetalhesVM());
         }
     }
 }
@@ -116,7 +123,8 @@ public class DetalhesContatoViewModel
                 compromisso.HoraTermino,
                 compromisso.TipoCompromisso,
                 compromisso.Local,
-                compromisso.Link
+                compromisso.Link,
+                compromisso.Contato!.Nome
             ));
         }
     }
@@ -126,17 +134,18 @@ public class CompromissoContatoViewModel
     public string Assunto { get; set; } = string.Empty;
     public DateTime DataOcorrencia { get; set; }
 
-    public DateTime HoraInicio { get; set; }
+    public TimeSpan HoraInicio { get; set; }
 
-    public DateTime HoraTermino { get; set; }
+    public TimeSpan HoraTermino { get; set; }
 
     public TipoCompromisso TipoCompromisso { get; set; }
 
     public string Local { get; set; } = string.Empty;
 
     public string Link { get; set; } = string.Empty;
+    public string? NomeContato { get; set; } = string.Empty;
 
-    public CompromissoContatoViewModel(string assunto, DateTime dataOcorrencia, DateTime horaInicio, DateTime horaTermino, TipoCompromisso tipoCompromisso, string local, string link)
+    public CompromissoContatoViewModel(string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino, TipoCompromisso tipoCompromisso, string local, string link, string? nomeContato)
     {
         Assunto = assunto;
         DataOcorrencia = dataOcorrencia;
@@ -145,5 +154,6 @@ public class CompromissoContatoViewModel
         TipoCompromisso = tipoCompromisso;
         Local = local;
         Link = link;
+        NomeContato = nomeContato;
     }
 }
