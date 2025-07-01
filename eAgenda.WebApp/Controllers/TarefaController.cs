@@ -34,7 +34,7 @@ public class TarefaController : Controller
                 _ => tarefas
             };
 
-            tarefas = tarefas.Intersect(tarefasPorStatus).ToList();
+            tarefas = [.. tarefas.Intersect(tarefasPorStatus)];
         }
 
         if (!string.IsNullOrEmpty(prioridade))
@@ -47,7 +47,7 @@ public class TarefaController : Controller
                 _ => tarefas
             };
 
-            tarefas = tarefas.Intersect(tarefasPorPrioridade).ToList();
+            tarefas = [.. tarefas.Intersect(tarefasPorPrioridade)];
         }
 
         VisualizarTarefasViewModel visualizarVM = new(tarefas);
@@ -128,7 +128,7 @@ public class TarefaController : Controller
     [HttpGet, Route("/tarefas/{id:guid}/detalhes")]
     public IActionResult Detalhes(Guid id)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
         tarefaSelecionada.AtualizarStatus();
 
@@ -140,7 +140,7 @@ public class TarefaController : Controller
     [HttpGet, Route("/tarefas/{id:guid}/gerenciar-itens")]
     public IActionResult GerenciarItens(Guid id)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         List<ItemTarefa> itens = [.. tarefaSelecionada.Itens];
 
         GerenciarItensViewModel gerenciarItensVM = new(
@@ -153,7 +153,7 @@ public class TarefaController : Controller
     [HttpPost, Route("/tarefas/{id:guid}/adicionar-item")]
     public IActionResult AdicionarItem(Guid id, AdicionarItemViewModel adicionarItemVM)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa novoItem = new(adicionarItemVM.TituloItem);
 
         if (tarefaSelecionada.Itens.Any(i => i.Titulo == novoItem.Titulo))
@@ -184,7 +184,7 @@ public class TarefaController : Controller
     [HttpPost, Route("/tarefas/{id:guid}/remover-item/{idItem:guid}")]
     public IActionResult RemoverItem(Guid id, Guid idItem, string contexto)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem);
 
         tarefaSelecionada.RemoverItem(itemSelecionado);
@@ -201,7 +201,7 @@ public class TarefaController : Controller
     [HttpPost, Route("/tarefas/{id:guid}/concluir-item/{idItem:guid}")]
     public IActionResult ConcluirItem(Guid id, Guid idItem)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem);
 
         itemSelecionado.Concluir();
@@ -218,7 +218,7 @@ public class TarefaController : Controller
     [HttpPost, Route("/tarefas/{id:guid}/reabrir-item/{idItem:guid}")]
     public IActionResult ReabrirItem(Guid id, Guid idItem)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem);
 
         itemSelecionado.Reabrir();
@@ -235,7 +235,7 @@ public class TarefaController : Controller
     [HttpPost, Route("/tarefas/{id:guid}/concluir-tarefa")]
     public IActionResult ConcluirTarefa(Guid id)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
         repositorioTarefa.ConcluirItensTarefa(tarefaSelecionada);
         tarefaSelecionada.Concluir();
@@ -250,7 +250,7 @@ public class TarefaController : Controller
     [HttpPost, Route("/tarefas/{id:guid}/reabrir-tarefa")]
     public IActionResult ReabrirTarefa(Guid id)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
         repositorioTarefa.ReabrirItensTarefa(tarefaSelecionada);
 
@@ -264,7 +264,7 @@ public class TarefaController : Controller
     [HttpPost, Route("/tarefas/{id:guid}/cancelar-tarefa")]
     public IActionResult CancelarTarefa(Guid id)
     {
-        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id);
+        Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
         tarefaSelecionada.Cancelar();
         repositorioTarefa.CancelarItensTarefa(tarefaSelecionada);

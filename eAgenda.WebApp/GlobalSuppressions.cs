@@ -1,0 +1,15 @@
+﻿// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>", Scope = "member", Target = "~M:eAgenda.WebApp.Controllers.CompromissoController.#ctor(eAgenda.Dominio.ModuloContato.IRepositorioContato,eAgenda.Dominio.ModuloCompromisso.IRepositorioCompromisso)")]
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>", Scope = "member", Target = "~M:eAgenda.WebApp.Controllers.TarefaController.#ctor(eAgenda.Infraestrutura.Arquivos.Compartilhado.ContextoDados,eAgenda.Dominio.ModuloTarefa.IRepositorioTarefa)")]
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>", Scope = "member", Target = "~M:eAgenda.WebApp.Controllers.HomeController.#ctor(eAgenda.Dominio.ModuloTarefa.IRepositorioTarefa,eAgenda.Dominio.ModuloDespesa.IRepositorioDespesa,eAgenda.Dominio.ModuloContato.IRepositorioContato,eAgenda.Dominio.ModuloCompromisso.IRepositorioCompromisso,eAgenda.Dominio.ModuloCategoria.IRepositorioCategoria)")]
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>", Scope = "member", Target = "~M:eAgenda.WebApp.Controllers.DespesaController.#ctor(eAgenda.Infraestrutura.Arquivos.Compartilhado.ContextoDados,eAgenda.Dominio.ModuloDespesa.IRepositorioDespesa,eAgenda.Dominio.ModuloCategoria.IRepositorioCategoria)")]
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>", Scope = "member", Target = "~M:eAgenda.WebApp.Controllers.CategoriaController.#ctor(eAgenda.Dominio.ModuloCategoria.IRepositorioCategoria)")]
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>", Scope = "member", Target = "~M:eAgenda.WebApp.Controllers.ContatoController.#ctor(eAgenda.Dominio.ModuloContato.IRepositorioContato)")]
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>", Scope = "member", Target = "~M:eAgenda.WebApp.Models.ExcluirCategoriaViewModel.#ctor(System.Guid,System.String)")]
+[assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>", Scope = "member", Target = "~M:eAgenda.WebApp.Models.CompromissoContatoViewModel.#ctor(System.String,System.DateTime,System.DateTime,System.DateTime,eAgenda.Dominio.ModuloCompromisso.TipoCompromisso,System.String,System.String,System.String)")]
