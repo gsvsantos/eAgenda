@@ -27,13 +27,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var compromisso in Model.Registros)
+            @foreach (DetalhesCompromissoViewModel compromisso in Model.Registros)
             {
                     <tr class="table-light">
                         <td>@compromisso.Assunto</td>
                         <td>@compromisso.DataOcorrencia.ToShortDateString()</td>
-                        <td>@compromisso.HoraInicio</td>
-                        <td>@compromisso.HoraTermino</td>
+                        <td>@compromisso.HoraInicio.ToString(@"hh\:mm")</td>
+                        <td>@compromisso.HoraTermino.ToString(@"hh\:mm")</td>
                         <td>@compromisso.TipoCompromisso</td>
                         <td>@(compromisso.Contato?.Nome ?? "—")</td>
                         <td>

@@ -3,12 +3,12 @@ using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
-using eAgenda.Infra.Dados.Arquivo.ModuloCompromisso;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.Infraestrutura.Arquivos.ModuloCategoria;
-using eAgenda.Infraestrutura.Arquivos.ModuloContato;
 using eAgenda.Infraestrutura.Arquivos.ModuloDespesa;
 using eAgenda.Infraestrutura.Arquivos.ModuloTarefa;
+using eAgenda.Infraestrutura.SQLServer.ModuloCompromisso;
+using eAgenda.Infraestrutura.SQLServer.ModuloContato;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
 
@@ -28,8 +28,8 @@ namespace eAgenda.WebApp
             });
             builder.Services.AddScoped((IServiceProvider _) => new ContextoDados(true));
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmArquivo>();
-            builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoEmArquivo>();
-            builder.Services.AddScoped<IRepositorioContato, RepositorioContatoEmArquivo>();
+            builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoSQL>();
+            builder.Services.AddScoped<IRepositorioContato, RepositorioContatoSQL>();
             builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaEmArquivo>();
             builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaEmArquivos>();
 

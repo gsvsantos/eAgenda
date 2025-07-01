@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\eAgenda.Dominio\eAgenda.Dominio.csproj" />
     <ProjectReference Include="..\eAgenda.Infraestrutura.Arquivos\eAgenda.Infraestrutura.Arquivos.csproj" />
+    <ProjectReference Include="..\eAgenda.Infraestrutura.SqlServer\eAgenda.Infraestrutura.SQLServer.csproj" />
   </ItemGroup>
 
 </Project>
