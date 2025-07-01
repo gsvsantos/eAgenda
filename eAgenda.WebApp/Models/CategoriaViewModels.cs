@@ -54,12 +54,10 @@ public class ExcluirCategoriaViewModel
 
 public class VisualizarCategoriasViewModel
 {
-    public List<DespesasCategoriaViewModel> Registros { get; set; }
+    public List<DetalhesCategoriaViewModel> Registros { get; set; } = [];
 
     public VisualizarCategoriasViewModel(List<Categoria> categorias)
     {
-        Registros = new List<DespesasCategoriaViewModel>();
-
         foreach (var c in categorias)
             Registros.Add(c.ParaDetalhesVM());
     }
@@ -87,15 +85,14 @@ public class DespesaCategoriaViewModel
     }
 }
 
-
-public class DespesasCategoriaViewModel
+public class DetalhesCategoriaViewModel
 {
     public Guid Id { get; set; }
     public string Titulo { get; set; } = string.Empty;
     public List<DespesaCategoriaViewModel> Despesas { get; set; } = [];
 
-    public DespesasCategoriaViewModel() { }
-    public DespesasCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas)
+    public DetalhesCategoriaViewModel() { }
+    public DetalhesCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas)
     {
         Id = id;
         Titulo = titulo;
