@@ -24,27 +24,27 @@
 
                     <div class="form-group d-grid mt-2">
                         <label asp-for="Titulo" class="form-label fs-5">Titulo:</label>
-                        <input asp-for="Titulo" class="form-control" />
+                        <input asp-for="Titulo" class="form-control" id="inputTitulo"/>
                         <span asp-validation-for="Titulo" class="text-danger d-block mt-2"></span>
                     </div>
                     <div class="form-group d-grid mt-2">
                         <label asp-for="Descricao" class="form-label">Descrição:</label>
-                        <input asp-for="Descricao" class="form-control" />
+                        <input asp-for="Descricao" class="form-control" id="inputDescricao"/>
                         <span asp-validation-for="Descricao" class="text-danger d-block mt-2"></span>
                     </div>
                     <div class="form-group d-grid mt-2">
                         <label asp-for="DataOcorrencia" class="form-label">Data de Ocorrencia</label>
-                        <input asp-for="DataOcorrencia" class="form-control" id="inputTitulo" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")">
+                        <input asp-for="DataOcorrencia" class="form-control" id="inputData" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")">
                         <span asp-validation-for="DataOcorrencia" class="text-danger d-block mt-2"></span>
                     </div>
                     <div class="form-group d-grid mt-2">
                         <label asp-for="Valor" class="form-label">Valor:</label>
-                        <input asp-for="Valor" class="form-control" type="number" step="0.01" pattern="^\d+(?:,\d{1,2})?$" value="0.00" />
+                        <input asp-for="Valor" class="form-control" id="inputValor" type="number" step="0.01" pattern="^\d+(?:,\d{1,2})?$" value="0.00" />
                         <span asp-validation-for="Valor" class="text-danger d-block mt-2"></span>
                     </div>
                     <div class="form-group d-grid mt-2">
                         <label asp-for="FormaPagamento" class="form-label">Forma Pagamento:</label>
-                        <select asp-for="FormaPagamento" class="form-control" asp-items="@Html.GetEnumSelectList<MeiosPagamento>()" class="form-control">
+                        <select asp-for="FormaPagamento" class="form-control" id="selectFormaPagamento" asp-items="@Html.GetEnumSelectList<MeiosPagamento>()" class="form-control">
                             <option value="" selected disabled>Selecione a forma de Pagamento</option>
                         </select>
                         <span asp-validation-for="FormaPagamento" class="text-danger d-block mt-2"></span>
@@ -62,7 +62,7 @@
                             }
                             else
                             {
-                            @for (int i = 0; i < Model.Categorias?.Count(); i++)
+                                @for (int i = 0; i < Model.Categorias?.Count(); i++)
                                 {
                                     SelectListItem? categoria = Model.Categorias.ElementAt(i);
                                     <div class="form-check">
@@ -71,7 +71,7 @@
                                             name="CategoriasSelecionadas"
                                             value="@categoria.Value"
                                             id="categoria_@categoria.Value"
-                                    @(Model.CategoriasSelecionadas != null && Model.CategoriasSelecionadas.Contains(Guid.Parse(categoria.Value)) ? "checked" : "") />
+                                            @(Model.CategoriasSelecionadas != null && Model.CategoriasSelecionadas.Contains(Guid.Parse(categoria.Value)) ? "checked" : "") />
                                         <label class="form-check-label" for="categoria_@categoria.Value">
                                         @categoria.Text
                                         </label>
