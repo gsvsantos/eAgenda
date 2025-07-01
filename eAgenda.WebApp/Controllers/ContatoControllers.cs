@@ -1,5 +1,4 @@
 ﻿using eAgenda.Dominio.ModuloContato;
-using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.WebApp.Helpers;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,7 @@ namespace eAgenda.WebApp.Controllers
     {
         private readonly IRepositorioContato repositorioContato;
 
-        public ContatoController(ContextoDados contextoDados, IRepositorioContato repositorioContato)
+        public ContatoController(IRepositorioContato repositorioContato)
         {
             this.repositorioContato = repositorioContato;
         }
@@ -20,7 +19,7 @@ namespace eAgenda.WebApp.Controllers
         public IActionResult Index()
         {
             List<Contato> contatos = repositorioContato.SelecionarRegistros();
-            VisualizarContatosViewModel visualizarVM = new VisualizarContatosViewModel(contatos);
+            VisualizarContatosViewModel visualizarVM = new(contatos);
 
             return View(visualizarVM);
         }
@@ -28,7 +27,7 @@ namespace eAgenda.WebApp.Controllers
         [HttpGet("cadastrar")]
         public IActionResult Cadastrar()
         {
-            CadastrarContatoViewModel cadastrarVM = new CadastrarContatoViewModel();
+            CadastrarContatoViewModel cadastrarVM = new();
 
             return View(cadastrarVM);
         }
@@ -37,7 +36,6 @@ namespace eAgenda.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Cadastrar(CadastrarContatoViewModel cadastrarVM)
         {
-
             if (repositorioContato.SelecionarRegistros().Any(c => c.Email == cadastrarVM.Email)
                 && repositorioContato.SelecionarRegistros().Any(c => c.Telefone == cadastrarVM.Telefone))
             {
@@ -57,7 +55,7 @@ namespace eAgenda.WebApp.Controllers
 
             cadastrarVM.Telefone = TelefoneHelper.FormatarTelefone(cadastrarVM.Telefone);
 
-            Contato contato = new Contato(cadastrarVM.Nome, cadastrarVM.Email, cadastrarVM.Telefone, cadastrarVM.Cargo!, cadastrarVM.Empresa!);
+            Contato contato = new(cadastrarVM.Nome, cadastrarVM.Email, cadastrarVM.Telefone, cadastrarVM.Cargo!, cadastrarVM.Empresa!);
 
             repositorioContato.CadastrarRegistro(contato);
 
@@ -67,10 +65,10 @@ namespace eAgenda.WebApp.Controllers
         [HttpGet("editar/{id:Guid}")]
         public IActionResult Editar(Guid id)
         {
-            Contato contato = repositorioContato.SelecionarRegistroPorId(id);
+            Contato contato = repositorioContato.SelecionarRegistroPorId(id)!;
             if (contato == null)
                 return NotFound();
-            EditarContatoViewModel editarVM = new EditarContatoViewModel(
+            EditarContatoViewModel editarVM = new(
                 contato.Id,
                 contato.Nome,
                 contato.Telefone,
@@ -85,7 +83,6 @@ namespace eAgenda.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Editar(Guid id, EditarContatoViewModel editarVM)
         {
-
             if (repositorioContato.SelecionarRegistros().Any(c => c.Id != id && c.Email == editarVM.Email)
                 && repositorioContato.SelecionarRegistros().Any(c => c.Id != id && c.Telefone == editarVM.Telefone))
             {
@@ -103,7 +100,7 @@ namespace eAgenda.WebApp.Controllers
             if (!ModelState.IsValid)
                 return View(editarVM);
 
-            Contato contatoEditado = new Contato(
+            Contato contatoEditado = new(
                 editarVM.Nome,
                 editarVM.Email,
                 editarVM.Telefone,
@@ -117,11 +114,11 @@ namespace eAgenda.WebApp.Controllers
         [HttpGet("excluir/{id:Guid}")]
         public IActionResult Excluir(Guid id)
         {
-            Contato contato = repositorioContato.SelecionarRegistroPorId(id);
+            Contato contato = repositorioContato.SelecionarRegistroPorId(id)!;
             if (contato == null)
                 return NotFound();
 
-            ExcluirContatoViewModel excluirVM = new ExcluirContatoViewModel(id, contato.Nome);
+            ExcluirContatoViewModel excluirVM = new(id, contato.Nome);
 
             return View(excluirVM);
         }
@@ -136,10 +133,10 @@ namespace eAgenda.WebApp.Controllers
         [HttpGet("detalhes/{id:Guid}")]
         public IActionResult Detalhes(Guid id)
         {
-            Contato contato = repositorioContato.SelecionarRegistroPorId(id);
+            Contato contato = repositorioContato.SelecionarRegistroPorId(id)!;
             if (contato == null)
                 return NotFound();
-            DetalhesContatoViewModel detalhesVM = new DetalhesContatoViewModel(
+            DetalhesContatoViewModel detalhesVM = new(
                 contato.Id,
                 contato.Nome,
                 contato.Email,
@@ -150,5 +147,4 @@ namespace eAgenda.WebApp.Controllers
             return View(detalhesVM);
         }
     }
-
 }

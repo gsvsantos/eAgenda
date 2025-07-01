@@ -1,5 +1,4 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
-using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +10,16 @@ public class CategoriaController : Controller
 {
     private readonly IRepositorioCategoria repositorioCategoria;
 
-    public CategoriaController(ContextoDados contextoDados, IRepositorioCategoria repositorioCategoria)
+    public CategoriaController(IRepositorioCategoria repositorioCategoria)
     {
         this.repositorioCategoria = repositorioCategoria;
     }
 
     public IActionResult Index()
     {
-        var registros = repositorioCategoria.SelecionarRegistros();
+        List<Categoria> registros = repositorioCategoria.SelecionarRegistros();
 
-        var visualizarVM = new VisualizarCategoriasViewModel(registros);
+        VisualizarCategoriasViewModel visualizarVM = new(registros);
 
         return View(visualizarVM);
     }
@@ -28,7 +27,7 @@ public class CategoriaController : Controller
     [HttpGet("cadastrar")]
     public IActionResult Cadastrar()
     {
-        var cadastrarVM = new CadastrarCategoriaViewModel();
+        CadastrarCategoriaViewModel cadastrarVM = new();
 
         return View(cadastrarVM);
     }
@@ -37,9 +36,7 @@ public class CategoriaController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Cadastrar(CadastrarCategoriaViewModel cadastrarVM)
     {
-        var registros = repositorioCategoria.SelecionarRegistros();
-
-        foreach (var item in registros)
+        foreach (Categoria item in repositorioCategoria.SelecionarRegistros())
         {
             if (item.Titulo.Equals(cadastrarVM.Titulo))
             {
@@ -51,7 +48,7 @@ public class CategoriaController : Controller
         if (!ModelState.IsValid)
             return View(cadastrarVM);
 
-        var entidade = cadastrarVM.ParaEntidade();
+        Categoria entidade = cadastrarVM.ParaEntidade();
 
         repositorioCategoria.CadastrarRegistro(entidade);
 
@@ -61,9 +58,9 @@ public class CategoriaController : Controller
     [HttpGet("editar/{id:guid}")]
     public ActionResult Editar(Guid id)
     {
-        var registroSelecionado = repositorioCategoria.SelecionarRegistroPorId(id);
+        Categoria registroSelecionado = repositorioCategoria.SelecionarRegistroPorId(id)!;
 
-        var editarVM = new EditarCategoriaViewModel(
+        EditarCategoriaViewModel editarVM = new(
             id,
             registroSelecionado!.Titulo
         );
@@ -75,9 +72,7 @@ public class CategoriaController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult Editar(Guid id, EditarCategoriaViewModel editarVM)
     {
-        var registros = repositorioCategoria.SelecionarRegistros();
-
-        foreach (var item in registros)
+        foreach (Categoria item in repositorioCategoria.SelecionarRegistros())
         {
             if (!item.Id.Equals(id) && item.Titulo.Equals(editarVM.Titulo))
             {
@@ -89,7 +84,7 @@ public class CategoriaController : Controller
         if (!ModelState.IsValid)
             return View(editarVM);
 
-        var entidadeEditada = editarVM.ParaEntidade();
+        Categoria entidadeEditada = editarVM.ParaEntidade();
 
         repositorioCategoria.EditarRegistro(id, entidadeEditada);
 
@@ -99,9 +94,9 @@ public class CategoriaController : Controller
     [HttpGet("excluir/{id:guid}")]
     public IActionResult Excluir(Guid id)
     {
-        var registroSelecionado = repositorioCategoria.SelecionarRegistroPorId(id);
+        Categoria registroSelecionado = repositorioCategoria.SelecionarRegistroPorId(id)!;
 
-        var excluirVM = new ExcluirCategoriaViewModel(registroSelecionado!.Id, registroSelecionado.Titulo);
+        ExcluirCategoriaViewModel excluirVM = new(registroSelecionado!.Id, registroSelecionado.Titulo);
 
         return View(excluirVM);
     }
@@ -109,16 +104,16 @@ public class CategoriaController : Controller
     [HttpPost("excluir/{id:guid}")]
     public IActionResult ExcluirConfirmado(Guid id)
     {
-        var categoria = repositorioCategoria.SelecionarRegistroPorId(id);
+        Categoria categoria = repositorioCategoria.SelecionarRegistroPorId(id)!;
 
         if (categoria == null)
             return NotFound();
 
-        if (categoria.Despesas.Any())
+        if (categoria.Despesas.Count != 0)
         {
             ModelState.AddModelError("ExclusaoVinculo", "Não é possível excluir esta categoria, pois há despesas vinculadas a ela.");
 
-            var excluirVM = new ExcluirCategoriaViewModel(categoria.Id, categoria.Titulo);
+            ExcluirCategoriaViewModel excluirVM = new(categoria.Id, categoria.Titulo);
 
             return View("Excluir", excluirVM);
         }
@@ -128,20 +123,19 @@ public class CategoriaController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-
     [HttpGet("despesas/{id:guid}")]
     public IActionResult Despesas(Guid id)
     {
-        var categoria = repositorioCategoria.SelecionarRegistroPorId(id);
+        Categoria categoria = repositorioCategoria.SelecionarRegistroPorId(id)!;
 
         if (categoria == null)
             return NotFound();
 
-        var despesasVM = new DespesasCategoriaViewModel
+        DetalhesCategoriaViewModel despesasVM = new()
         {
             Id = categoria.Id,
             Titulo = categoria.Titulo,
-            Despesas = categoria.Despesas.Select(d => new DespesaCategoriaViewModel
+            Despesas = categoria.Despesas.ConvertAll(d => new DespesaCategoriaViewModel
             {
                 Id = d.Id,
                 Titulo = d.Titulo,
@@ -149,11 +143,9 @@ public class CategoriaController : Controller
                 DataOcorrencia = d.DataOcorrencia,
                 Valor = d.Valor,
                 FormaPagamento = d.FormaPagamento.ToString()
-            }).ToList()
+            })
         };
 
         return View(despesasVM);
     }
-
-
 }

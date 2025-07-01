@@ -1,6 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
-using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +11,7 @@ public class CompromissoController : Controller
     private readonly IRepositorioContato repositorioContato;
     private readonly IRepositorioCompromisso repositorioCompromisso;
 
-    public CompromissoController(ContextoDados contextoDados, IRepositorioContato repositorioContato, IRepositorioCompromisso repositorioCompromisso)
+    public CompromissoController(IRepositorioContato repositorioContato, IRepositorioCompromisso repositorioCompromisso)
     {
         this.repositorioContato = repositorioContato;
         this.repositorioCompromisso = repositorioCompromisso;
@@ -22,7 +21,7 @@ public class CompromissoController : Controller
     public IActionResult Index()
     {
         List<Compromisso> compromissos = repositorioCompromisso.SelecionarRegistros();
-        var vm = new VisualizarCompromissosViewModel(compromissos);
+        VisualizarCompromissosViewModel vm = new(compromissos);
 
         return View(vm);
     }
@@ -30,8 +29,8 @@ public class CompromissoController : Controller
     [HttpGet("cadastrar")]
     public IActionResult Cadastrar()
     {
-        var contatos = repositorioContato.SelecionarRegistros();
-        var viewModel = new CadastrarCompromissoViewModel(contatos);
+        List<Contato> contatos = repositorioContato.SelecionarRegistros();
+        CadastrarCompromissoViewModel viewModel = new(contatos);
 
         return View(viewModel);
     }
@@ -40,12 +39,12 @@ public class CompromissoController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Cadastrar(CadastrarCompromissoViewModel vm)
     {
-        Contato? contato = null;
+        Contato contato = null!;
         if (vm.ContatoId.HasValue)
         {
-            contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value);
+            contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value)!;
         }
-        var compromisso = new Compromisso(
+        Compromisso compromisso = new(
             vm.Assunto,
             vm.DataOcorrencia,
             vm.HoraInicio,
@@ -55,8 +54,6 @@ public class CompromissoController : Controller
             vm.Link!,
             contato
         );
-
-        var erros = compromisso.Validar();
 
         if (repositorioCompromisso.TemConflito(compromisso))
             ModelState.AddModelError("ConflitoHorario", "Há compromisso marcado para esses horário!");
@@ -74,12 +71,12 @@ public class CompromissoController : Controller
     [HttpGet("editar/{id:Guid}")]
     public IActionResult Editar(Guid id)
     {
-        var compromisso = repositorioCompromisso.SelecionarRegistroPorId(id);
+        Compromisso compromisso = repositorioCompromisso.SelecionarRegistroPorId(id)!;
         if (compromisso == null)
             return NotFound();
 
-        var contatos = repositorioContato.SelecionarRegistros();
-        var vm = new EditarCompromissoViewModel(compromisso, contatos);
+        List<Contato> contatos = repositorioContato.SelecionarRegistros();
+        EditarCompromissoViewModel vm = new EditarCompromissoViewModel(compromisso, contatos);
 
         return View(vm);
     }
@@ -88,13 +85,13 @@ public class CompromissoController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Editar(Guid id, EditarCompromissoViewModel vm)
     {
-        Contato? contato = null;
+        Contato contato = null!;
         if (vm.ContatoId.HasValue)
         {
-            contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value);
+            contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value)!;
         }
 
-        var compromissoEditado = new Compromisso(
+        Compromisso compromissoEditado = new(
             vm.Assunto,
             vm.DataOcorrencia,
             vm.HoraInicio,
@@ -104,8 +101,6 @@ public class CompromissoController : Controller
             vm.Link!,
             contato
         );
-
-        var erros = compromissoEditado.Validar();
 
         if (repositorioCompromisso.TemConflito(compromissoEditado))
             ModelState.AddModelError("ConflitoHorario", "Há compromisso marcado para esses horário!");
@@ -119,7 +114,6 @@ public class CompromissoController : Controller
 
         return RedirectToAction("Index");
     }
-
 
     [HttpGet("excluir/{id:Guid}")]
     public IActionResult Excluir(Guid id)
@@ -150,5 +144,3 @@ public class CompromissoController : Controller
         return View(vm);
     }
 }
-
-

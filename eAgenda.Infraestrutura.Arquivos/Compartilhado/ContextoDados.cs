@@ -10,9 +10,9 @@ namespace eAgenda.Infraestrutura.Arquivos.Compartilhado;
 
 public class ContextoDados
 {
-    public List<Categoria> Categorias { get; set; }
-    public List<Compromisso> Compromissos { get; set; }
     public List<Contato> Contatos { get; set; }
+    public List<Compromisso> Compromissos { get; set; }
+    public List<Categoria> Categorias { get; set; }
     public List<Despesa> Despesas { get; set; }
     public List<Tarefa> Tarefas { get; set; }
     private string pastaArmazenamento = string.Empty;
@@ -20,9 +20,9 @@ public class ContextoDados
 
     public ContextoDados()
     {
-        Categorias = new List<Categoria>();
-        Compromissos = new List<Compromisso>();
         Contatos = new List<Contato>();
+        Compromissos = new List<Compromisso>();
+        Categorias = new List<Categoria>();
         Despesas = new List<Despesa>();
         Tarefas = new List<Tarefa>();
     }
@@ -76,12 +76,10 @@ public class ContextoDados
             return;
         }
 
-        // Espaço para reatribuir as listas conforme o contexto carregado (Ex: Contatos = contextoArmazenado.Contatos;)
-
+        Contatos = contextoArmazenado.Contatos;
+        Compromissos = contextoArmazenado.Compromissos;
         Categorias = contextoArmazenado.Categorias;
         Despesas = contextoArmazenado.Despesas;
         Tarefas = contextoArmazenado.Tarefas;
-        Contatos = contextoArmazenado.Contatos;
-        Compromissos = contextoArmazenado.Compromissos;
     }
 }
