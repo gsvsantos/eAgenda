@@ -11,8 +11,8 @@ public static class ContatoExtensions
                 formularioVM.Nome,
                 formularioVM.Email,
                 formularioVM.Telefone,
-                formularioVM.Cargo!,
-                formularioVM.Empresa!);
+                formularioVM.Cargo,
+                formularioVM.Empresa);
     }
 
     public static DetalhesContatoViewModel ParaDetalhesVM(this Contato contato)

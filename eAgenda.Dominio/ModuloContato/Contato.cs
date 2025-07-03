@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloCompromisso;
 
@@ -15,11 +14,17 @@ namespace eAgenda.Dominio.ModuloContato
 
         public List<Compromisso> Compromissos { get; set; } = [];
 
-        [ExcludeFromCodeCoverage]
-        public Contato() { }
-
         public Contato(string nome, string email, string telefone, string? cargo, string? empresa)
         {
+            Nome = nome;
+            Email = email;
+            Telefone = telefone;
+            Cargo = cargo;
+            Empresa = empresa;
+        }
+        public Contato(Guid id, string nome, string email, string telefone, string? cargo, string? empresa) : this(nome, email, telefone, cargo, empresa)
+        {
+            Id = id;
             Nome = nome;
             Email = email;
             Telefone = telefone;

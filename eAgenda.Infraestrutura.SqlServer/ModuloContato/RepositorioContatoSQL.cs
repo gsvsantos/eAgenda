@@ -35,13 +35,13 @@ public class RepositorioContatoSQL : IRepositorioContato
 
         SqlConnection conexaoComBanco = new(connectionString);
 
-        SqlCommand comandoCadastrar = new(sqlCadastrar, conexaoComBanco);
+        SqlCommand comandoCadastro = new(sqlCadastrar, conexaoComBanco);
 
-        ConfigurarParametrosContato(novoRegistro, comandoCadastrar);
+        ConfigurarParametrosContato(novoRegistro, comandoCadastro);
 
         conexaoComBanco.Open();
 
-        comandoCadastrar.ExecuteNonQuery();
+        comandoCadastro.ExecuteNonQuery();
 
         conexaoComBanco.Close();
     }
@@ -179,15 +179,13 @@ public class RepositorioContatoSQL : IRepositorioContato
     private Contato ConverterParaContato(SqlDataReader leitor)
     {
         return new(
+            Guid.Parse(leitor["ID"].ToString()!),
             Convert.ToString(leitor["NOME"])!,
             Convert.ToString(leitor["EMAIL"])!,
             Convert.ToString(leitor["TELEFONE"])!,
             Convert.ToString(leitor["CARGO"]),
             Convert.ToString(leitor["EMPRESA"])
-            )
-        {
-            Id = Guid.Parse(leitor["ID"].ToString()!)
-        };
+            );
     }
 
     private void ConfigurarParametrosContato(Contato contato, SqlCommand comando)

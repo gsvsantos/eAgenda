@@ -1,4 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloContato;
+using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Helpers;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +56,7 @@ namespace eAgenda.WebApp.Controllers
 
             cadastrarVM.Telefone = TelefoneHelper.FormatarTelefone(cadastrarVM.Telefone);
 
-            Contato contato = new(cadastrarVM.Nome, cadastrarVM.Email, cadastrarVM.Telefone, cadastrarVM.Cargo!, cadastrarVM.Empresa!);
+            Contato contato = cadastrarVM.ParaEntidade();
 
             repositorioContato.CadastrarRegistro(contato);
 
@@ -100,13 +101,8 @@ namespace eAgenda.WebApp.Controllers
             if (!ModelState.IsValid)
                 return View(editarVM);
 
-            Contato contatoEditado = new(
-                editarVM.Nome,
-                editarVM.Email,
-                editarVM.Telefone,
-                editarVM.Cargo!,
-                editarVM.Empresa!
-            );
+            Contato contatoEditado = editarVM.ParaEntidade();
+
             repositorioContato.EditarRegistro(id, contatoEditado);
             return RedirectToAction("Index");
         }
