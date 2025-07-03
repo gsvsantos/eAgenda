@@ -73,8 +73,8 @@ namespace eAgenda.WebApp.Controllers
                 contato.Nome,
                 contato.Telefone,
                 contato.Email,
-                contato.Cargo,
-                contato.Empresa
+                contato.Cargo!,
+                contato.Empresa!
             );
             return View(editarVM);
         }
@@ -141,8 +141,8 @@ namespace eAgenda.WebApp.Controllers
                 contato.Nome,
                 contato.Email,
                 contato.Telefone,
-                contato.Cargo,
-                contato.Empresa,
+                contato.Cargo!,
+                contato.Empresa!,
                 contato.Compromissos);
             return View(detalhesVM);
         }
