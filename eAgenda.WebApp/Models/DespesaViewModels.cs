@@ -57,7 +57,7 @@ public class EditarDespesaViewModel : FormularioDespesaViewModel
 {
     public EditarDespesaViewModel() { }
 
-    public EditarDespesaViewModel(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento) : this()
+    public EditarDespesaViewModel(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento, List<Categoria> categoriasDisponiveis, List<Categoria> categoriasSelecionadas) : this()
     {
         Id = id;
         Titulo = titulo;
@@ -65,6 +65,15 @@ public class EditarDespesaViewModel : FormularioDespesaViewModel
         DataOcorrencia = dataOcorrencia;
         Valor = valor;
         FormaPagamento = formaPagamento;
+        foreach (var c in categoriasDisponiveis)
+        {
+            Categorias?.Add(new SelectListItem()
+            {
+                Text = c.Titulo,
+                Value = c.Id.ToString()
+            });
+        }
+        CategoriasSelecionadas = categoriasSelecionadas.ConvertAll(c => c.Id);
     }
 }
 

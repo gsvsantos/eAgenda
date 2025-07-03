@@ -101,6 +101,7 @@ public class DespesaController : Controller
     public ActionResult Editar(Guid id)
     {
         Despesa registroSelecionado = repositorioDespesa.SelecionarRegistroPorId(id)!;
+        List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
 
         EditarDespesaViewModel editarVM = new(
             id,
@@ -108,7 +109,9 @@ public class DespesaController : Controller
             registroSelecionado.Descricao,
             registroSelecionado.DataOcorrencia,
             registroSelecionado.Valor,
-            registroSelecionado.FormaPagamento
+            registroSelecionado.FormaPagamento,
+            categorias,
+            registroSelecionado.Categorias
         );
         return View(editarVM);
     }
