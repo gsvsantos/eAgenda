@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using eAgenda.Dominio.Compartilhado;
 
 namespace eAgenda.Dominio.ModuloTarefa;
@@ -10,22 +9,29 @@ public class Tarefa : EntidadeBase<Tarefa>
     public string Descricao { get; set; } = string.Empty;
     public NivelPrioridade Prioridade { get; set; }
     public DateTime DataCriacao { get; set; } = DateTime.Now;
-    public DateTime DataConclusao { get; set; }
+    public DateTime? DataConclusao { get; set; }
     public StatusTarefa Status { get; set; }
     public double PercentualConcluido { get; set; }
     public List<ItemTarefa> Itens { get; set; } = [];
+
     private const double PercentualConclusao = 100;
     private const double PercentualPendencia = 0;
 
-    [ExcludeFromCodeCoverage]
-    public Tarefa() { }
-    public Tarefa(string titulo, string descricao, NivelPrioridade prioridade) : this()
+    public Tarefa(string titulo, string descricao, NivelPrioridade prioridade)
     {
         Titulo = titulo;
         Descricao = descricao;
         Prioridade = prioridade;
         Status = StatusTarefa.Pendente;
         PercentualConcluido = 0;
+    }
+
+    public Tarefa(Guid id, string titulo, string descricao, NivelPrioridade prioridade, DateTime dataCriacao, DateTime? dataConclusao, StatusTarefa status) : this(titulo, descricao, prioridade)
+    {
+        Id = id;
+        DataCriacao = dataCriacao;
+        DataConclusao = dataConclusao;
+        Status = status;
     }
 
     public void AdicionarItem(ItemTarefa item)
@@ -54,6 +60,7 @@ public class Tarefa : EntidadeBase<Tarefa>
 
     public void Reabrir()
     {
+        DataConclusao = null;
         AtualizarStatus();
     }
 
@@ -68,6 +75,29 @@ public class Tarefa : EntidadeBase<Tarefa>
         Descricao = registroEditado.Descricao;
         Prioridade = registroEditado.Prioridade;
         DataCriacao = registroEditado.DataCriacao;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Tarefa tarefa)
+            return false;
+
+        return Id == tarefa.Id &&
+               Titulo == tarefa.Titulo &&
+               Descricao == tarefa.Descricao &&
+               Prioridade == tarefa.Prioridade &&
+               DataCriacao == tarefa.DataCriacao &&
+               DataConclusao == tarefa.DataConclusao &&
+               Status == tarefa.Status &&
+               PercentualConcluido == tarefa.PercentualConcluido;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(
+            Id, Titulo, Descricao,
+            Prioridade, DataCriacao, DataConclusao,
+            Status, PercentualConcluido);
     }
 
     private double CalcularPercentualConcluido()

@@ -25,7 +25,18 @@ public class Compromisso : EntidadeBase<Compromisso>
     [ExcludeFromCodeCoverage]
     public Compromisso() { }
     public Compromisso(string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino,
-        TipoCompromisso tipoCompromisso, string local, string link, Contato? contato) : this()
+        TipoCompromisso tipoCompromisso, string local, string link) : this()
+    {
+        Assunto = assunto;
+        DataOcorrencia = dataOcorrencia;
+        HoraInicio = horaInicio;
+        HoraTermino = horaTermino;
+        TipoCompromisso = tipoCompromisso;
+        Local = local;
+        Link = link;
+    }
+    public Compromisso(string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino,
+        TipoCompromisso tipoCompromisso, string local, string link, Contato? contato) : this(assunto, dataOcorrencia, horaTermino, horaTermino, tipoCompromisso, local, link)
     {
         Assunto = assunto;
         DataOcorrencia = dataOcorrencia;

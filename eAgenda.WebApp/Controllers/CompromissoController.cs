@@ -86,10 +86,9 @@ public class CompromissoController : Controller
     public IActionResult Editar(Guid id, EditarCompromissoViewModel vm)
     {
         Contato contato = null!;
+
         if (vm.ContatoId.HasValue)
-        {
             contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value)!;
-        }
 
         Compromisso compromissoEditado = new(
             vm.Assunto,

@@ -94,4 +94,24 @@ public class RepositorioTarefaEmArquivos : RepositorioBaseEmArquivo<Tarefa>, IRe
     {
         return contexto.Tarefas;
     }
+
+    public void AdicionarItem(ItemTarefa item)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoverItem(ItemTarefa item)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ConcluirItem(ItemTarefa item)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ReabrirItem(ItemTarefa item)
+    {
+        throw new NotImplementedException();
+    }
 }

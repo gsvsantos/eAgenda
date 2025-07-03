@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace eAgenda.Dominio.ModuloTarefa;
 
@@ -8,16 +7,21 @@ public class ItemTarefa
     public Guid Id { get; set; }
     public string Titulo { get; set; } = string.Empty;
     public StatusItemTarefa Status { get; set; }
+    public Tarefa Tarefa { get; set; }
 
-    [ExcludeFromCodeCoverage]
-    public ItemTarefa() { }
-    public ItemTarefa(string titulo) : this()
+    public ItemTarefa(string titulo, Tarefa tarefa)
     {
         Id = Guid.NewGuid();
         Titulo = titulo;
+        Tarefa = tarefa;
         Status = StatusItemTarefa.EmAndamento;
     }
 
+    public ItemTarefa(Guid id, string titulo, StatusItemTarefa status, Tarefa tarefa) : this(titulo, tarefa)
+    {
+        Id = id;
+        Status = status;
+    }
 
     public void MarcarEmAndamento()
     {
