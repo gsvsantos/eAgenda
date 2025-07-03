@@ -19,7 +19,7 @@
                     <span><i class="bi bi-calendar-plus" title="Data de criação"></i> @Model.DataCriacao.ToShortDateString()</span>
                     @if (Model.Status == StatusTarefa.Concluida && Model.DataConclusao != DateTime.MinValue)
                     {
-                        <span><i class="bi bi-calendar-check" title="Data de conclusão"></i> @Model.DataConclusao.ToShortDateString()</span>
+                        <span><i class="bi bi-calendar-check" title="Data de conclusão"></i> @Model.DataConclusao?.ToShortDateString()</span>
                     }
                 </div>
                 <div class="task-priority">

@@ -83,12 +83,12 @@ public class DetalhesTarefaViewModel
     public string Descricao { get; set; } = string.Empty;
     public NivelPrioridade Prioridade { get; set; }
     public DateTime DataCriacao { get; set; }
-    public DateTime DataConclusao { get; set; }
+    public DateTime? DataConclusao { get; set; }
     public StatusTarefa Status { get; set; }
     public double PercentualConcluido { get; set; }
     public List<ItemTarefaViewModel> Itens { get; set; } = [];
 
-    public DetalhesTarefaViewModel(Guid id, string titulo, string descricao, NivelPrioridade prioridade, DateTime dataCriacao, DateTime dataConclusao, StatusTarefa status, double percentualConcluido, List<ItemTarefa> itens)
+    public DetalhesTarefaViewModel(Guid id, string titulo, string descricao, NivelPrioridade prioridade, DateTime dataCriacao, DateTime? dataConclusao, StatusTarefa status, double percentualConcluido, List<ItemTarefa> itens)
     {
         Id = id;
         Titulo = titulo;
