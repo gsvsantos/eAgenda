@@ -31,7 +31,7 @@ public class RepositorioContatoSQL : IRepositorioContato
                 @TELEFONE,
                 @EMPRESA,
                 @CARGO
-            ); SELECT SCOPE_IDENTITY();";
+            );";
 
         SqlConnection conexaoComBanco = new(connectionString);
 
@@ -105,7 +105,27 @@ public class RepositorioContatoSQL : IRepositorioContato
 
     public bool PossuiCompromissosVinculados(Guid id)
     {
-        throw new NotImplementedException();
+        const string sqlVerificar =
+            @"SELECT COUNT(*)
+            FROM 
+                [TBCOMPROMISSO]
+            WHERE
+	            [CONTATO_ID] = @ID";
+
+        SqlConnection conexaoComBanco = new(connectionString);
+
+        conexaoComBanco.Open();
+
+        SqlCommand comandoVerificacao = new(sqlVerificar, conexaoComBanco);
+
+        comandoVerificacao.Parameters.AddWithValue("ID", id);
+
+        int quantidadeConflitos = Convert.ToInt32(comandoVerificacao.ExecuteScalar());
+
+        conexaoComBanco.Close();
+
+        return quantidadeConflitos >= 1;
+
     }
 
     public Contato? SelecionarRegistroPorId(Guid idRegistro)

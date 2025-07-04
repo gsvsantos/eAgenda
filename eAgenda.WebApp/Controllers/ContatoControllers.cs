@@ -1,4 +1,5 @@
-﻿using eAgenda.Dominio.ModuloContato;
+﻿using eAgenda.Dominio.ModuloCompromisso;
+using eAgenda.Dominio.ModuloContato;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Helpers;
 using eAgenda.WebApp.Models;
@@ -10,16 +11,19 @@ namespace eAgenda.WebApp.Controllers
     public class ContatoController : Controller
     {
         private readonly IRepositorioContato repositorioContato;
+        private readonly IRepositorioCompromisso repositorioCompromisso;
 
-        public ContatoController(IRepositorioContato repositorioContato)
+        public ContatoController(IRepositorioContato repositorioContato, IRepositorioCompromisso repositorioCompromisso)
         {
             this.repositorioContato = repositorioContato;
+            this.repositorioCompromisso = repositorioCompromisso;
         }
 
         [HttpGet("")]
         public IActionResult Index()
         {
             List<Contato> contatos = repositorioContato.SelecionarRegistros();
+
             VisualizarContatosViewModel visualizarVM = new(contatos);
 
             return View(visualizarVM);
@@ -60,23 +64,25 @@ namespace eAgenda.WebApp.Controllers
 
             repositorioContato.CadastrarRegistro(contato);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet("editar/{id:Guid}")]
         public IActionResult Editar(Guid id)
         {
             Contato contato = repositorioContato.SelecionarRegistroPorId(id)!;
+
             if (contato == null)
                 return NotFound();
+
             EditarContatoViewModel editarVM = new(
                 contato.Id,
                 contato.Nome,
                 contato.Telefone,
                 contato.Email,
                 contato.Cargo!,
-                contato.Empresa!
-            );
+                contato.Empresa!);
+
             return View(editarVM);
         }
 
@@ -104,17 +110,21 @@ namespace eAgenda.WebApp.Controllers
             Contato contatoEditado = editarVM.ParaEntidade();
 
             repositorioContato.EditarRegistro(id, contatoEditado);
-            return RedirectToAction("Index");
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet("excluir/{id:Guid}")]
         public IActionResult Excluir(Guid id)
         {
             Contato contato = repositorioContato.SelecionarRegistroPorId(id)!;
+
             if (contato == null)
                 return NotFound();
 
-            ExcluirContatoViewModel excluirVM = new(id, contato.Nome);
+            ExcluirContatoViewModel excluirVM = new(
+                id,
+                contato.Nome);
 
             return View(excluirVM);
         }
@@ -122,24 +132,35 @@ namespace eAgenda.WebApp.Controllers
         [HttpPost("excluir/{id:Guid}")]
         public IActionResult ExcluirConfirmado(Guid id)
         {
+            Contato contato = repositorioContato.SelecionarRegistroPorId(id)!;
+
+            if (repositorioContato.PossuiCompromissosVinculados(id))
+            {
+                ModelState.AddModelError("ExclusaoVinculo", "Não é possível excluir este contato, pois há compromissos vinculados a ele.");
+
+                ExcluirContatoViewModel excluirVM = new(
+                contato.Id,
+                    contato.Nome);
+
+                return View("Excluir", excluirVM);
+            }
+
             repositorioContato.ExcluirRegistro(id);
-            return RedirectToAction("Index");
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet("detalhes/{id:Guid}")]
         public IActionResult Detalhes(Guid id)
         {
             Contato contato = repositorioContato.SelecionarRegistroPorId(id)!;
+            contato.Compromissos = repositorioCompromisso.SelecionarCompromissosContato(id);
+
             if (contato == null)
                 return NotFound();
-            DetalhesContatoViewModel detalhesVM = new(
-                contato.Id,
-                contato.Nome,
-                contato.Email,
-                contato.Telefone,
-                contato.Cargo!,
-                contato.Empresa!,
-                contato.Compromissos);
+
+            DetalhesContatoViewModel detalhesVM = contato.ParaDetalhesVM();
+
             return View(detalhesVM);
         }
     }
