@@ -262,7 +262,7 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
             Convert.ToDateTime(leitor["DATA"]),
             TimeSpan.FromTicks(Convert.ToInt64(leitor["HORAINICIO"])),
             TimeSpan.FromTicks(Convert.ToInt64(leitor["HORATERMINO"])),
-            (TipoCompromisso)Convert.ToInt32(leitor["TIPO"]),
+            (TipoCompromisso)Convert.ToInt64(leitor["TIPO"]),
             Convert.ToString(leitor["LOCAL"])!,
             Convert.ToString(leitor["LINK"])!,
             contato
@@ -298,14 +298,14 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
     {
         const string sqlVerificar =
             @"SELECT COUNT(*) 
-            FROM TBCompromisso 
+            FROM [TBCOMPROMISSO] 
             WHERE 
                 ID <> @ID AND
                 DATA = @DATA AND
                 (
-                    (@HoraInicio >= HoraInicio AND @HoraInicio < HoraTermino) OR
-                    (@HoraTermino > HoraInicio AND @HoraTermino <= HoraTermino) OR
-                    (@HoraInicio <= HoraInicio AND @HoraTermino >= HoraTermino)
+                    (@HORAINICIO >= [HORAINICIO] AND @HORAINICIO < [HORATERMINO]) OR
+                    (@HORATERMINO > [HORAINICIO] AND @HORATERMINO <= [HORATERMINO]) OR
+                    (@HORAINICIO <= [HORAINICIO] AND @HORATERMINO >= [HORATERMINO])
                 );";
 
         SqlConnection conexaoComBanco = new(connectionString);
@@ -314,8 +314,8 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
 
         comandoVerificacao.Parameters.AddWithValue("ID", compromisso.Id);
         comandoVerificacao.Parameters.AddWithValue("DATA", compromisso.DataOcorrencia);
-        comandoVerificacao.Parameters.AddWithValue("HoraInicio", compromisso.HoraInicio.Ticks);
-        comandoVerificacao.Parameters.AddWithValue("HoraTermino", compromisso.HoraTermino.Ticks);
+        comandoVerificacao.Parameters.AddWithValue("HORAINICIO", compromisso.HoraInicio.Ticks);
+        comandoVerificacao.Parameters.AddWithValue("HORATERMINO", compromisso.HoraTermino.Ticks);
 
         conexaoComBanco.Open();
 

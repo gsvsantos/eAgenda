@@ -89,6 +89,7 @@ public class CompromissoController : Controller
             contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value)!;
 
         Compromisso compromissoEditado = vm.ParaEntidade(contato);
+        compromissoEditado.Id = id;
 
         if (repositorioCompromisso.TemConflito(compromissoEditado))
             ModelState.AddModelError("ConflitoHorario", "Há compromisso marcado para esses horário!");
