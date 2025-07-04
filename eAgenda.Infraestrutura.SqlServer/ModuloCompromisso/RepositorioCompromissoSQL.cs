@@ -218,7 +218,7 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
 	            CT.[EMPRESA],
 	            CT.[CARGO]
             FROM
-	            [TBCOMPROMISSO] AS CP LEFT JOIN
+	            [TBCOMPROMISSO] AS CP INNER JOIN
 	            [TBCONTATO] AS CT
             ON
 	            CT.ID = CP.CONTATO_ID
