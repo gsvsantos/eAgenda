@@ -4,8 +4,8 @@ using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
-using eAgenda.Infraestrutura.Arquivos.ModuloCategoria;
 using eAgenda.Infraestrutura.Arquivos.ModuloDespesa;
+using eAgenda.Infraestrutura.SQLServer.ModuloCategoria;
 using eAgenda.Infraestrutura.SQLServer.ModuloCompromisso;
 using eAgenda.Infraestrutura.SQLServer.ModuloContato;
 using eAgenda.Infraestrutura.SQLServer.ModuloTarefa;
@@ -27,7 +27,7 @@ namespace eAgenda.WebApp
                 options.Filters.Add<LogarAcaoAttribute>();
             });
             builder.Services.AddScoped((IServiceProvider _) => new ContextoDados(true));
-            builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmArquivo>();
+            builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaSQL>();
             builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoSQL>();
             builder.Services.AddScoped<IRepositorioContato, RepositorioContatoSQL>();
             builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaEmArquivo>();

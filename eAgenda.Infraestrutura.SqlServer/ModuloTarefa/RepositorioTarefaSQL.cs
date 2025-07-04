@@ -83,7 +83,8 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
     {
         const string sqlExcluir =
             @"DELETE FROM [TBTAREFA]
-            WHERE [ID] = @ID";
+            WHERE
+	            [ID] = @ID";
 
         ExcluirItensTarefa(idRegistro);
 

@@ -199,7 +199,7 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
         return compromissos;
     }
 
-    public List<Compromisso> SelecionarCompromissosContato(Guid idRegistro)
+    public List<Compromisso> SelecionarCompromissosContato(Guid idContato)
     {
         const string sqlSelecionarCompromissos =
             @"SELECT
@@ -229,7 +229,7 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
 
         SqlCommand comandoSelecao = new(sqlSelecionarCompromissos, conexaoComBanco);
 
-        comandoSelecao.Parameters.AddWithValue("ID", idRegistro);
+        comandoSelecao.Parameters.AddWithValue("ID", idContato);
 
         conexaoComBanco.Open();
 

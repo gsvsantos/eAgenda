@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using eAgenda.Dominio.Compartilhado;
+﻿using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloDespesa;
 
 namespace eAgenda.Dominio.ModuloCategoria;
@@ -9,11 +8,13 @@ public class Categoria : EntidadeBase<Categoria>
     public string Titulo { get; set; } = string.Empty;
     public List<Despesa> Despesas { get; set; } = [];
 
-    [ExcludeFromCodeCoverage]
-    public Categoria() { }
-    public Categoria(string titulo) : this()
+    public Categoria(string titulo)
     {
         Titulo = titulo;
+    }
+    public Categoria(Guid id, string titulo) : this(titulo)
+    {
+        Id = id;
     }
 
     public void AderirDespesa(Despesa despesa)
