@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using eAgenda.Dominio.Compartilhado;
+﻿using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloCategoria;
+using System.ComponentModel.DataAnnotations;
 
 namespace eAgenda.Dominio.ModuloDespesa;
 
@@ -14,11 +13,18 @@ public class Despesa : EntidadeBase<Despesa>
     public MeiosPagamento FormaPagamento { get; set; }
     public List<Categoria> Categorias { get; set; } = [];
 
-    [ExcludeFromCodeCoverage]
-    public Despesa() { }
-
-    public Despesa(string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento) : this()
+    public Despesa(string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento)
     {
+        Titulo = titulo;
+        Descricao = descricao;
+        DataOcorrencia = dataOcorrencia;
+        Valor = valor;
+        FormaPagamento = formaPagamento;
+    }
+
+    public Despesa(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento) : this(titulo, descricao, dataOcorrencia, valor, formaPagamento)
+    {
+        Id = id;
         Titulo = titulo;
         Descricao = descricao;
         DataOcorrencia = dataOcorrencia;

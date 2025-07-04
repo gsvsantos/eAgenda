@@ -178,7 +178,7 @@ public class DespesaController : Controller
     [HttpGet, Route("/despesas/{id:guid}/gerenciar-categorias")]
     public IActionResult GerenciarCategorias(Guid id)
     {
-        Despesa despesaSelecionada = repositorioDespesa.SelecionarPorId(id);
+        Despesa despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id)!;
         List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
 
         GerenciarCategoriasViewModel gerenciarCategoriaVm = new(
@@ -191,7 +191,7 @@ public class DespesaController : Controller
     [HttpPost, Route("/despesas/{id:guid}/adicionar-categoria")]
     public IActionResult AdicionarCategoria(Guid id, AdicionarCategoriaViewModel adicionarCategoriaVm)
     {
-        Despesa despesaSelecionada = repositorioDespesa.SelecionarPorId(id);
+        Despesa despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id)!;
         Categoria categoriaSelecionado = repositorioCategoria.SelecionarRegistroPorId(adicionarCategoriaVm.IdCategoria)!;
 
         if (despesaSelecionada.Categorias.Any(i => i.Titulo == categoriaSelecionado!.Titulo))
@@ -226,7 +226,7 @@ public class DespesaController : Controller
     [HttpPost, Route("/despesas/{id:guid}/remover-categoria/{idCategoria:guid}")]
     public IActionResult RemoverCategoria(Guid id, Guid idCategoria)
     {
-        Despesa despesaSelecionada = repositorioDespesa.SelecionarPorId(id);
+        Despesa despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id)!;
         Categoria categoriaSelecionado = repositorioCategoria.SelecionarRegistroPorId(idCategoria)!;
 
         despesaSelecionada.RemoverCategoria(categoriaSelecionado);

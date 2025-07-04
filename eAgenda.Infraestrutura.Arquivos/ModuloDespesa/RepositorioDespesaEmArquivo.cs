@@ -13,15 +13,4 @@ public class RepositorioDespesaEmArquivo : RepositorioBaseEmArquivo<Despesa>, IR
     {
         return contexto.Despesas;
     }
-
-    public Despesa SelecionarPorId(Guid idRegistro)
-    {
-        foreach (var item in registros)
-        {
-            if (item.Id == idRegistro)
-                return item;
-        }
-
-        return null!;
-    }
 }

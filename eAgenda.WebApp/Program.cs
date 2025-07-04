@@ -4,10 +4,10 @@ using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
-using eAgenda.Infraestrutura.Arquivos.ModuloDespesa;
 using eAgenda.Infraestrutura.SQLServer.ModuloCategoria;
 using eAgenda.Infraestrutura.SQLServer.ModuloCompromisso;
 using eAgenda.Infraestrutura.SQLServer.ModuloContato;
+using eAgenda.Infraestrutura.SQLServer.ModuloDespesa;
 using eAgenda.Infraestrutura.SQLServer.ModuloTarefa;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
@@ -30,7 +30,7 @@ namespace eAgenda.WebApp
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaSQL>();
             builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoSQL>();
             builder.Services.AddScoped<IRepositorioContato, RepositorioContatoSQL>();
-            builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaEmArquivo>();
+            builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaSQL>();
             builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaSQL>();
 
             builder.Services.AddSerilogConfig(builder.Logging);
