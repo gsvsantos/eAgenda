@@ -131,10 +131,8 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
 
         Tarefa? tarefa = null;
 
-        while (leitor.Read())
-        {
+        if (leitor.Read())
             tarefa = ConverterParaTarefa(leitor);
-        }
 
         conexaoComBanco.Close();
 
@@ -409,10 +407,8 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
 
         ItemTarefa? item = null;
 
-        while (leitor.Read())
-        {
+        if (leitor.Read())
             item = ConverterParaItemTarefa(leitor, tarefa);
-        }
 
         conexaoComBanco.Close();
 
