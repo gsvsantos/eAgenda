@@ -42,13 +42,13 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
 
         SqlConnection conexaoComBanco = new(connectionString);
 
-        SqlCommand comandoCadastrar = new(sqlCadastrar, conexaoComBanco);
+        SqlCommand comandoCadastro = new(sqlCadastrar, conexaoComBanco);
 
-        ConfigurarParametrosCompromisso(novoRegistro, comandoCadastrar);
+        ConfigurarParametrosCompromisso(novoRegistro, comandoCadastro);
 
         conexaoComBanco.Open();
 
-        comandoCadastrar.ExecuteNonQuery();
+        comandoCadastro.ExecuteNonQuery();
 
         conexaoComBanco.Close();
     }
@@ -207,6 +207,7 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
             contato = ConverterParaContato(leitor);
 
         return new(
+            Guid.Parse(leitor["ID"].ToString()!),
             Convert.ToString(leitor["ASSUNTO"])!,
             Convert.ToDateTime(leitor["DATA"]),
             TimeSpan.FromTicks(Convert.ToInt64(leitor["HORAINICIO"])),
@@ -215,26 +216,19 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
             Convert.ToString(leitor["LOCAL"])!,
             Convert.ToString(leitor["LINK"])!,
             contato
-            )
-        {
-            Id = Guid.Parse(leitor["ID"].ToString()!)
-        };
+            );
     }
 
     private Contato ConverterParaContato(SqlDataReader leitor)
     {
         return new(
+            Guid.Parse(leitor["ID"].ToString()!),
             Convert.ToString(leitor["NOME"])!,
             Convert.ToString(leitor["EMAIL"])!,
             Convert.ToString(leitor["TELEFONE"])!,
             Convert.ToString(leitor["CARGO"]),
             Convert.ToString(leitor["EMPRESA"])
-            )
-        {
-            Id = leitor["CONTATO_ID"] != DBNull.Value
-            ? Guid.Parse(leitor["CONTATO_ID"].ToString()!)
-            : Guid.Empty
-        };
+            );
     }
 
     private void ConfigurarParametrosCompromisso(Compromisso compromisso, SqlCommand comando)

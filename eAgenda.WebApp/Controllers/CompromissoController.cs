@@ -1,5 +1,6 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
+using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,19 +42,9 @@ public class CompromissoController : Controller
     {
         Contato contato = null!;
         if (vm.ContatoId.HasValue)
-        {
             contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value)!;
-        }
-        Compromisso compromisso = new(
-            vm.Assunto,
-            vm.DataOcorrencia,
-            vm.HoraInicio,
-            vm.HoraTermino,
-            vm.TipoCompromisso,
-            vm.Local!,
-            vm.Link!,
-            contato
-        );
+
+        Compromisso compromisso = vm.ParaEntidade(contato);
 
         if (repositorioCompromisso.TemConflito(compromisso))
             ModelState.AddModelError("ConflitoHorario", "Há compromisso marcado para esses horário!");
@@ -76,7 +67,7 @@ public class CompromissoController : Controller
             return NotFound();
 
         List<Contato> contatos = repositorioContato.SelecionarRegistros();
-        EditarCompromissoViewModel vm = new EditarCompromissoViewModel(compromisso, contatos);
+        EditarCompromissoViewModel vm = new(compromisso, contatos);
 
         return View(vm);
     }
@@ -90,16 +81,7 @@ public class CompromissoController : Controller
         if (vm.ContatoId.HasValue)
             contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value)!;
 
-        Compromisso compromissoEditado = new(
-            vm.Assunto,
-            vm.DataOcorrencia,
-            vm.HoraInicio,
-            vm.HoraTermino,
-            vm.TipoCompromisso,
-            vm.Local!,
-            vm.Link!,
-            contato
-        );
+        Compromisso compromissoEditado = vm.ParaEntidade(contato);
 
         if (repositorioCompromisso.TemConflito(compromissoEditado))
             ModelState.AddModelError("ConflitoHorario", "Há compromisso marcado para esses horário!");
@@ -117,11 +99,11 @@ public class CompromissoController : Controller
     [HttpGet("excluir/{id:Guid}")]
     public IActionResult Excluir(Guid id)
     {
-        var compromisso = repositorioCompromisso.SelecionarRegistroPorId(id);
+        Compromisso? compromisso = repositorioCompromisso.SelecionarRegistroPorId(id);
         if (compromisso == null)
             return NotFound();
 
-        var vm = new ExcluirCompromissoViewModel(id, compromisso.Assunto);
+        ExcluirCompromissoViewModel vm = new(id, compromisso.Assunto);
         return View(vm);
     }
 
@@ -135,11 +117,13 @@ public class CompromissoController : Controller
     [HttpGet("detalhes/{id:Guid}")]
     public IActionResult Detalhes(Guid id)
     {
-        var compromisso = repositorioCompromisso.SelecionarRegistroPorId(id);
+        Compromisso? compromisso = repositorioCompromisso.SelecionarRegistroPorId(id);
+
         if (compromisso == null)
             return NotFound();
-        var vm = new DetalhesCompromissoViewModel(id, compromisso.Assunto, compromisso.DataOcorrencia, compromisso.HoraInicio, compromisso.HoraTermino, compromisso.TipoCompromisso,
-            compromisso.Local, compromisso.Link, compromisso.Contato);
+
+        DetalhesCompromissoViewModel vm = compromisso.ParaDetalhesVM();
+
         return View(vm);
     }
 }

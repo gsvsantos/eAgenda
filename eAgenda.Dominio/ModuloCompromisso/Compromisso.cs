@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloContato;
 
@@ -9,34 +8,15 @@ public class Compromisso : EntidadeBase<Compromisso>
 {
     public string Assunto { get; set; } = string.Empty;
     public DateTime DataOcorrencia { get; set; }
-
     public TimeSpan HoraInicio { get; set; }
-
     public TimeSpan HoraTermino { get; set; }
-
     public TipoCompromisso TipoCompromisso { get; set; }
-
     public string Local { get; set; } = string.Empty;
-
     public string Link { get; set; } = string.Empty;
-
     public Contato? Contato { get; set; }
 
-    [ExcludeFromCodeCoverage]
-    public Compromisso() { }
     public Compromisso(string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino,
-        TipoCompromisso tipoCompromisso, string local, string link) : this()
-    {
-        Assunto = assunto;
-        DataOcorrencia = dataOcorrencia;
-        HoraInicio = horaInicio;
-        HoraTermino = horaTermino;
-        TipoCompromisso = tipoCompromisso;
-        Local = local;
-        Link = link;
-    }
-    public Compromisso(string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino,
-        TipoCompromisso tipoCompromisso, string local, string link, Contato? contato) : this(assunto, dataOcorrencia, horaTermino, horaTermino, tipoCompromisso, local, link)
+        TipoCompromisso tipoCompromisso, string local, string link, Contato? contato)
     {
         Assunto = assunto;
         DataOcorrencia = dataOcorrencia;
@@ -46,6 +26,11 @@ public class Compromisso : EntidadeBase<Compromisso>
         Local = local;
         Link = link;
         Contato = contato;
+    }
+    public Compromisso(Guid id, string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino,
+        TipoCompromisso tipoCompromisso, string local, string link, Contato? contato) : this(assunto, dataOcorrencia, horaInicio, horaTermino, tipoCompromisso, local, link, contato)
+    {
+        Id = id;
     }
 
     public void Iniciar()

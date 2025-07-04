@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
+using eAgenda.WebApp.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eAgenda.WebApp.Models;
@@ -50,8 +51,7 @@ public abstract class FormularioCompromissoViewModel
 public class CadastrarCompromissoViewModel : FormularioCompromissoViewModel
 {
     public CadastrarCompromissoViewModel() { }
-
-    public CadastrarCompromissoViewModel(List<Contato> contatos)
+    public CadastrarCompromissoViewModel(List<Contato> contatos) : this()
     {
         foreach (var contato in contatos)
         {
@@ -67,8 +67,7 @@ public class CadastrarCompromissoViewModel : FormularioCompromissoViewModel
 public class EditarCompromissoViewModel : FormularioCompromissoViewModel
 {
     public EditarCompromissoViewModel() { }
-
-    public EditarCompromissoViewModel(Compromisso compromisso, List<Contato> contatos)
+    public EditarCompromissoViewModel(Compromisso compromisso, List<Contato> contatos) : this()
     {
         Id = compromisso.Id;
         Assunto = compromisso.Assunto;
@@ -92,7 +91,7 @@ public class EditarCompromissoViewModel : FormularioCompromissoViewModel
 public class ExcluirCompromissoViewModel : FormularioCompromissoViewModel
 {
     public ExcluirCompromissoViewModel() { }
-    public ExcluirCompromissoViewModel(Guid id, string assunto)
+    public ExcluirCompromissoViewModel(Guid id, string assunto) : this()
     {
         Id = id;
         Assunto = assunto;
@@ -101,20 +100,12 @@ public class ExcluirCompromissoViewModel : FormularioCompromissoViewModel
 public class VisualizarCompromissosViewModel
 {
     public List<DetalhesCompromissoViewModel> Registros { get; set; } = [];
+
     public VisualizarCompromissosViewModel(List<Compromisso> compromissos)
     {
         foreach (Compromisso compromisso in compromissos)
         {
-            Registros.Add(new DetalhesCompromissoViewModel(
-                compromisso.Id,
-                compromisso.Assunto,
-                compromisso.DataOcorrencia,
-                compromisso.HoraInicio,
-                compromisso.HoraTermino,
-                compromisso.TipoCompromisso,
-                compromisso.Local,
-                compromisso.Link,
-                compromisso.Contato));
+            Registros.Add(compromisso.ParaDetalhesVM());
         }
     }
 }
@@ -135,6 +126,7 @@ public class DetalhesCompromissoViewModel
     public string Link { get; set; } = string.Empty;
 
     public Contato? Contato { get; set; }
+
     public DetalhesCompromissoViewModel(Guid id, string assunto, DateTime dataOcorrencia, TimeSpan horaInicio, TimeSpan horaTermino, TipoCompromisso tipoCompromisso, string local, string link, Contato? contato)
     {
         Id = id;
