@@ -199,6 +199,56 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
         return compromissos;
     }
 
+    public List<Compromisso> SelecionarCompromissosContato(Guid idRegistro)
+    {
+        const string sqlSelecionarCompromissos =
+            @"SELECT
+	            CP.[ID],
+	            CP.[ASSUNTO],
+	            CP.[DATA],
+	            CP.[HORAINICIO],
+	            CP.[HORATERMINO],
+	            CP.[TIPO],
+	            CP.[LOCAL],
+	            CP.[LINK],
+	            CP.[CONTATO_ID],
+	            CT.[NOME],
+	            CT.[EMAIL],
+	            CT.[TELEFONE],
+	            CT.[EMPRESA],
+	            CT.[CARGO]
+            FROM
+	            [TBCOMPROMISSO] AS CP LEFT JOIN
+	            [TBCONTATO] AS CT
+            ON
+	            CT.ID = CP.CONTATO_ID
+            WHERE
+	            CT.ID = @ID";
+
+        SqlConnection conexaoComBanco = new(connectionString);
+
+        SqlCommand comandoSelecao = new(sqlSelecionarCompromissos, conexaoComBanco);
+
+        comandoSelecao.Parameters.AddWithValue("ID", idRegistro);
+
+        conexaoComBanco.Open();
+
+        SqlDataReader leitor = comandoSelecao.ExecuteReader();
+
+        List<Compromisso> compromissos = [];
+
+        while (leitor.Read())
+        {
+            Compromisso compromisso = ConverterParaCompromisso(leitor);
+
+            compromissos.Add(compromisso);
+        }
+
+        conexaoComBanco.Close();
+
+        return compromissos;
+    }
+
     private Compromisso ConverterParaCompromisso(SqlDataReader leitor)
     {
         Contato? contato = null;
@@ -246,7 +296,7 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
 
     public bool TemConflito(Compromisso compromisso)
     {
-        const string sqlVerificacao =
+        const string sqlVerificar =
             @"SELECT COUNT(*) 
             FROM TBCompromisso 
             WHERE 
@@ -259,16 +309,17 @@ public class RepositorioCompromissoSQL : IRepositorioCompromisso
                 );";
 
         SqlConnection conexaoComBanco = new(connectionString);
-        SqlCommand comandoSelecao = new(sqlVerificacao, conexaoComBanco);
 
-        comandoSelecao.Parameters.AddWithValue("ID", compromisso.Id);
-        comandoSelecao.Parameters.AddWithValue("DATA", compromisso.DataOcorrencia);
-        comandoSelecao.Parameters.AddWithValue("HoraInicio", compromisso.HoraInicio.Ticks);
-        comandoSelecao.Parameters.AddWithValue("HoraTermino", compromisso.HoraTermino.Ticks);
+        SqlCommand comandoVerificacao = new(sqlVerificar, conexaoComBanco);
+
+        comandoVerificacao.Parameters.AddWithValue("ID", compromisso.Id);
+        comandoVerificacao.Parameters.AddWithValue("DATA", compromisso.DataOcorrencia);
+        comandoVerificacao.Parameters.AddWithValue("HoraInicio", compromisso.HoraInicio.Ticks);
+        comandoVerificacao.Parameters.AddWithValue("HoraTermino", compromisso.HoraTermino.Ticks);
 
         conexaoComBanco.Open();
 
-        int quantidadeConflitos = Convert.ToInt32(comandoSelecao.ExecuteScalar());
+        int quantidadeConflitos = Convert.ToInt32(comandoVerificacao.ExecuteScalar());
 
         conexaoComBanco.Close();
 
