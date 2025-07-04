@@ -73,7 +73,7 @@ public class DespesaController : Controller
             return View(cadastrarVM);
         }
 
-        Despesa entidade = cadastrarVM.ParaEntidade();
+        Despesa novaDespesa = cadastrarVM.ParaEntidade();
 
         List<Guid>? categoriasSelecionadas = cadastrarVM.CategoriasSelecionadas;
 
@@ -85,14 +85,14 @@ public class DespesaController : Controller
                 {
                     if (idCategoria.Equals(c.Id))
                     {
-                        entidade.AderirCategoria(c);
+                        novaDespesa.AderirCategoria(c);
                         break;
                     }
                 }
             }
         }
 
-        repositorioDespesa.CadastrarRegistro(entidade);
+        repositorioDespesa.CadastrarRegistro(novaDespesa);
 
         return RedirectToAction(nameof(Index));
     }
@@ -120,7 +120,6 @@ public class DespesaController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult Editar(Guid id, EditarDespesaViewModel editarVM)
     {
-        List<Despesa> registros = repositorioDespesa.SelecionarRegistros();
         List<Categoria> categoriasDisponiveis = repositorioCategoria.SelecionarRegistros();
 
         if (repositorioDespesa.SelecionarRegistros().Any(d => d.Id != id && d.Titulo == editarVM.Titulo))
@@ -148,9 +147,26 @@ public class DespesaController : Controller
             return View(editarVM);
         }
 
-        Despesa entidadeEditada = editarVM.ParaEntidade();
+        Despesa despesaEditada = editarVM.ParaEntidade();
 
-        repositorioDespesa.EditarRegistro(id, entidadeEditada);
+        List<Guid>? categoriasSelecionadas = editarVM.CategoriasSelecionadas;
+
+        if (categoriasSelecionadas is not null)
+        {
+            foreach (Guid idCategoria in categoriasSelecionadas)
+            {
+                foreach (Categoria c in categoriasDisponiveis)
+                {
+                    if (idCategoria.Equals(c.Id))
+                    {
+                        despesaEditada.AderirCategoria(c);
+                        break;
+                    }
+                }
+            }
+        }
+
+        repositorioDespesa.EditarRegistro(id, despesaEditada);
 
         return RedirectToAction(nameof(Index));
     }
@@ -192,29 +208,24 @@ public class DespesaController : Controller
     public IActionResult AdicionarCategoria(Guid id, AdicionarCategoriaViewModel adicionarCategoriaVm)
     {
         Despesa despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id)!;
-        Categoria categoriaSelecionado = repositorioCategoria.SelecionarRegistroPorId(adicionarCategoriaVm.IdCategoria)!;
+        Categoria categoriaSelecionada = repositorioCategoria.SelecionarRegistroPorId(adicionarCategoriaVm.IdCategoria)!;
+        List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
 
-        if (despesaSelecionada.Categorias.Any(i => i.Titulo == categoriaSelecionado!.Titulo))
+        if (despesaSelecionada.Categorias.Any(i => i.Titulo == categoriaSelecionada!.Titulo))
         {
             ModelState.AddModelError("ConflitoCategoria", "A despesa já contém essa categoria!");
         }
 
         if (!ModelState.IsValid)
         {
-            List<Categoria> categoriasDespesa = [.. despesaSelecionada.Categorias];
 
             return View("GerenciarCategorias",
                 new GerenciarCategoriasViewModel(
                     despesaSelecionada,
-                    categoriasDespesa));
+                    categorias));
         }
 
-        despesaSelecionada.AderirCategoria(categoriaSelecionado);
-        categoriaSelecionado.AderirDespesa(despesaSelecionada);
-
-        contextoDados.Salvar();
-
-        List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
+        repositorioDespesa.AdicionarCategoria(categoriaSelecionada, despesaSelecionada);
 
         GerenciarCategoriasViewModel gerenciarCategoriaVm = new(
             despesaSelecionada,
@@ -227,12 +238,9 @@ public class DespesaController : Controller
     public IActionResult RemoverCategoria(Guid id, Guid idCategoria)
     {
         Despesa despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id)!;
-        Categoria categoriaSelecionado = repositorioCategoria.SelecionarRegistroPorId(idCategoria)!;
+        Categoria categoriaSelecionada = repositorioCategoria.SelecionarRegistroPorId(idCategoria)!;
 
-        despesaSelecionada.RemoverCategoria(categoriaSelecionado);
-        categoriaSelecionado.RemoverDespesa(despesaSelecionada);
-
-        contextoDados.Salvar();
+        repositorioDespesa.RemoverCategoria(categoriaSelecionada, despesaSelecionada);
 
         List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
 

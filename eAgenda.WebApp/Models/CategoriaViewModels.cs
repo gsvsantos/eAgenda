@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using eAgenda.Dominio.ModuloCategoria;
+﻿using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.WebApp.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace eAgenda.WebApp.Models;
 
@@ -95,14 +95,14 @@ public class DetalhesCategoriaViewModel
         Titulo = titulo;
         foreach (var despesa in despesas)
         {
-            Despesas.ConvertAll(d => new DespesaCategoriaViewModel
+            Despesas.Add(new DespesaCategoriaViewModel
             {
-                Id = d.Id,
-                Titulo = d.Titulo,
-                Descricao = d.Descricao,
-                DataOcorrencia = d.DataOcorrencia,
-                Valor = d.Valor,
-                FormaPagamento = d.FormaPagamento
+                Id = despesa.Id,
+                Titulo = despesa.Titulo,
+                Descricao = despesa.Descricao,
+                DataOcorrencia = despesa.DataOcorrencia,
+                Valor = despesa.Valor,
+                FormaPagamento = despesa.FormaPagamento.ToString()
             });
         }
     }
