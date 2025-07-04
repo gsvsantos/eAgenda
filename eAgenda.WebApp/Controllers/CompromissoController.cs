@@ -22,6 +22,7 @@ public class CompromissoController : Controller
     public IActionResult Index()
     {
         List<Compromisso> compromissos = repositorioCompromisso.SelecionarRegistros();
+
         VisualizarCompromissosViewModel vm = new(compromissos);
 
         return View(vm);
@@ -31,6 +32,7 @@ public class CompromissoController : Controller
     public IActionResult Cadastrar()
     {
         List<Contato> contatos = repositorioContato.SelecionarRegistros();
+
         CadastrarCompromissoViewModel viewModel = new(contatos);
 
         return View(viewModel);
@@ -41,6 +43,7 @@ public class CompromissoController : Controller
     public IActionResult Cadastrar(CadastrarCompromissoViewModel vm)
     {
         Contato contato = null!;
+
         if (vm.ContatoId.HasValue)
             contato = repositorioContato.SelecionarRegistroPorId(vm.ContatoId.Value)!;
 
@@ -63,11 +66,15 @@ public class CompromissoController : Controller
     public IActionResult Editar(Guid id)
     {
         Compromisso compromisso = repositorioCompromisso.SelecionarRegistroPorId(id)!;
+
         if (compromisso == null)
             return NotFound();
 
         List<Contato> contatos = repositorioContato.SelecionarRegistros();
-        EditarCompromissoViewModel vm = new(compromisso, contatos);
+
+        EditarCompromissoViewModel vm = new(
+            compromisso,
+            contatos);
 
         return View(vm);
     }
@@ -100,10 +107,14 @@ public class CompromissoController : Controller
     public IActionResult Excluir(Guid id)
     {
         Compromisso? compromisso = repositorioCompromisso.SelecionarRegistroPorId(id);
+
         if (compromisso == null)
             return NotFound();
 
-        ExcluirCompromissoViewModel vm = new(id, compromisso.Assunto);
+        ExcluirCompromissoViewModel vm = new(
+            id,
+            compromisso.Assunto);
+
         return View(vm);
     }
 
@@ -111,6 +122,7 @@ public class CompromissoController : Controller
     public IActionResult ExcluirConfirmado(Guid id)
     {
         repositorioCompromisso.ExcluirRegistro(id);
+
         return RedirectToAction("Index");
     }
 

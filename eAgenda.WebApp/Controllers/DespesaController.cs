@@ -75,7 +75,7 @@ public class DespesaController : Controller
 
         Despesa entidade = cadastrarVM.ParaEntidade();
 
-        var categoriasSelecionadas = cadastrarVM.CategoriasSelecionadas;
+        List<Guid>? categoriasSelecionadas = cadastrarVM.CategoriasSelecionadas;
 
         if (categoriasSelecionadas is not null)
         {
@@ -111,8 +111,8 @@ public class DespesaController : Controller
             registroSelecionado.Valor,
             registroSelecionado.FormaPagamento,
             categorias,
-            registroSelecionado.Categorias
-        );
+            registroSelecionado.Categorias);
+
         return View(editarVM);
     }
 
@@ -160,7 +160,9 @@ public class DespesaController : Controller
     {
         Despesa registroSelecionado = repositorioDespesa.SelecionarRegistroPorId(id)!;
 
-        ExcluirDespesaViewModel excluirVM = new(registroSelecionado.Id, registroSelecionado.Titulo);
+        ExcluirDespesaViewModel excluirVM = new(
+            registroSelecionado.Id,
+            registroSelecionado.Titulo);
 
         return View(excluirVM);
     }
@@ -179,7 +181,9 @@ public class DespesaController : Controller
         Despesa despesaSelecionada = repositorioDespesa.SelecionarPorId(id);
         List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
 
-        GerenciarCategoriasViewModel gerenciarCategoriaVm = new(despesaSelecionada, categorias);
+        GerenciarCategoriasViewModel gerenciarCategoriaVm = new(
+            despesaSelecionada,
+            categorias);
 
         return View(gerenciarCategoriaVm);
     }
@@ -199,9 +203,10 @@ public class DespesaController : Controller
         {
             List<Categoria> categoriasDespesa = [.. despesaSelecionada.Categorias];
 
-            return View("GerenciarCategorias", new GerenciarCategoriasViewModel(
-            despesaSelecionada,
-            categoriasDespesa));
+            return View("GerenciarCategorias",
+                new GerenciarCategoriasViewModel(
+                    despesaSelecionada,
+                    categoriasDespesa));
         }
 
         despesaSelecionada.AderirCategoria(categoriaSelecionado);
@@ -211,7 +216,9 @@ public class DespesaController : Controller
 
         List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
 
-        GerenciarCategoriasViewModel gerenciarCategoriaVm = new(despesaSelecionada, categorias);
+        GerenciarCategoriasViewModel gerenciarCategoriaVm = new(
+            despesaSelecionada,
+            categorias);
 
         return RedirectToAction(nameof(GerenciarCategorias), new { id });
     }
@@ -229,7 +236,9 @@ public class DespesaController : Controller
 
         List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
 
-        GerenciarCategoriasViewModel gerenciarCategoriaVm = new(despesaSelecionada, categorias);
+        GerenciarCategoriasViewModel gerenciarCategoriaVm = new(
+            despesaSelecionada,
+            categorias);
 
         return RedirectToAction(nameof(GerenciarCategorias), new { id });
     }

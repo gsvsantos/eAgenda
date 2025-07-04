@@ -11,7 +11,6 @@ namespace eAgenda.Dominio.ModuloContato
         public string Telefone { get; set; } = string.Empty;
         public string? Cargo { get; set; } = string.Empty;
         public string? Empresa { get; set; } = string.Empty;
-
         public List<Compromisso> Compromissos { get; set; } = [];
 
         public Contato(string nome, string email, string telefone, string? cargo, string? empresa)

@@ -41,7 +41,6 @@ public class FormularioDespesaViewModel
 public class CadastrarDespesaViewModel : FormularioDespesaViewModel
 {
     public CadastrarDespesaViewModel() { }
-
     public CadastrarDespesaViewModel(List<Categoria> categoriasDisponiveis) : this()
     {
         foreach (var c in categoriasDisponiveis)
@@ -56,7 +55,6 @@ public class CadastrarDespesaViewModel : FormularioDespesaViewModel
 public class EditarDespesaViewModel : FormularioDespesaViewModel
 {
     public EditarDespesaViewModel() { }
-
     public EditarDespesaViewModel(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento, List<Categoria> categoriasDisponiveis, List<Categoria> categoriasSelecionadas) : this()
     {
         Id = id;
@@ -103,8 +101,8 @@ public class GerenciarCategoriasViewModel
 {
     public DetalhesDespesaViewModel Despesa { get; set; } = null!;
     public List<SelectListItem> Categorias { get; set; } = [];
-    public GerenciarCategoriasViewModel() { }
 
+    public GerenciarCategoriasViewModel() { }
     public GerenciarCategoriasViewModel(Despesa despesa, List<Categoria> categorias) : this()
     {
         Despesa = despesa.ParaDetalhesVM();

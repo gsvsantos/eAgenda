@@ -88,7 +88,7 @@ public class EditarContatoViewModel : FormularioContatoViewModel
 public class ExcluirContatoViewModel : FormularioContatoViewModel
 {
     public ExcluirContatoViewModel() { }
-    public ExcluirContatoViewModel(Guid id, string nome)
+    public ExcluirContatoViewModel(Guid id, string nome) : this()
     {
         Id = id;
         Nome = nome;

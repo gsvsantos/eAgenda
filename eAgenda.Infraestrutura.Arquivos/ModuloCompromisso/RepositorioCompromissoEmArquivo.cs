@@ -30,5 +30,10 @@ namespace eAgenda.Infra.Dados.Arquivo.ModuloCompromisso
                 (c2.HoraTermino > c1.HoraInicio && c2.HoraTermino <= c1.HoraTermino) ||
                 (c2.HoraInicio <= c1.HoraInicio && c2.HoraTermino >= c1.HoraTermino);
         }
+
+        public List<Compromisso> SelecionarCompromissosContato(Guid idRegistro)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

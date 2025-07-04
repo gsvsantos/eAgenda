@@ -62,8 +62,7 @@ public class CategoriaController : Controller
 
         EditarCategoriaViewModel editarVM = new(
             id,
-            registroSelecionado!.Titulo
-        );
+            registroSelecionado!.Titulo);
 
         return View(editarVM);
     }
@@ -96,7 +95,9 @@ public class CategoriaController : Controller
     {
         Categoria registroSelecionado = repositorioCategoria.SelecionarRegistroPorId(id)!;
 
-        ExcluirCategoriaViewModel excluirVM = new(registroSelecionado!.Id, registroSelecionado.Titulo);
+        ExcluirCategoriaViewModel excluirVM = new(
+            registroSelecionado!.Id,
+            registroSelecionado.Titulo);
 
         return View(excluirVM);
     }
@@ -113,7 +114,9 @@ public class CategoriaController : Controller
         {
             ModelState.AddModelError("ExclusaoVinculo", "Não é possível excluir esta categoria, pois há despesas vinculadas a ela.");
 
-            ExcluirCategoriaViewModel excluirVM = new(categoria.Id, categoria.Titulo);
+            ExcluirCategoriaViewModel excluirVM = new(
+                categoria.Id,
+                categoria.Titulo);
 
             return View("Excluir", excluirVM);
         }
@@ -131,20 +134,7 @@ public class CategoriaController : Controller
         if (categoria == null)
             return NotFound();
 
-        DetalhesCategoriaViewModel despesasVM = new()
-        {
-            Id = categoria.Id,
-            Titulo = categoria.Titulo,
-            Despesas = categoria.Despesas.ConvertAll(d => new DespesaCategoriaViewModel
-            {
-                Id = d.Id,
-                Titulo = d.Titulo,
-                Descricao = d.Descricao,
-                DataOcorrencia = d.DataOcorrencia,
-                Valor = d.Valor,
-                FormaPagamento = d.FormaPagamento.ToString()
-            })
-        };
+        DetalhesCategoriaViewModel despesasVM = categoria.ParaDetalhesVM();
 
         return View(despesasVM);
     }

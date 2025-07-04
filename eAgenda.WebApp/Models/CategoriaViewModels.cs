@@ -20,7 +20,6 @@ public class FormularioCategoriaViewModel
 public class CadastrarCategoriaViewModel : FormularioCategoriaViewModel
 {
     public CadastrarCategoriaViewModel() { }
-
     public CadastrarCategoriaViewModel(string titulo) : this()
     {
         Titulo = titulo;
@@ -32,7 +31,6 @@ public class EditarCategoriaViewModel : FormularioCategoriaViewModel
     public Guid Id { get; set; }
 
     public EditarCategoriaViewModel() { }
-
     public EditarCategoriaViewModel(Guid id, string titulo) : this()
     {
         Id = id;
@@ -73,8 +71,7 @@ public class DespesaCategoriaViewModel
     public string FormaPagamento { get; set; } = string.Empty;
 
     public DespesaCategoriaViewModel() { }
-
-    public DespesaCategoriaViewModel(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento)
+    public DespesaCategoriaViewModel(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento) : this()
     {
         Id = id;
         Titulo = titulo;
@@ -92,13 +89,21 @@ public class DetalhesCategoriaViewModel
     public List<DespesaCategoriaViewModel> Despesas { get; set; } = [];
 
     public DetalhesCategoriaViewModel() { }
-    public DetalhesCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas)
+    public DetalhesCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas) : this()
     {
         Id = id;
         Titulo = titulo;
         foreach (var despesa in despesas)
         {
-            Despesas.Add(new DespesaCategoriaViewModel(despesa.Id, despesa.Titulo, despesa.Descricao, despesa.DataOcorrencia, despesa.Valor, despesa.FormaPagamento));
+            Despesas.ConvertAll(d => new DespesaCategoriaViewModel
+            {
+                Id = d.Id,
+                Titulo = d.Titulo,
+                Descricao = d.Descricao,
+                DataOcorrencia = d.DataOcorrencia,
+                Valor = d.Valor,
+                FormaPagamento = d.FormaPagamento
+            });
         }
     }
 }

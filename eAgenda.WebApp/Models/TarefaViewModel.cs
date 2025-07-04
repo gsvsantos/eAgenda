@@ -31,7 +31,7 @@ public abstract class FormularioTarefaViewModel
 public class CadastrarTarefaViewModel : FormularioTarefaViewModel
 {
     public CadastrarTarefaViewModel() { }
-    public CadastrarTarefaViewModel(string titulo, NivelPrioridade prioridade)
+    public CadastrarTarefaViewModel(string titulo, NivelPrioridade prioridade) : this()
     {
         Titulo = titulo;
         Prioridade = prioridade;
@@ -56,7 +56,7 @@ public class VisualizarTarefasViewModel
 public class EditarTarefaViewModel : FormularioTarefaViewModel
 {
     public EditarTarefaViewModel() { }
-    public EditarTarefaViewModel(Guid id, string titulo, NivelPrioridade prioridade, DateTime dataCriacao, string? descricao)
+    public EditarTarefaViewModel(Guid id, string titulo, NivelPrioridade prioridade, DateTime dataCriacao, string? descricao) : this()
     {
         Id = id;
         Titulo = titulo;
@@ -69,7 +69,7 @@ public class EditarTarefaViewModel : FormularioTarefaViewModel
 public class ExcluirTarefaViewModel : FormularioTarefaViewModel
 {
     public ExcluirTarefaViewModel() { }
-    public ExcluirTarefaViewModel(Guid id, string titulo)
+    public ExcluirTarefaViewModel(Guid id, string titulo) : this()
     {
         Id = id;
         Titulo = titulo;
