@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using eAgenda.Dominio.Compartilhado;
+﻿using eAgenda.Dominio.Compartilhado;
+using System.ComponentModel.DataAnnotations;
 
 namespace eAgenda.Dominio.ModuloTarefa;
 
@@ -49,24 +49,48 @@ public class Tarefa : EntidadeBase<Tarefa>
     public void AtualizarStatus()
     {
         PercentualConcluido = CalcularPercentualConcluido();
-        Status = ObterStatusParaPercentual(PercentualConcluido);
+
+        if (Itens.Count == 0)
+            return;
+
+        if (Status != StatusTarefa.Cancelada)
+            Status = ObterStatusParaPercentual(PercentualConcluido);
+
+        if (Status == StatusTarefa.Cancelada && Itens.Count != 0)
+            Status = ObterStatusParaPercentual(PercentualConcluido);
+
+        if (Status == StatusTarefa.Concluida)
+            DataConclusao = DateTime.Now;
+
+        if (Status == StatusTarefa.Pendente || Status == StatusTarefa.EmAndamento)
+            DataConclusao = null;
     }
 
     public void Concluir()
     {
-        DataConclusao = DateTime.Today;
+        foreach (ItemTarefa item in Itens)
+            item.Concluir();
+
+        DataConclusao = DateTime.Now;
         AtualizarStatus();
     }
 
     public void Reabrir()
     {
+        foreach (ItemTarefa item in Itens)
+            item.Reabrir();
+
+        Status = StatusTarefa.Pendente;
         DataConclusao = null;
-        AtualizarStatus();
     }
 
     public void Cancelar()
     {
+        foreach (ItemTarefa item in Itens)
+            item.Cancelar();
+
         Status = StatusTarefa.Cancelada;
+        DataConclusao = null;
     }
 
     public override void AtualizarRegistro(Tarefa registroEditado)
@@ -111,7 +135,7 @@ public class Tarefa : EntidadeBase<Tarefa>
 
     private StatusTarefa ObterStatusParaPercentual(double percentualStatus)
     {
-        if (Status == StatusTarefa.Cancelada && Itens.All(i => i.Status == StatusItemTarefa.Cancelado))
+        if (Itens.Any(i => i.Status == StatusItemTarefa.Cancelado))
             return StatusTarefa.Cancelada;
 
         if (percentualStatus >= PercentualConclusao)

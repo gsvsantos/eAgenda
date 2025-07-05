@@ -1,5 +1,4 @@
 ﻿using eAgenda.Dominio.ModuloTarefa;
-using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +8,10 @@ namespace eAgenda.WebApp.Controllers;
 [Route("tarefas")]
 public class TarefaController : Controller
 {
-    private readonly ContextoDados contextoDados;
     private readonly IRepositorioTarefa repositorioTarefa;
 
-    public TarefaController(ContextoDados contextoDados, IRepositorioTarefa repositorioTarefa)
+    public TarefaController(IRepositorioTarefa repositorioTarefa)
     {
-        this.contextoDados = contextoDados;
         this.repositorioTarefa = repositorioTarefa;
     }
 
@@ -244,8 +241,6 @@ public class TarefaController : Controller
 
         repositorioTarefa.ReabrirItensTarefa(tarefaSelecionada);
 
-        contextoDados.Salvar();
-
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
 
         return RedirectToAction(nameof(Detalhes), new { id });
@@ -256,10 +251,7 @@ public class TarefaController : Controller
     {
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
-        tarefaSelecionada.Cancelar();
         repositorioTarefa.CancelarItensTarefa(tarefaSelecionada);
-
-        contextoDados.Salvar();
 
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
 

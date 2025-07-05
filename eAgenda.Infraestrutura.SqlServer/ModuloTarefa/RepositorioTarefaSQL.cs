@@ -291,6 +291,8 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
 
     public void CancelarItensTarefa(Tarefa tarefa)
     {
+        tarefa.Cancelar();
+
         const string sqlCancelarItens =
             @"UPDATE [TBITEMTAREFA]
             SET
@@ -311,11 +313,13 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
 
         conexaoComBanco.Close();
 
-        tarefa.Cancelar();
+        AtualizarStatusTarefa(tarefa);
     }
 
     public void ConcluirItensTarefa(Tarefa tarefa)
     {
+        tarefa.Concluir();
+
         const string sqlCancelarItens =
             @"UPDATE [TBITEMTAREFA]
             SET
@@ -335,7 +339,7 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
 
         conexaoComBanco.Close();
 
-        tarefa.Concluir();
+        AtualizarStatusTarefa(tarefa);
     }
 
     public void ExcluirItensTarefa(Guid idTarefa)
@@ -360,6 +364,8 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
 
     public void ReabrirItensTarefa(Tarefa tarefa)
     {
+        tarefa.Reabrir();
+
         const string sqlCancelarItens =
             @"UPDATE [TBITEMTAREFA]
             SET
@@ -379,7 +385,7 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
 
         conexaoComBanco.Close();
 
-        tarefa.Reabrir();
+        AtualizarStatusTarefa(tarefa);
     }
 
     public ItemTarefa? SelecionarItem(Tarefa tarefa, Guid idItem)
@@ -696,13 +702,6 @@ public class RepositorioTarefaSQL : IRepositorioTarefa
         conexaoComBanco.Open();
 
         SqlCommand comandoAtualizacao = new(sqlAtualizarTarefa, conexaoComBanco);
-
-        if (tarefa.Itens.Count > 0 && tarefa.Itens.All(i => i.Status == StatusItemTarefa.Concluido))
-            tarefa.Concluir();
-        else if (tarefa.Itens.Count > 0 && tarefa.Itens.Any(i => i.Status == StatusItemTarefa.Cancelado))
-            tarefa.Cancelar();
-        else
-            tarefa.Reabrir();
 
         comandoAtualizacao.Parameters.AddWithValue("ID", tarefa.Id);
         comandoAtualizacao.Parameters.AdicionarValorNullavel("DATACONCLUSAO", tarefa.DataConclusao);
