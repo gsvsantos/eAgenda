@@ -1,12 +1,15 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Infraestrutura.SQLServer.Compartilhado;
-using Microsoft.Data.SqlClient;
+using eAgenda.Infraestrutura.SQLServer.Extensions;
+using System.Data;
 
 namespace eAgenda.Infraestrutura.SQLServer.ModuloCategoria;
 
 public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositorioCategoria
 {
+    public RepositorioCategoriaSQL(IDbConnection conexaoComBanco) : base(conexaoComBanco) { }
+
     protected override string SqlCadastrar => @"INSERT INTO [TBCATEGORIA]
             (
 	            [ID],
@@ -76,7 +79,7 @@ public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositor
         return categorias;
     }
 
-    private Despesa ConverterParaDespesa(SqlDataReader leitor)
+    private Despesa ConverterParaDespesa(IDataReader leitor)
     {
         return new(
             Guid.Parse(leitor["ID"].ToString()!),
@@ -90,31 +93,14 @@ public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositor
 
     private void CarregarDespesas(Categoria categoria)
     {
-        const string sqlCarregarDespesas =
-            @"SELECT
-	            D.[ID],
-	            D.[TITULO],
-	            D.[DESCRICAO],
-	            D.[DATAOCORRENCIA],
-	            D.[VALOR],
-	            D.[FORMAPAGAMENTO]
-            FROM
-	            [TBDESPESA] AS D
-	            INNER JOIN [TBDESPESA_TBCATEGORIA] AS DC
-            ON
-	            D.[ID] = DC.[DESPESA_ID]
-            WHERE
-                DC.[CATEGORIA_ID] = @CATEGORIA_ID";
-
-        SqlConnection conexaoComBanco = new(connectionString);
-
         conexaoComBanco.Open();
 
-        SqlCommand comandoSelecao = new(sqlCarregarDespesas, conexaoComBanco);
+        IDbCommand comandoSelecao = conexaoComBanco.CreateCommand();
+        comandoSelecao.CommandText = SqlSelecionarDespesas;
 
-        comandoSelecao.Parameters.AddWithValue("CATEGORIA_ID", categoria.Id);
+        comandoSelecao.AdicionarParametro("CATEGORIA_ID", categoria.Id);
 
-        SqlDataReader leitor = comandoSelecao.ExecuteReader();
+        IDataReader leitor = comandoSelecao.ExecuteReader();
 
         while (leitor.Read())
         {
@@ -126,16 +112,16 @@ public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositor
         conexaoComBanco.Close();
     }
 
-    protected override Categoria ConverterParaRegistro(SqlDataReader leitor)
+    protected override Categoria ConverterParaRegistro(IDataReader leitor)
     {
         return new(
             Guid.Parse(leitor["ID"].ToString()!),
             Convert.ToString(leitor["Titulo"])!);
     }
 
-    protected override void ConfigurarParametrosRegistro(Categoria novoRegistro, SqlCommand comandoCadastro)
+    protected override void ConfigurarParametrosRegistro(Categoria novoRegistro, IDbCommand comandoCadastro)
     {
-        comandoCadastro.Parameters.AddWithValue("ID", novoRegistro.Id);
-        comandoCadastro.Parameters.AddWithValue("TITULO", novoRegistro.Titulo);
+        comandoCadastro.AdicionarParametro("ID", novoRegistro.Id);
+        comandoCadastro.AdicionarParametro("TITULO", novoRegistro.Titulo);
     }
 }

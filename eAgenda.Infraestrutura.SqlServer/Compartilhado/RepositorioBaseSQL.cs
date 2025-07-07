@@ -1,27 +1,31 @@
 ﻿using eAgenda.Dominio.Compartilhado;
-using Microsoft.Data.SqlClient;
+using eAgenda.Infraestrutura.SQLServer.Extensions;
+using System.Data;
 
 namespace eAgenda.Infraestrutura.SQLServer.Compartilhado;
 
 public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 {
-    protected readonly string connectionString =
-        "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaDb;Integrated Security=True";
+    protected readonly IDbConnection conexaoComBanco;
     protected abstract string SqlCadastrar { get; }
     protected abstract string SqlEditar { get; }
     protected abstract string SqlExcluir { get; }
     protected abstract string SqlSelecionarPorId { get; }
     protected abstract string SqlSelecionarTodos { get; }
 
+    protected RepositorioBaseSQL(IDbConnection conexaoComBanco)
+    {
+        this.conexaoComBanco = conexaoComBanco;
+    }
+
     public virtual void CadastrarRegistro(T novoRegistro)
     {
         novoRegistro.Id = Guid.NewGuid();
 
-        SqlConnection conexaoComBanco = new(connectionString);
-
         conexaoComBanco.Open();
 
-        SqlCommand comandoCadastro = new(SqlCadastrar, conexaoComBanco);
+        IDbCommand comandoCadastro = conexaoComBanco.CreateCommand();
+        comandoCadastro.CommandText = SqlCadastrar;
 
         ConfigurarParametrosRegistro(novoRegistro, comandoCadastro);
 
@@ -32,11 +36,10 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 
     public virtual bool EditarRegistro(Guid idRegistro, T registroEditado)
     {
-        SqlConnection conexaoComBanco = new(connectionString);
-
         conexaoComBanco.Open();
 
-        SqlCommand comandoEdicao = new(SqlEditar, conexaoComBanco);
+        IDbCommand comandoEdicao = conexaoComBanco.CreateCommand();
+        comandoEdicao.CommandText = SqlEditar;
 
         registroEditado.Id = idRegistro;
 
@@ -51,13 +54,12 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 
     public virtual bool ExcluirRegistro(Guid idRegistro)
     {
-        SqlConnection conexaoComBanco = new(connectionString);
-
         conexaoComBanco.Open();
 
-        SqlCommand comandoExclusao = new(SqlExcluir, conexaoComBanco);
+        IDbCommand comandoExclusao = conexaoComBanco.CreateCommand();
+        comandoExclusao.CommandText = SqlExcluir;
 
-        comandoExclusao.Parameters.AddWithValue("ID", idRegistro);
+        comandoExclusao.AdicionarParametro("ID", idRegistro);
 
         int linhasAfetadas = comandoExclusao.ExecuteNonQuery();
 
@@ -68,15 +70,14 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 
     public virtual T? SelecionarRegistroPorId(Guid idRegistro)
     {
-        SqlConnection conexaoComBanco = new(connectionString);
-
         conexaoComBanco.Open();
 
-        SqlCommand comandoSelecao = new(SqlSelecionarTodos, conexaoComBanco);
+        IDbCommand comandoSelecao = conexaoComBanco.CreateCommand();
+        comandoSelecao.CommandText = SqlSelecionarPorId;
 
-        comandoSelecao.Parameters.AddWithValue("ID", idRegistro);
+        comandoSelecao.AdicionarParametro("ID", idRegistro);
 
-        SqlDataReader leitor = comandoSelecao.ExecuteReader();
+        IDataReader leitor = comandoSelecao.ExecuteReader();
 
         T? T = null;
 
@@ -90,13 +91,12 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 
     public virtual List<T> SelecionarRegistros()
     {
-        SqlConnection conexaoComBanco = new(connectionString);
-
         conexaoComBanco.Open();
 
-        SqlCommand comandoSelecao = new(SqlSelecionarTodos, conexaoComBanco);
+        IDbCommand comandoSelecao = conexaoComBanco.CreateCommand();
+        comandoSelecao.CommandText = SqlSelecionarTodos;
 
-        SqlDataReader leitor = comandoSelecao.ExecuteReader();
+        IDataReader leitor = comandoSelecao.ExecuteReader();
 
         List<T> Ts = [];
 
@@ -110,7 +110,7 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
         return Ts;
     }
 
-    protected abstract T ConverterParaRegistro(SqlDataReader leitor);
+    protected abstract T ConverterParaRegistro(IDataReader leitor);
 
-    protected abstract void ConfigurarParametrosRegistro(T novoRegistro, SqlCommand comandoCadastro);
+    protected abstract void ConfigurarParametrosRegistro(T novoRegistro, IDbCommand comandoCadastro);
 }
