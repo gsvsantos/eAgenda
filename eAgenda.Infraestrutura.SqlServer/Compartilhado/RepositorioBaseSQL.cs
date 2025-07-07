@@ -13,7 +13,7 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
     protected abstract string SqlSelecionarPorId { get; }
     protected abstract string SqlSelecionarTodos { get; }
 
-    public void CadastrarRegistro(T novoRegistro)
+    public virtual void CadastrarRegistro(T novoRegistro)
     {
         novoRegistro.Id = Guid.NewGuid();
 
@@ -30,7 +30,7 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
         conexaoComBanco.Close();
     }
 
-    public bool EditarRegistro(Guid idRegistro, T registroEditado)
+    public virtual bool EditarRegistro(Guid idRegistro, T registroEditado)
     {
         SqlConnection conexaoComBanco = new(connectionString);
 
@@ -49,7 +49,7 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
         return linhasAfetadas >= 1;
     }
 
-    public bool ExcluirRegistro(Guid idRegistro)
+    public virtual bool ExcluirRegistro(Guid idRegistro)
     {
         SqlConnection conexaoComBanco = new(connectionString);
 
