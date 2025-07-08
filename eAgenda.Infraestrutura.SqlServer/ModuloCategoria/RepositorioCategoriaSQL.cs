@@ -8,8 +8,6 @@ namespace eAgenda.Infraestrutura.SQLServer.ModuloCategoria;
 
 public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositorioCategoria
 {
-    public RepositorioCategoriaSQL(IDbConnection conexaoComBanco) : base(conexaoComBanco) { }
-
     protected override string SqlCadastrar => @"INSERT INTO [TBCATEGORIA]
             (
 	            [ID],
@@ -20,17 +18,14 @@ public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositor
 	            @ID,
 	            @TITULO
             )";
-
     protected override string SqlEditar => @"UPDATE [TBCATEGORIA]
             SET
 	            [TITULO] = @TITULO
             WHERE
 	            [ID] = @ID";
-
     protected override string SqlExcluir => @"DELETE FROM [TBCATEGORIA]
             WHERE
 	            [ID] = @ID";
-
     protected override string SqlSelecionarPorId => @"SELECT
                 [ID],
                 [TITULO]
@@ -38,13 +33,12 @@ public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositor
                 [TBCATEGORIA]
             WHERE
                 [ID] = @ID";
-
     protected override string SqlSelecionarTodos => @"SELECT
                 [ID],
                 [TITULO]
             FROM
                 [TBCATEGORIA]";
-    protected string SqlSelecionarDespesas => @"SELECT
+    private static string SqlSelecionarDespesas => @"SELECT
 	            D.[ID],
 	            D.[TITULO],
 	            D.[DESCRICAO],
@@ -58,6 +52,8 @@ public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositor
 	            D.[ID] = DC.[DESPESA_ID]
             WHERE
                 DC.[CATEGORIA_ID] = @CATEGORIA_ID";
+
+    public RepositorioCategoriaSQL(IDbConnection conexaoComBanco) : base(conexaoComBanco) { }
 
     public override Categoria? SelecionarRegistroPorId(Guid idRegistro)
     {
@@ -119,9 +115,9 @@ public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositor
             Convert.ToString(leitor["Titulo"])!);
     }
 
-    protected override void ConfigurarParametrosRegistro(Categoria novoRegistro, IDbCommand comandoCadastro)
+    protected override void ConfigurarParametrosRegistro(Categoria categoria, IDbCommand comando)
     {
-        comandoCadastro.AdicionarParametro("ID", novoRegistro.Id);
-        comandoCadastro.AdicionarParametro("TITULO", novoRegistro.Titulo);
+        comando.AdicionarParametro("ID", categoria.Id);
+        comando.AdicionarParametro("TITULO", categoria.Titulo);
     }
 }
