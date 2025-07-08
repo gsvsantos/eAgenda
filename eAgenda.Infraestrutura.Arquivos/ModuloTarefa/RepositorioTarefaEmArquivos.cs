@@ -114,4 +114,14 @@ public class RepositorioTarefaEmArquivos : RepositorioBaseEmArquivo<Tarefa>, IRe
     {
         throw new NotImplementedException();
     }
+
+    public List<Tarefa> SelecionarTarefasPorStatus(string? status)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Tarefa> SelecionarTarefasPorPrioridade(string? prioridade)
+    {
+        throw new NotImplementedException();
+    }
 }

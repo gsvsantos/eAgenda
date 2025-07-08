@@ -23,27 +23,14 @@ public class TarefaController : Controller
 
         if (!string.IsNullOrEmpty(status))
         {
-            List<Tarefa> tarefasPorStatus = status switch
-            {
-                "Pendente" => repositorioTarefa.SelecionarTarefasPendentes(),
-                "EmAndamento" => repositorioTarefa.SelecionarTarefasEmAndamento(),
-                "Concluida" => repositorioTarefa.SelecionarTarefasConcluidas(),
-                "Cancelada" => repositorioTarefa.SelecionarTarefasCanceladas(),
-                _ => tarefas
-            };
+            List<Tarefa> tarefasPorStatus = repositorioTarefa.SelecionarTarefasPorStatus(status);
 
             tarefas = [.. tarefas.IntersectBy(tarefasPorStatus.Select(x => x.Id), t => t.Id)];
         }
 
         if (!string.IsNullOrEmpty(prioridade))
         {
-            List<Tarefa> tarefasPorPrioridade = prioridade switch
-            {
-                "Baixa" => repositorioTarefa.SelecionarTarefasPrioridadeBaixa(),
-                "Media" => repositorioTarefa.SelecionarTarefasPrioridadeMedia(),
-                "Alta" => repositorioTarefa.SelecionarTarefasPrioridadeAlta(),
-                _ => tarefas
-            };
+            List<Tarefa> tarefasPorPrioridade = repositorioTarefa.SelecionarTarefasPorPrioridade(prioridade);
 
             tarefas = [.. tarefas.IntersectBy(tarefasPorPrioridade.Select(x => x.Id), t => t.Id)];
         }
