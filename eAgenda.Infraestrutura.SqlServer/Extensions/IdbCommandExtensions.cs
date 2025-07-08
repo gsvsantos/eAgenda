@@ -8,7 +8,7 @@ public static class IdbCommandExtensions
     {
         IDbDataParameter parametro = comando.CreateParameter();
         parametro.ParameterName = nome;
-        parametro.Value = valor;
+        parametro.Value = valor ?? DBNull.Value;
 
         comando.Parameters.Add(parametro);
     }
