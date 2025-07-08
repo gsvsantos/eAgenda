@@ -22,26 +22,6 @@ CREATE TABLE [dbo].[TBCompromisso] (
     CONSTRAINT [FK_TBCompromisso_TBContato] FOREIGN KEY ([Contato_Id]) REFERENCES [dbo].[TBContato] ([Id])
 );
 
-CREATE TABLE [dbo].[TBTarefa] (
-    [Id]            UNIQUEIDENTIFIER NOT NULL,
-    [Titulo]        NVARCHAR (100)   NOT NULL,
-    [Descricao]     NVARCHAR (100)   NOT NULL,
-    [Prioridade]    INT              NOT NULL,
-    [DataCriacao]   DATETIME2 (7)    NOT NULL,
-    [DataConclusao] DATETIME2 (7)    NULL,
-    [Status]        INT              NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-CREATE TABLE [dbo].[TBItemTarefa] (
-    [Id]        UNIQUEIDENTIFIER NOT NULL,
-    [Titulo]    NVARCHAR (100)   NOT NULL,
-    [Status]    INT              NOT NULL,
-    [Tarefa_Id] UNIQUEIDENTIFIER NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_TBItemTarefa_TBTarefa] FOREIGN KEY ([Tarefa_Id]) REFERENCES [dbo].[TBTarefa] ([Id])
-);
-
 CREATE TABLE [dbo].[TBDespesa] (
     [Id]             UNIQUEIDENTIFIER NOT NULL,
     [Titulo]         NVARCHAR (100)   NOT NULL,
@@ -62,3 +42,24 @@ CREATE TABLE [dbo].[TBDespesa_TBCategoria] (
     [Despesa_Id]   UNIQUEIDENTIFIER NOT NULL,
     [Categoria_Id] UNIQUEIDENTIFIER NOT NULL
 );
+
+CREATE TABLE [dbo].[TBTarefa] (
+    [Id]            UNIQUEIDENTIFIER NOT NULL,
+    [Titulo]        NVARCHAR (100)   NOT NULL,
+    [Descricao]     NVARCHAR (100)   NOT NULL,
+    [Prioridade]    INT              NOT NULL,
+    [DataCriacao]   DATETIME2 (7)    NOT NULL,
+    [DataConclusao] DATETIME2 (7)    NULL,
+    [Status]        INT              NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[TBItemTarefa] (
+    [Id]        UNIQUEIDENTIFIER NOT NULL,
+    [Titulo]    NVARCHAR (100)   NOT NULL,
+    [Status]    INT              NOT NULL,
+    [Tarefa_Id] UNIQUEIDENTIFIER NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_TBItemTarefa_TBTarefa] FOREIGN KEY ([Tarefa_Id]) REFERENCES [dbo].[TBTarefa] ([Id])
+);
+

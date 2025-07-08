@@ -30,8 +30,7 @@ namespace eAgenda.WebApp
             });
             builder.Services.AddScoped<IDbConnection>(_ =>
             {
-                const string connectionString =
-                "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaDb;Integrated Security=True";
+                string? connectionString = builder.Configuration["SQL_CONNECTION_STRING"];
 
                 return new SqlConnection(connectionString);
             });
