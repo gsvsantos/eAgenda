@@ -1,20 +1,13 @@
 ﻿using eAgenda.Dominio.ModuloContato;
+using eAgenda.Infraestrutura.SQLServer.Compartilhado;
 using eAgenda.Infraestrutura.SQLServer.Extensions;
-using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace eAgenda.Infraestrutura.SQLServer.ModuloContato;
 
-public class RepositorioContatoSQL : IRepositorioContato
+public class RepositorioContatoSQL : RepositorioBaseSQL<Contato>, IRepositorioContato
 {
-    private readonly string connectionString =
-        "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaDb;Integrated Security=True";
-
-    public void CadastrarRegistro(Contato novoRegistro)
-    {
-        novoRegistro.Id = Guid.NewGuid();
-
-        const string sqlCadastrar =
-            @"INSERT INTO [TBCONTATO]
+    protected override string SqlCadastrar => @"INSERT INTO [TBCONTATO]
             (
                 [ID],
                 [NOME],
@@ -31,25 +24,8 @@ public class RepositorioContatoSQL : IRepositorioContato
                 @TELEFONE,
                 @EMPRESA,
                 @CARGO
-            );";
-
-        SqlConnection conexaoComBanco = new(connectionString);
-
-        SqlCommand comandoCadastro = new(sqlCadastrar, conexaoComBanco);
-
-        ConfigurarParametrosContato(novoRegistro, comandoCadastro);
-
-        conexaoComBanco.Open();
-
-        comandoCadastro.ExecuteNonQuery();
-
-        conexaoComBanco.Close();
-    }
-
-    public bool EditarRegistro(Guid idRegistro, Contato registroEditado)
-    {
-        const string sqlEditar =
-            @"UPDATE [TBCONTATO]	
+            )";
+    protected override string SqlEditar => @"UPDATE [TBCONTATO]	
 		    SET
 			    [NOME] = @NOME,
 			    [EMAIL] = @EMAIL,
@@ -58,80 +34,10 @@ public class RepositorioContatoSQL : IRepositorioContato
 			    [CARGO] = @CARGO
 		    WHERE
 			    [ID] = @ID";
-
-        SqlConnection conexaoComBanco = new(connectionString);
-
-        SqlCommand comandoEdicao = new(sqlEditar, conexaoComBanco);
-
-        registroEditado.Id = idRegistro;
-
-        ConfigurarParametrosContato(registroEditado, comandoEdicao);
-
-        conexaoComBanco.Open();
-
-        int linhasAfetadas = comandoEdicao.ExecuteNonQuery();
-
-        conexaoComBanco.Close();
-
-        return linhasAfetadas >= 1;
-    }
-
-    public bool ExcluirRegistro(Guid idRegistro)
-    {
-        const string sqlExcluir =
-            @"DELETE FROM [TBCONTATO]
+    protected override string SqlExcluir => @"DELETE FROM [TBCONTATO]
 		    WHERE
 			    [ID] = @ID";
-
-        SqlConnection conexaoComBanco = new(connectionString);
-
-        SqlCommand comandoExclusao = new(sqlExcluir, conexaoComBanco);
-
-        comandoExclusao.Parameters.AddWithValue("ID", idRegistro);
-
-        conexaoComBanco.Open();
-
-        int linhasAfetadas = comandoExclusao.ExecuteNonQuery();
-
-        conexaoComBanco.Close();
-
-        return linhasAfetadas >= 1;
-    }
-
-    public bool ExistePorEmailOuTelefone(string email, string telefone, Guid? ignorarId = null)
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool PossuiCompromissosVinculados(Guid id)
-    {
-        const string sqlVerificar =
-            @"SELECT COUNT(*)
-            FROM 
-                [TBCOMPROMISSO]
-            WHERE
-	            [CONTATO_ID] = @ID";
-
-        SqlConnection conexaoComBanco = new(connectionString);
-
-        conexaoComBanco.Open();
-
-        SqlCommand comandoVerificacao = new(sqlVerificar, conexaoComBanco);
-
-        comandoVerificacao.Parameters.AddWithValue("ID", id);
-
-        int quantidadeConflitos = Convert.ToInt32(comandoVerificacao.ExecuteScalar());
-
-        conexaoComBanco.Close();
-
-        return quantidadeConflitos >= 1;
-
-    }
-
-    public Contato? SelecionarRegistroPorId(Guid idRegistro)
-    {
-        const string sqlSelecionarPorId =
-            @"SELECT 
+    protected override string SqlSelecionarPorId => @"SELECT 
 		        [ID], 
 		        [NOME], 
 		        [EMAIL],
@@ -142,31 +48,7 @@ public class RepositorioContatoSQL : IRepositorioContato
 		        [TBCONTATO]
             WHERE
                 [ID] = @ID";
-
-        SqlConnection conexaoComBanco = new(connectionString);
-
-        SqlCommand comandoSelecao = new(sqlSelecionarPorId, conexaoComBanco);
-
-        comandoSelecao.Parameters.AddWithValue("ID", idRegistro);
-
-        conexaoComBanco.Open();
-
-        SqlDataReader leitor = comandoSelecao.ExecuteReader();
-
-        Contato? contato = null;
-
-        if (leitor.Read())
-            contato = ConverterParaContato(leitor);
-
-        conexaoComBanco.Close();
-
-        return contato;
-    }
-
-    public List<Contato> SelecionarRegistros()
-    {
-        const string sqlSelecionarTodos =
-            @"SELECT
+    protected override string SqlSelecionarTodos => @"SELECT
                 [ID],
                 [NOME],
                 [EMAIL],
@@ -175,28 +57,36 @@ public class RepositorioContatoSQL : IRepositorioContato
                 [CARGO]
             FROM
                 [TBCONTATO]";
+    private static string SqlVerificarVinculos => @"SELECT COUNT(*)
+            FROM 
+                [TBCOMPROMISSO]
+            WHERE
+	            [CONTATO_ID] = @ID";
 
-        SqlConnection conexaoComBanco = new(connectionString);
+    public RepositorioContatoSQL(IDbConnection conexaoComBanco) : base(conexaoComBanco) { }
+
+    public bool ExistePorEmailOuTelefone(string email, string telefone, Guid? ignorarId = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool PossuiCompromissosVinculados(Guid id)
+    {
+        IDbCommand comandoVerificacao = conexaoComBanco.CreateCommand();
+        comandoVerificacao.CommandText = SqlVerificarVinculos;
+
+        comandoVerificacao.AdicionarParametro("ID", id);
 
         conexaoComBanco.Open();
 
-        SqlCommand comandoSelecao = new(sqlSelecionarTodos, conexaoComBanco);
-
-        SqlDataReader leitor = comandoSelecao.ExecuteReader();
-
-        List<Contato> contatos = [];
-
-        while (leitor.Read())
-        {
-            contatos.Add(ConverterParaContato(leitor));
-        }
+        int quantidadeConflitos = Convert.ToInt32(comandoVerificacao.ExecuteScalar());
 
         conexaoComBanco.Close();
 
-        return contatos;
+        return quantidadeConflitos >= 1;
     }
 
-    private Contato ConverterParaContato(SqlDataReader leitor)
+    protected override Contato ConverterParaRegistro(IDataReader leitor)
     {
         return new(
             Guid.Parse(leitor["ID"].ToString()!),
@@ -208,13 +98,13 @@ public class RepositorioContatoSQL : IRepositorioContato
             );
     }
 
-    private void ConfigurarParametrosContato(Contato contato, SqlCommand comando)
+    protected override void ConfigurarParametrosRegistro(Contato contato, IDbCommand comando)
     {
-        comando.Parameters.AddWithValue("ID", contato.Id);
-        comando.Parameters.AddWithValue("NOME", contato.Nome);
-        comando.Parameters.AddWithValue("EMAIL", contato.Email);
-        comando.Parameters.AddWithValue("TELEFONE", contato.Telefone);
-        comando.Parameters.AdicionarValorNullavel("EMPRESA", contato.Empresa);
-        comando.Parameters.AdicionarValorNullavel("CARGO", contato.Cargo);
+        comando.AdicionarParametro("ID", contato.Id);
+        comando.AdicionarParametro("NOME", contato.Nome);
+        comando.AdicionarParametro("EMAIL", contato.Email);
+        comando.AdicionarParametro("TELEFONE", contato.Telefone);
+        comando.AdicionarParametro("EMPRESA", contato.Empresa!);
+        comando.AdicionarParametro("CARGO", contato.Cargo!);
     }
 }
