@@ -22,12 +22,12 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
     {
         novoRegistro.Id = Guid.NewGuid();
 
-        conexaoComBanco.Open();
-
         IDbCommand comandoCadastro = conexaoComBanco.CreateCommand();
         comandoCadastro.CommandText = SqlCadastrar;
 
         ConfigurarParametrosRegistro(novoRegistro, comandoCadastro);
+
+        conexaoComBanco.Open();
 
         comandoCadastro.ExecuteNonQuery();
 
@@ -36,14 +36,14 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 
     public virtual bool EditarRegistro(Guid idRegistro, T registroEditado)
     {
-        conexaoComBanco.Open();
-
         IDbCommand comandoEdicao = conexaoComBanco.CreateCommand();
         comandoEdicao.CommandText = SqlEditar;
 
         registroEditado.Id = idRegistro;
 
         ConfigurarParametrosRegistro(registroEditado, comandoEdicao);
+
+        conexaoComBanco.Open();
 
         int linhasAfetadas = comandoEdicao.ExecuteNonQuery();
 
@@ -54,12 +54,12 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 
     public virtual bool ExcluirRegistro(Guid idRegistro)
     {
-        conexaoComBanco.Open();
-
         IDbCommand comandoExclusao = conexaoComBanco.CreateCommand();
         comandoExclusao.CommandText = SqlExcluir;
 
         comandoExclusao.AdicionarParametro("ID", idRegistro);
+
+        conexaoComBanco.Open();
 
         int linhasAfetadas = comandoExclusao.ExecuteNonQuery();
 
@@ -70,12 +70,12 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 
     public virtual T? SelecionarRegistroPorId(Guid idRegistro)
     {
-        conexaoComBanco.Open();
-
         IDbCommand comandoSelecao = conexaoComBanco.CreateCommand();
         comandoSelecao.CommandText = SqlSelecionarPorId;
 
         comandoSelecao.AdicionarParametro("ID", idRegistro);
+
+        conexaoComBanco.Open();
 
         IDataReader leitor = comandoSelecao.ExecuteReader();
 
@@ -91,10 +91,10 @@ public abstract class RepositorioBaseSQL<T> where T : EntidadeBase<T>
 
     public virtual List<T> SelecionarRegistros()
     {
-        conexaoComBanco.Open();
-
         IDbCommand comandoSelecao = conexaoComBanco.CreateCommand();
         comandoSelecao.CommandText = SqlSelecionarTodos;
+
+        conexaoComBanco.Open();
 
         IDataReader leitor = comandoSelecao.ExecuteReader();
 
