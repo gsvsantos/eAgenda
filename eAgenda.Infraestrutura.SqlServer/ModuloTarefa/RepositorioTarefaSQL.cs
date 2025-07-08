@@ -310,7 +310,8 @@ public class RepositorioTarefaSQL : RepositorioBaseSQL<Tarefa>, IRepositorioTare
     {
         Tarefa? tarefa = base.SelecionarRegistroPorId(idRegistro);
 
-        CarregarItensTarefa(tarefa);
+        if (tarefa is not null)
+            CarregarItensTarefa(tarefa);
 
         return tarefa;
     }
@@ -415,7 +416,7 @@ public class RepositorioTarefaSQL : RepositorioBaseSQL<Tarefa>, IRepositorioTare
         IDbCommand comandoSelecao = conexaoComBanco.CreateCommand();
         comandoSelecao.CommandText = SqlSelecionarItensTarefa;
 
-        comandoSelecao.AdicionarParametro("TAREFA_ID", tarefa.Id);
+        comandoSelecao.AdicionarParametro("TAREFA_ID", tarefa!.Id);
 
         conexaoComBanco.Open();
 
@@ -429,7 +430,7 @@ public class RepositorioTarefaSQL : RepositorioBaseSQL<Tarefa>, IRepositorioTare
         conexaoComBanco.Close();
     }
 
-    private ItemTarefa ConverterParaItemTarefa(IDataReader leitor, Tarefa tarefa)
+    private static ItemTarefa ConverterParaItemTarefa(IDataReader leitor, Tarefa tarefa)
     {
         return new(
             Guid.Parse(leitor["ID"].ToString()!),
@@ -439,7 +440,7 @@ public class RepositorioTarefaSQL : RepositorioBaseSQL<Tarefa>, IRepositorioTare
         );
     }
 
-    private void ConfigurarParametrosItemTarefa(ItemTarefa item, IDbCommand comando)
+    private static void ConfigurarParametrosItemTarefa(ItemTarefa item, IDbCommand comando)
     {
         comando.AdicionarParametro("ID", item.Id);
         comando.AdicionarParametro("TITULO", item.Titulo);

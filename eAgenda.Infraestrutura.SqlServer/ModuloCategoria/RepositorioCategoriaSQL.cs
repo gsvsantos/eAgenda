@@ -75,7 +75,7 @@ public class RepositorioCategoriaSQL : RepositorioBaseSQL<Categoria>, IRepositor
         return categorias;
     }
 
-    private Despesa ConverterParaDespesa(IDataReader leitor)
+    private static Despesa ConverterParaDespesa(IDataReader leitor)
     {
         return new(
             Guid.Parse(leitor["ID"].ToString()!),
