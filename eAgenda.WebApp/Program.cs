@@ -41,6 +41,7 @@ namespace eAgenda.WebApp
             builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaSQL>();
             builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaSQL>();
 
+            builder.Services.AddEntityFrameworkConfig(builder.Configuration);
             builder.Services.AddSerilogConfig(builder.Logging);
 
             WebApplication app = builder.Build();
