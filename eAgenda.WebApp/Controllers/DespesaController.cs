@@ -1,23 +1,24 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
-using eAgenda.Infraestrutura.Arquivos.Compartilhado;
+using eAgenda.Infraestrutura.ORM.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace eAgenda.WebApp.Controllers;
 
 [Route("despesas")]
 public class DespesaController : Controller
 {
-    private readonly ContextoDados contextoDados;
+    private readonly eAgendaDbContext contexto;
     private readonly IRepositorioDespesa repositorioDespesa;
     private readonly IRepositorioCategoria repositorioCategoria;
 
-    public DespesaController(ContextoDados contextoDados, IRepositorioDespesa repositorioDespesa, IRepositorioCategoria repositorioCategoria)
+    public DespesaController(eAgendaDbContext contexto, IRepositorioDespesa repositorioDespesa, IRepositorioCategoria repositorioCategoria)
     {
-        this.contextoDados = contextoDados;
+        this.contexto = contexto;
         this.repositorioDespesa = repositorioDespesa;
         this.repositorioCategoria = repositorioCategoria;
     }
@@ -92,7 +93,22 @@ public class DespesaController : Controller
             }
         }
 
-        repositorioDespesa.CadastrarRegistro(novaDespesa);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+        try
+        {
+            repositorioDespesa.CadastrarRegistro(novaDespesa);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -166,7 +182,22 @@ public class DespesaController : Controller
             }
         }
 
-        repositorioDespesa.EditarRegistro(id, despesaEditada);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+        try
+        {
+            repositorioDespesa.EditarRegistro(id, despesaEditada);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -186,7 +217,22 @@ public class DespesaController : Controller
     [HttpPost("excluir/{id:guid}")]
     public IActionResult ExcluirConfirmado(Guid id)
     {
-        repositorioDespesa.ExcluirRegistro(id);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+        try
+        {
+            repositorioDespesa.ExcluirRegistro(id);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -225,8 +271,22 @@ public class DespesaController : Controller
                     categorias));
         }
 
-        repositorioDespesa.AdicionarCategoria(categoriaSelecionada, despesaSelecionada);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
+        try
+        {
+            repositorioDespesa.AdicionarCategoria(categoriaSelecionada, despesaSelecionada);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
         GerenciarCategoriasViewModel gerenciarCategoriaVm = new(
             despesaSelecionada,
             categorias);
@@ -240,8 +300,22 @@ public class DespesaController : Controller
         Despesa despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id)!;
         Categoria categoriaSelecionada = repositorioCategoria.SelecionarRegistroPorId(idCategoria)!;
 
-        repositorioDespesa.RemoverCategoria(categoriaSelecionada, despesaSelecionada);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
+        try
+        {
+            repositorioDespesa.RemoverCategoria(categoriaSelecionada, despesaSelecionada);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
         List<Categoria> categorias = repositorioCategoria.SelecionarRegistros();
 
         GerenciarCategoriasViewModel gerenciarCategoriaVm = new(

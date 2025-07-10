@@ -4,10 +4,10 @@ using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
-using eAgenda.Infraestrutura.SQLServer.ModuloCategoria;
+using eAgenda.Infraestrutura.ORM.ModuloCategoria;
+using eAgenda.Infraestrutura.ORM.ModuloDespesa;
 using eAgenda.Infraestrutura.SQLServer.ModuloCompromisso;
 using eAgenda.Infraestrutura.SQLServer.ModuloContato;
-using eAgenda.Infraestrutura.SQLServer.ModuloDespesa;
 using eAgenda.Infraestrutura.SQLServer.ModuloTarefa;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
@@ -35,10 +35,10 @@ namespace eAgenda.WebApp
                 return new SqlConnection(connectionString);
             });
             builder.Services.AddScoped((IServiceProvider _) => new ContextoDados(true));
-            builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaSQL>();
+            builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaORM>();
             builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoSQL>();
             builder.Services.AddScoped<IRepositorioContato, RepositorioContatoSQL>();
-            builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaSQL>();
+            builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaORM>();
             builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaSQL>();
 
             builder.Services.AddEntityFrameworkConfig(builder.Configuration);
