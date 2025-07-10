@@ -8,36 +8,16 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
 {
     public RepositorioTarefaORM(EAgendaDbContext contexto) : base(contexto) { }
 
-    public void AtualizarStatusRegistros()
+    public override Tarefa? SelecionarRegistroPorId(Guid idRegistro)
     {
-        foreach (Tarefa tarefa in SelecionarRegistros())
-        {
-            tarefa.AtualizarStatus();
-        }
+        return registros
+            .Include(t => t.Itens)
+            .FirstOrDefault(t => t.Id.Equals(idRegistro));
     }
 
-    public void CancelarItensTarefa(Tarefa tarefa)
+    public override List<Tarefa> SelecionarRegistros()
     {
-        foreach (ItemTarefa i in tarefa.Itens)
-        {
-            i.Cancelar();
-        }
-    }
-
-    public void ConcluirItensTarefa(Tarefa tarefa)
-    {
-        foreach (ItemTarefa i in tarefa.Itens)
-        {
-            i.Concluir();
-        }
-    }
-
-    public void ReabrirItensTarefa(Tarefa tarefa)
-    {
-        foreach (ItemTarefa i in tarefa.Itens)
-        {
-            i.Reabrir();
-        }
+        return [.. registros.Include(t => t.Itens)];
     }
 
     public ItemTarefa? SelecionarItem(Tarefa tarefa, Guid idItem)
@@ -76,14 +56,35 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
             .Include(t => t.Itens)];
     }
 
-    public override Tarefa? SelecionarRegistroPorId(Guid idRegistro)
+    public void AtualizarStatusRegistros()
     {
-        return registros
-            .Include(t => t.Itens)
-            .FirstOrDefault(t => t.Id.Equals(idRegistro));
+        foreach (Tarefa tarefa in SelecionarRegistros())
+        {
+            tarefa.AtualizarStatus();
+        }
     }
-    public override List<Tarefa> SelecionarRegistros()
+
+    public void CancelarItensTarefa(Tarefa tarefa)
     {
-        return [.. registros.Include(t => t.Itens)];
+        foreach (ItemTarefa i in tarefa.Itens)
+        {
+            i.Cancelar();
+        }
+    }
+
+    public void ConcluirItensTarefa(Tarefa tarefa)
+    {
+        foreach (ItemTarefa i in tarefa.Itens)
+        {
+            i.Concluir();
+        }
+    }
+
+    public void ReabrirItensTarefa(Tarefa tarefa)
+    {
+        foreach (ItemTarefa i in tarefa.Itens)
+        {
+            i.Reabrir();
+        }
     }
 }

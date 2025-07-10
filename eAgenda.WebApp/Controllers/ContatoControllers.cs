@@ -1,5 +1,4 @@
-﻿using eAgenda.Dominio.ModuloCompromisso;
-using eAgenda.Dominio.ModuloContato;
+﻿using eAgenda.Dominio.ModuloContato;
 using eAgenda.Infraestrutura.ORM.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Helpers;
@@ -14,13 +13,11 @@ namespace eAgenda.WebApp.Controllers
     {
         private readonly EAgendaDbContext contexto;
         private readonly IRepositorioContato repositorioContato;
-        private readonly IRepositorioCompromisso repositorioCompromisso;
 
-        public ContatoController(EAgendaDbContext contexto, IRepositorioContato repositorioContato, IRepositorioCompromisso repositorioCompromisso)
+        public ContatoController(EAgendaDbContext contexto, IRepositorioContato repositorioContato)
         {
             this.contexto = contexto;
             this.repositorioContato = repositorioContato;
-            this.repositorioCompromisso = repositorioCompromisso;
         }
 
         [HttpGet("")]
@@ -203,7 +200,6 @@ namespace eAgenda.WebApp.Controllers
         public IActionResult Detalhes(Guid id)
         {
             Contato contato = repositorioContato.SelecionarRegistroPorId(id)!;
-            contato.Compromissos = repositorioCompromisso.SelecionarCompromissosContato(id);
 
             if (contato == null)
                 return NotFound();

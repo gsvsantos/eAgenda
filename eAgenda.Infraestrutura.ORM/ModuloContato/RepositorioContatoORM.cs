@@ -1,11 +1,22 @@
 ﻿using eAgenda.Dominio.ModuloContato;
 using eAgenda.Infraestrutura.ORM.Compartilhado;
+using Microsoft.EntityFrameworkCore;
 
 namespace eAgenda.Infraestrutura.ORM.ModuloContato;
 
 public class RepositorioContatoORM : RepositorioBaseORM<Contato>, IRepositorioContato
 {
     public RepositorioContatoORM(EAgendaDbContext contexto) : base(contexto) { }
+
+    public override Contato? SelecionarRegistroPorId(Guid idRegistro)
+    {
+        return registros.Where(c => c.Id.Equals(idRegistro)).Include(c => c.Compromissos).FirstOrDefault();
+    }
+
+    public override List<Contato> SelecionarRegistros()
+    {
+        return [.. registros.Include(c => c.Compromissos)];
+    }
 
     public bool ExistePorEmailOuTelefone(string email, string telefone, Guid? ignorarId = null)
     {

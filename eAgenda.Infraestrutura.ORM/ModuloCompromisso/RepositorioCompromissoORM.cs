@@ -1,5 +1,6 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Infraestrutura.ORM.Compartilhado;
+using Microsoft.EntityFrameworkCore;
 
 namespace eAgenda.Infraestrutura.ORM.ModuloCompromisso;
 
@@ -7,10 +8,14 @@ public class RepositorioCompromissoORM : RepositorioBaseORM<Compromisso>, IRepos
 {
     public RepositorioCompromissoORM(EAgendaDbContext contexto) : base(contexto) { }
 
-    public List<Compromisso> SelecionarCompromissosContato(Guid idRegistro)
+    public override Compromisso? SelecionarRegistroPorId(Guid idRegistro)
     {
-        return [.. registros.Where(comp =>
-            comp.Contato!.Id.Equals(idRegistro))];
+        return registros.Where(c => c.Id.Equals(idRegistro)).Include(c => c.Contato).FirstOrDefault();
+    }
+
+    public override List<Compromisso> SelecionarRegistros()
+    {
+        return [.. registros.Include(c => c.Contato)];
     }
 
     public bool TemConflito(Compromisso compromisso)
