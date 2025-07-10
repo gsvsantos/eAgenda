@@ -11,27 +11,30 @@ public class MapeadorDespesaORM : IEntityTypeConfiguration<Despesa>
         builder.ToTable("TBDespesa");
 
         builder.Property(d => d.Id)
-            .ValueGeneratedNever()
-            .IsRequired();
+               .ValueGeneratedNever()
+               .IsRequired();
 
         builder.Property(d => d.Titulo)
-            .IsRequired();
+               .HasMaxLength(100)
+               .IsRequired();
 
         builder.Property(d => d.Descricao)
-            .IsRequired();
+               .HasMaxLength(100)
+               .IsRequired();
 
         builder.Property(d => d.DataOcorrencia)
-            .IsRequired();
+               .HasColumnType("datetime2(7)")
+               .IsRequired();
 
         builder.Property(d => d.Valor)
-            .HasPrecision(18, 2)
-            .IsRequired();
+               .HasPrecision(18, 2)
+               .IsRequired();
 
         builder.Property(d => d.FormaPagamento)
-            .IsRequired();
+               .IsRequired();
 
         builder.HasMany(d => d.Categorias)
-            .WithMany(c => c.Despesas)
-            .UsingEntity(j => j.ToTable("TBDespesa_TBCategoria"));
+               .WithMany(c => c.Despesas)
+               .UsingEntity(j => j.ToTable("TBDespesa_TBCategoria"));
     }
 }

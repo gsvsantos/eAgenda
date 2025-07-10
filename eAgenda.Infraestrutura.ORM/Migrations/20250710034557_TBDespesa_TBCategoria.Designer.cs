@@ -12,7 +12,7 @@ using eAgenda.Infraestrutura.ORM.Compartilhado;
 namespace eAgenda.Infraestrutura.ORM.Migrations
 {
     [DbContext(typeof(eAgendaDbContext))]
-    [Migration("20250709212803_TBDespesa_TBCategoria")]
+    [Migration("20250710034557_TBDespesa_TBCategoria")]
     partial class TBDespesa_TBCategoria
     {
         /// <inheritdoc />
@@ -47,7 +47,8 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -60,18 +61,20 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataOcorrencia")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2(7)");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("FormaPagamento")
                         .HasColumnType("int");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Valor")
                         .HasPrecision(18, 2)

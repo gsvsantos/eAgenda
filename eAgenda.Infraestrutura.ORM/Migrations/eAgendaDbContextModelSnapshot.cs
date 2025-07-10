@@ -44,7 +44,8 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -57,18 +58,20 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataOcorrencia")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2(7)");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("FormaPagamento")
                         .HasColumnType("int");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Valor")
                         .HasPrecision(18, 2)

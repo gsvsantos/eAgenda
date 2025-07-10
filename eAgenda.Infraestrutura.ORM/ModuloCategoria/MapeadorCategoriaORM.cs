@@ -11,13 +11,14 @@ public class MapeadorCategoriaORM : IEntityTypeConfiguration<Categoria>
         builder.ToTable("TBCategoria");
 
         builder.Property(c => c.Id)
-            .ValueGeneratedNever()
-            .IsRequired();
+               .ValueGeneratedNever()
+               .IsRequired();
 
         builder.Property(c => c.Titulo)
-            .IsRequired();
+               .HasMaxLength(100)
+               .IsRequired();
 
         builder.HasMany(c => c.Despesas)
-            .WithMany(d => d.Categorias);
+               .WithMany(d => d.Categorias);
     }
 }

@@ -16,7 +16,7 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Titulo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,9 +28,9 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataOcorrencia = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DataOcorrencia = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     FormaPagamento = table.Column<int>(type: "int", nullable: false)
                 },
