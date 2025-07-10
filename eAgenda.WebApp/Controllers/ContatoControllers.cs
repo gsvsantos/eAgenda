@@ -196,7 +196,6 @@ namespace eAgenda.WebApp.Controllers
                 throw;
             }
 
-
             return RedirectToAction(nameof(Index));
         }
 

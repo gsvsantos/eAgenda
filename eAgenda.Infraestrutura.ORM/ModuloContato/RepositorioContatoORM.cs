@@ -1,7 +1,7 @@
 ﻿using eAgenda.Dominio.ModuloContato;
 using eAgenda.Infraestrutura.ORM.Compartilhado;
 
-namespace eAgenda.Infraestrutura.ORM.ModuloConta;
+namespace eAgenda.Infraestrutura.ORM.ModuloContato;
 
 public class RepositorioContatoORM : RepositorioBaseORM<Contato>, IRepositorioContato
 {
@@ -9,11 +9,12 @@ public class RepositorioContatoORM : RepositorioBaseORM<Contato>, IRepositorioCo
 
     public bool ExistePorEmailOuTelefone(string email, string telefone, Guid? ignorarId = null)
     {
-        throw new NotImplementedException();
+        return registros.Any(x => (x.Email == email || x.Telefone == telefone)
+            && (!ignorarId.HasValue || x.Id != ignorarId.Value));
     }
 
     public bool PossuiCompromissosVinculados(Guid id)
     {
-        throw new NotImplementedException();
+        return registros.Any(c => c.Compromissos.Any(p => p.Contato!.Id == id));
     }
 }
