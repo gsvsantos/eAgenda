@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eAgenda.Infraestrutura.ORM.Compartilhado;
 
-public class eAgendaDbContext : DbContext
+public class EAgendaDbContext : DbContext
 {
-    public eAgendaDbContext(DbContextOptions options) : base(options) { }
+    public EAgendaDbContext(DbContextOptions options) : base(options) { }
     public DbSet<Categoria> Categorias { get; set; }
     public DbSet<Despesa> Despesas { get; set; }
 
@@ -16,5 +16,7 @@ public class eAgendaDbContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new MapeadorCategoriaORM());
         modelBuilder.ApplyConfiguration(new MapeadorDespesaORM());
+
+        base.OnModelCreating(modelBuilder);
     }
 }

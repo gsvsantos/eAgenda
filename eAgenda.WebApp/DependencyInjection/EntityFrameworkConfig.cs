@@ -7,7 +7,7 @@ public static class EntityFrameworkConfig
 {
     public static void AddEntityFrameworkConfig(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<eAgendaDbContext>(options =>
+        services.AddDbContext<EAgendaDbContext>(options =>
         options.UseSqlServer(configuration["SQL_CONNECTION_STRING"]));
     }
 }

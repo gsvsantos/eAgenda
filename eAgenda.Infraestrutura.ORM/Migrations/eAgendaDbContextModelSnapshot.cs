@@ -10,8 +10,8 @@ using eAgenda.Infraestrutura.ORM.Compartilhado;
 
 namespace eAgenda.Infraestrutura.ORM.Migrations
 {
-    [DbContext(typeof(eAgendaDbContext))]
-    partial class eAgendaDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(EAgendaDbContext))]
+    partial class EAgendaDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -58,12 +58,12 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataOcorrencia")
-                        .HasColumnType("datetime2(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("FormaPagamento")
                         .HasColumnType("int");
