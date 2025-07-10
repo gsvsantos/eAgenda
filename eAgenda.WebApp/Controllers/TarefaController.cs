@@ -126,6 +126,8 @@ public class TarefaController : Controller
     {
         repositorioTarefa.AtualizarStatusRegistros();
 
+        contexto.SaveChanges();
+
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
@@ -136,6 +138,10 @@ public class TarefaController : Controller
     [HttpGet, Route("/tarefas/{id:guid}/gerenciar-itens")]
     public IActionResult GerenciarItens(Guid id)
     {
+        repositorioTarefa.AtualizarStatusRegistros();
+
+        contexto.SaveChanges();
+
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         List<ItemTarefa> itens = [.. tarefaSelecionada.Itens];
 
