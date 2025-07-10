@@ -5,10 +5,10 @@ using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.Infraestrutura.ORM.ModuloCategoria;
+using eAgenda.Infraestrutura.ORM.ModuloCompromisso;
+using eAgenda.Infraestrutura.ORM.ModuloConta;
 using eAgenda.Infraestrutura.ORM.ModuloDespesa;
-using eAgenda.Infraestrutura.SQLServer.ModuloCompromisso;
-using eAgenda.Infraestrutura.SQLServer.ModuloContato;
-using eAgenda.Infraestrutura.SQLServer.ModuloTarefa;
+using eAgenda.Infraestrutura.ORM.ModuloTarefa;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
 using Microsoft.Data.SqlClient;
@@ -36,10 +36,10 @@ namespace eAgenda.WebApp
             });
             builder.Services.AddScoped((IServiceProvider _) => new ContextoDados(true));
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaORM>();
-            builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoSQL>();
-            builder.Services.AddScoped<IRepositorioContato, RepositorioContatoSQL>();
+            builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoORM>();
+            builder.Services.AddScoped<IRepositorioContato, RepositorioContatoORM>();
             builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaORM>();
-            builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaSQL>();
+            builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaORM>();
 
             builder.Services.AddEntityFrameworkConfig(builder.Configuration);
             builder.Services.AddSerilogConfig(builder.Logging);
