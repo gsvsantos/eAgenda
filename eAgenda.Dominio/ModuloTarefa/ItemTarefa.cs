@@ -16,6 +16,7 @@ public class ItemTarefa
         Tarefa = tarefa;
         Status = StatusItemTarefa.EmAndamento;
     }
+    protected ItemTarefa() { }
 
     public ItemTarefa(Guid id, string titulo, StatusItemTarefa status, Tarefa tarefa) : this(titulo, tarefa)
     {

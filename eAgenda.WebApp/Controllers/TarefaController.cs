@@ -1,4 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloTarefa;
+using eAgenda.Infraestrutura.ORM.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,16 +9,20 @@ namespace eAgenda.WebApp.Controllers;
 [Route("tarefas")]
 public class TarefaController : Controller
 {
+    private readonly EAgendaDbContext contexto;
     private readonly IRepositorioTarefa repositorioTarefa;
 
-    public TarefaController(IRepositorioTarefa repositorioTarefa)
+    public TarefaController(EAgendaDbContext contexto, IRepositorioTarefa repositorioTarefa)
     {
+        this.contexto = contexto;
         this.repositorioTarefa = repositorioTarefa;
     }
 
     public IActionResult Index(string? status, string? prioridade)
     {
         repositorioTarefa.AtualizarStatusRegistros();
+
+        contexto.SaveChanges();
 
         List<Tarefa> tarefas = repositorioTarefa.SelecionarRegistros();
 
@@ -56,6 +61,8 @@ public class TarefaController : Controller
 
         repositorioTarefa.CadastrarRegistro(novaTarefa);
 
+        contexto.SaveChanges();
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -84,6 +91,8 @@ public class TarefaController : Controller
 
         repositorioTarefa.EditarRegistro(id, tarefaEditada);
 
+        this.contexto.SaveChanges();
+
         if (contexto == nameof(Detalhes))
             return RedirectToAction(nameof(Detalhes), new { id });
 
@@ -106,6 +115,8 @@ public class TarefaController : Controller
     public IActionResult ExcluirConfirmado(Guid id)
     {
         repositorioTarefa.ExcluirRegistro(id);
+
+        contexto.SaveChanges();
 
         return RedirectToAction(nameof(Index));
     }
@@ -155,7 +166,10 @@ public class TarefaController : Controller
             itens));
         }
 
-        repositorioTarefa.AdicionarItem(novoItem);
+        tarefaSelecionada.AdicionarItem(novoItem);
+        contexto.Itens.Add(novoItem);
+
+        contexto.SaveChanges();
 
         GerenciarItensViewModel gerenciarItensVM = new(
             tarefaSelecionada,
@@ -170,7 +184,10 @@ public class TarefaController : Controller
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem)!;
 
-        repositorioTarefa.RemoverItem(itemSelecionado);
+        tarefaSelecionada.RemoverItem(itemSelecionado);
+        this.contexto.Itens.Remove(itemSelecionado);
+
+        this.contexto.SaveChanges();
 
         GerenciarItensViewModel gerenciarItensVM = new(
             tarefaSelecionada,
@@ -185,7 +202,9 @@ public class TarefaController : Controller
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem)!;
 
-        repositorioTarefa.ConcluirItem(itemSelecionado);
+        itemSelecionado.Concluir();
+
+        contexto.SaveChanges();
 
         GerenciarItensViewModel gerenciarItensVM = new(
             tarefaSelecionada,
@@ -200,7 +219,9 @@ public class TarefaController : Controller
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem)!;
 
-        repositorioTarefa.ReabrirItem(itemSelecionado);
+        itemSelecionado.Reabrir();
+
+        contexto.SaveChanges();
 
         GerenciarItensViewModel gerenciarItensVM = new(
             tarefaSelecionada,
@@ -214,7 +235,9 @@ public class TarefaController : Controller
     {
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
-        repositorioTarefa.ConcluirItensTarefa(tarefaSelecionada);
+        tarefaSelecionada.Concluir();
+
+        contexto.SaveChanges();
 
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
 
@@ -226,7 +249,9 @@ public class TarefaController : Controller
     {
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
-        repositorioTarefa.ReabrirItensTarefa(tarefaSelecionada);
+        tarefaSelecionada.Reabrir();
+
+        contexto.SaveChanges();
 
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
 
@@ -238,7 +263,9 @@ public class TarefaController : Controller
     {
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
-        repositorioTarefa.CancelarItensTarefa(tarefaSelecionada);
+        tarefaSelecionada.Cancelar();
+
+        contexto.SaveChanges();
 
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
 
