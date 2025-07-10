@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using eAgenda.Dominio.ModuloCompromisso;
+﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.WebApp.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace eAgenda.WebApp.Models;
 
@@ -13,7 +13,7 @@ public abstract class FormularioCompromissoViewModel
 
     [Required(ErrorMessage = "Digite o Assunto.")]
     [DisplayName("Assunto")]
-    [StringLength(100, MinimumLength = 2, ErrorMessage = "O assunto do compromisso deve ter entre 2 e 100 caracteres.")]
+    [StringLength(200, MinimumLength = 2, ErrorMessage = "O assunto do compromisso deve ter entre 2 e 200 caracteres.")]
     public string Assunto { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Selecione a data do compromisso.")]
@@ -36,15 +36,15 @@ public abstract class FormularioCompromissoViewModel
     public TipoCompromisso TipoCompromisso { get; set; }
 
     [DisplayName("Local")]
-    [StringLength(100, ErrorMessage = "O local deve ter no máximo 100 caracteres.")]
-    public string? Local { get; set; } = string.Empty;
+    [StringLength(255, ErrorMessage = "O local deve ter no máximo 255 caracteres.")]
+    public string? Local { get; set; }
 
     [DisplayName("Link")]
-    [StringLength(200, ErrorMessage = "O link deve ter no máximo 200 caracteres.")]
-    public string? Link { get; set; } = string.Empty;
+    [StringLength(1000, ErrorMessage = "O link deve ter no máximo 1.000 caracteres.")]
+    public string? Link { get; set; }
 
     [DisplayName("Contato")]
-    public Guid? ContatoId { get; set; } = Guid.Empty;
+    public Guid? ContatoId { get; set; }
     public List<SelectListItem> Contatos { get; set; } = [];
 }
 
