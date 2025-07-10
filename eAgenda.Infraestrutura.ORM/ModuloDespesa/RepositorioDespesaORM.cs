@@ -5,53 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eAgenda.Infraestrutura.ORM.ModuloDespesa;
 
-public class RepositorioDespesaORM : IRepositorioDespesa
+public class RepositorioDespesaORM : RepositorioBaseORM<Despesa>, IRepositorioDespesa
 {
-    private readonly eAgendaDbContext contexto;
+    public RepositorioDespesaORM(EAgendaDbContext contexto) : base(contexto) { }
 
-    public RepositorioDespesaORM(eAgendaDbContext contexto)
+    public override Despesa? SelecionarRegistroPorId(Guid idRegistro)
     {
-        this.contexto = contexto;
+        return registros.Where(d => d.Id.Equals(idRegistro)).Include(d => d.Categorias).FirstOrDefault();
     }
 
-    public void CadastrarRegistro(Despesa novoRegistro)
+    public override List<Despesa> SelecionarRegistros()
     {
-        novoRegistro.Id = Guid.NewGuid();
-        contexto.Despesas.Add(novoRegistro);
-    }
-
-    public bool EditarRegistro(Guid idRegistro, Despesa registroEditado)
-    {
-        Despesa? despesaSelecionada = SelecionarRegistroPorId(idRegistro);
-
-        if (despesaSelecionada is null)
-            return false;
-
-        despesaSelecionada.AtualizarRegistro(registroEditado);
-
-        return true;
-    }
-
-    public bool ExcluirRegistro(Guid idRegistro)
-    {
-        Despesa? despesaSelecionada = SelecionarRegistroPorId(idRegistro);
-
-        if (despesaSelecionada is null)
-            return false;
-
-        contexto.Despesas.Remove(despesaSelecionada);
-
-        return true;
-    }
-
-    public Despesa? SelecionarRegistroPorId(Guid idRegistro)
-    {
-        return contexto.Despesas.Where(d => d.Id.Equals(idRegistro)).Include(d => d.Categorias).FirstOrDefault();
-    }
-
-    public List<Despesa> SelecionarRegistros()
-    {
-        return [.. contexto.Despesas.Include(d => d.Categorias)];
+        return [.. registros.Include(d => d.Categorias)];
     }
 
     public void AdicionarCategoria(Categoria categoria, Despesa despesa)
