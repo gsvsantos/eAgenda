@@ -6,7 +6,7 @@ using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
 using eAgenda.Infraestrutura.ORM.ModuloCategoria;
 using eAgenda.Infraestrutura.ORM.ModuloCompromisso;
-using eAgenda.Infraestrutura.ORM.ModuloConta;
+using eAgenda.Infraestrutura.ORM.ModuloContato;
 using eAgenda.Infraestrutura.ORM.ModuloDespesa;
 using eAgenda.Infraestrutura.ORM.ModuloTarefa;
 using eAgenda.WebApp.ActionFilters;

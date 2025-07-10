@@ -9,9 +9,8 @@ public class RepositorioCompromissoORM : RepositorioBaseORM<Compromisso>, IRepos
 
     public List<Compromisso> SelecionarCompromissosContato(Guid idRegistro)
     {
-        return registros.Where(comp =>
-            comp.Contato!.Id.Equals(idRegistro))
-            .ToList();
+        return [.. registros.Where(comp =>
+            comp.Contato!.Id.Equals(idRegistro))];
     }
 
     public bool TemConflito(Compromisso compromisso)

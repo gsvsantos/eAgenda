@@ -10,7 +10,6 @@ public class RepositorioCategoriaORM : RepositorioBaseORM<Categoria>, IRepositor
 
     public override Categoria? SelecionarRegistroPorId(Guid idRegistro)
     {
-
         return registros.Where(c => c.Id.Equals(idRegistro)).Include(c => c.Despesas).FirstOrDefault();
     }
 
