@@ -8,11 +8,6 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
 {
     public RepositorioTarefaORM(EAgendaDbContext contexto) : base(contexto) { }
 
-    public void AdicionarItem(ItemTarefa item)
-    {
-        throw new NotImplementedException();
-    }
-
     public void AtualizarStatusRegistros()
     {
         foreach (Tarefa tarefa in SelecionarRegistros())
@@ -29,22 +24,12 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
         }
     }
 
-    public void ConcluirItem(ItemTarefa item)
-    {
-        throw new NotImplementedException();
-    }
-
     public void ConcluirItensTarefa(Tarefa tarefa)
     {
         foreach (ItemTarefa i in tarefa.Itens)
         {
             i.Concluir();
         }
-    }
-
-    public void ReabrirItem(ItemTarefa item)
-    {
-        throw new NotImplementedException();
     }
 
     public void ReabrirItensTarefa(Tarefa tarefa)
@@ -55,11 +40,6 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
         }
     }
 
-    public void RemoverItem(ItemTarefa item)
-    {
-        throw new NotImplementedException();
-    }
-
     public ItemTarefa? SelecionarItem(Tarefa tarefa, Guid idItem)
     {
         return tarefa.Itens.FirstOrDefault(i => i.Id == idItem);
@@ -67,12 +47,33 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
 
     public List<Tarefa> SelecionarTarefasPorPrioridade(string? prioridade)
     {
-        throw new NotImplementedException();
+        NivelPrioridade? prioridadeAtual = prioridade switch
+        {
+            "Baixa" => NivelPrioridade.Baixa,
+            "Media" => NivelPrioridade.Media,
+            "Alta" => NivelPrioridade.Alta,
+            _ => null
+        };
+
+        return [.. registros
+            .Where(t => t.Prioridade.Equals(prioridadeAtual))
+            .Include(t => t.Itens)];
     }
 
     public List<Tarefa> SelecionarTarefasPorStatus(string? status)
     {
-        throw new NotImplementedException();
+        StatusTarefa? statusAtual = status switch
+        {
+            "Pendente" => StatusTarefa.Pendente,
+            "EmAndamento" => StatusTarefa.EmAndamento,
+            "Concluida" => StatusTarefa.Concluida,
+            "Cancelada" => StatusTarefa.Cancelada,
+            _ => null
+        };
+
+        return [.. registros
+            .Where(t => t.Status.Equals(statusAtual))
+            .Include(t => t.Itens)];
     }
 
     public override Tarefa? SelecionarRegistroPorId(Guid idRegistro)
@@ -83,8 +84,6 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
     }
     public override List<Tarefa> SelecionarRegistros()
     {
-        return registros
-            .Include(t => t.Itens)
-            .ToList();
+        return [.. registros.Include(t => t.Itens)];
     }
 }

@@ -156,7 +156,7 @@ public class TarefaController : Controller
     public IActionResult AdicionarItem(Guid id, AdicionarItemViewModel adicionarItemVM)
     {
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
-        ItemTarefa novoItem = new(adicionarItemVM.TituloItem, tarefaSelecionada);
+        ItemTarefa novoItem = new(adicionarItemVM.TituloItem, tarefaSelecionada) { Tarefa = tarefaSelecionada };
 
         if (tarefaSelecionada.Itens.Any(i => i.Titulo == novoItem.Titulo))
         {
@@ -194,10 +194,6 @@ public class TarefaController : Controller
         this.contexto.Itens.Remove(itemSelecionado);
 
         this.contexto.SaveChanges();
-
-        GerenciarItensViewModel gerenciarItensVM = new(
-            tarefaSelecionada,
-            tarefaSelecionada.Itens);
 
         return RedirectToAction(contexto, new { id });
     }
