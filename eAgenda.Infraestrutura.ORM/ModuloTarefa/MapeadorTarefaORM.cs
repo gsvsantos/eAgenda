@@ -19,7 +19,7 @@ public class MapeadorTarefaORM : IEntityTypeConfiguration<Tarefa>
             .IsRequired();
 
         builder.Property(t => t.Descricao)
-            .HasMaxLength(100)
+            .HasMaxLength(1000)
             .IsRequired(false);
 
         builder.Property(t => t.Prioridade)
