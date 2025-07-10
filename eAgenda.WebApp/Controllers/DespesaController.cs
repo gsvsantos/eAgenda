@@ -12,11 +12,11 @@ namespace eAgenda.WebApp.Controllers;
 [Route("despesas")]
 public class DespesaController : Controller
 {
-    private readonly eAgendaDbContext contexto;
+    private readonly EAgendaDbContext contexto;
     private readonly IRepositorioDespesa repositorioDespesa;
     private readonly IRepositorioCategoria repositorioCategoria;
 
-    public DespesaController(eAgendaDbContext contexto, IRepositorioDespesa repositorioDespesa, IRepositorioCategoria repositorioCategoria)
+    public DespesaController(EAgendaDbContext contexto, IRepositorioDespesa repositorioDespesa, IRepositorioCategoria repositorioCategoria)
     {
         this.contexto = contexto;
         this.repositorioDespesa = repositorioDespesa;

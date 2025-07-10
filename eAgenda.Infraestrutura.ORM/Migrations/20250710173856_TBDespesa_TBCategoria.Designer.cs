@@ -11,8 +11,8 @@ using eAgenda.Infraestrutura.ORM.Compartilhado;
 
 namespace eAgenda.Infraestrutura.ORM.Migrations
 {
-    [DbContext(typeof(eAgendaDbContext))]
-    [Migration("20250710034557_TBDespesa_TBCategoria")]
+    [DbContext(typeof(EAgendaDbContext))]
+    [Migration("20250710173856_TBDespesa_TBCategoria")]
     partial class TBDespesa_TBCategoria
     {
         /// <inheritdoc />
@@ -61,12 +61,12 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataOcorrencia")
-                        .HasColumnType("datetime2(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("FormaPagamento")
                         .HasColumnType("int");

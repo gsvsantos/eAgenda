@@ -29,8 +29,8 @@ namespace eAgenda.Infraestrutura.ORM.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Titulo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    DataOcorrencia = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    DataOcorrencia = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     FormaPagamento = table.Column<int>(type: "int", nullable: false)
                 },

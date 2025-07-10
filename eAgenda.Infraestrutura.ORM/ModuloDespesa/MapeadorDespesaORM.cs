@@ -19,11 +19,10 @@ public class MapeadorDespesaORM : IEntityTypeConfiguration<Despesa>
                .IsRequired();
 
         builder.Property(d => d.Descricao)
-               .HasMaxLength(100)
+               .HasMaxLength(1000)
                .IsRequired();
 
         builder.Property(d => d.DataOcorrencia)
-               .HasColumnType("datetime2(7)")
                .IsRequired();
 
         builder.Property(d => d.Valor)

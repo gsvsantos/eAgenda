@@ -21,7 +21,6 @@ public class Despesa : EntidadeBase<Despesa>
         Valor = valor;
         FormaPagamento = formaPagamento;
     }
-
     public Despesa(Guid id, string titulo, string descricao, DateTime dataOcorrencia, decimal valor, MeiosPagamento formaPagamento) : this(titulo, descricao, dataOcorrencia, valor, formaPagamento)
     {
         Id = id;
@@ -31,6 +30,7 @@ public class Despesa : EntidadeBase<Despesa>
         Valor = valor;
         FormaPagamento = formaPagamento;
     }
+    private Despesa() { }
 
     public void AderirCategoria(Categoria categoria)
     {
