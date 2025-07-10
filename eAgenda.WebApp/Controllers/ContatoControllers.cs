@@ -1,20 +1,24 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
+using eAgenda.Infraestrutura.ORM.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Helpers;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace eAgenda.WebApp.Controllers
 {
     [Route("contatos")]
     public class ContatoController : Controller
     {
+        private readonly EAgendaDbContext contexto;
         private readonly IRepositorioContato repositorioContato;
         private readonly IRepositorioCompromisso repositorioCompromisso;
 
-        public ContatoController(IRepositorioContato repositorioContato, IRepositorioCompromisso repositorioCompromisso)
+        public ContatoController(EAgendaDbContext contexto, IRepositorioContato repositorioContato, IRepositorioCompromisso repositorioCompromisso)
         {
+            this.contexto = contexto;
             this.repositorioContato = repositorioContato;
             this.repositorioCompromisso = repositorioCompromisso;
         }
@@ -62,7 +66,22 @@ namespace eAgenda.WebApp.Controllers
 
             Contato contato = cadastrarVM.ParaEntidade();
 
-            repositorioContato.CadastrarRegistro(contato);
+            IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+            try
+            {
+                repositorioContato.CadastrarRegistro(contato);
+
+                contexto.SaveChanges();
+
+                transacao.Commit();
+            }
+            catch (Exception)
+            {
+                transacao.Rollback();
+
+                throw;
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -109,7 +128,22 @@ namespace eAgenda.WebApp.Controllers
 
             Contato contatoEditado = editarVM.ParaEntidade();
 
-            repositorioContato.EditarRegistro(id, contatoEditado);
+            IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+            try
+            {
+                repositorioContato.EditarRegistro(id, contatoEditado);
+
+                contexto.SaveChanges();
+
+                transacao.Commit();
+            }
+            catch (Exception)
+            {
+                transacao.Rollback();
+
+                throw;
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -145,7 +179,23 @@ namespace eAgenda.WebApp.Controllers
                 return View("Excluir", excluirVM);
             }
 
-            repositorioContato.ExcluirRegistro(id);
+            IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+            try
+            {
+                repositorioContato.ExcluirRegistro(id);
+
+                contexto.SaveChanges();
+
+                transacao.Commit();
+            }
+            catch (Exception)
+            {
+                transacao.Rollback();
+
+                throw;
+            }
+
 
             return RedirectToAction(nameof(Index));
         }

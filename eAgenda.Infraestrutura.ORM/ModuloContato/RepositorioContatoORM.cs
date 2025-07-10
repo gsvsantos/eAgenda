@@ -5,9 +5,7 @@ namespace eAgenda.Infraestrutura.ORM.ModuloConta;
 
 public class RepositorioContatoORM : RepositorioBaseORM<Contato>, IRepositorioContato
 {
-    public RepositorioContatoORM(EAgendaDbContext contexto) : base(contexto)
-    {
-    }
+    public RepositorioContatoORM(EAgendaDbContext contexto) : base(contexto) { }
 
     public bool ExistePorEmailOuTelefone(string email, string telefone, Guid? ignorarId = null)
     {
