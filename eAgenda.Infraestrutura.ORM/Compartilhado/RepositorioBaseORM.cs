@@ -50,6 +50,6 @@ public class RepositorioBaseORM<T> where T : EntidadeBase<T>
 
     public virtual List<T> SelecionarRegistros()
     {
-        return [.. registros];
+        return registros.ToList();
     }
 }

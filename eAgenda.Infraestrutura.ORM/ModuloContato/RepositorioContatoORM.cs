@@ -15,7 +15,7 @@ public class RepositorioContatoORM : RepositorioBaseORM<Contato>, IRepositorioCo
 
     public override List<Contato> SelecionarRegistros()
     {
-        return [.. registros.Include(c => c.Compromissos)];
+        return registros.Include(c => c.Compromissos).ToList();
     }
 
     public bool ExistePorEmailOuTelefone(string email, string telefone, Guid? ignorarId = null)

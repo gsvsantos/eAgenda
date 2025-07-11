@@ -16,7 +16,7 @@ public class RepositorioDespesaORM : RepositorioBaseORM<Despesa>, IRepositorioDe
 
     public override List<Despesa> SelecionarRegistros()
     {
-        return [.. registros.Include(d => d.Categorias)];
+        return registros.Include(d => d.Categorias).ToList();
     }
 
     public void AdicionarCategoria(Categoria categoria, Despesa despesa)

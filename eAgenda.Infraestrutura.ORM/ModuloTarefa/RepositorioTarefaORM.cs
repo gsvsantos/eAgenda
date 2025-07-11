@@ -17,7 +17,7 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
 
     public override List<Tarefa> SelecionarRegistros()
     {
-        return [.. registros.Include(t => t.Itens)];
+        return registros.Include(t => t.Itens).ToList();
     }
 
     public ItemTarefa? SelecionarItem(Tarefa tarefa, Guid idItem)
@@ -35,9 +35,12 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
             _ => null
         };
 
-        return [.. registros
+        if (prioridadeAtual == null)
+            return [];
+
+        return registros
             .Where(t => t.Prioridade.Equals(prioridadeAtual))
-            .Include(t => t.Itens)];
+            .Include(t => t.Itens).ToList();
     }
 
     public List<Tarefa> SelecionarTarefasPorStatus(string? status)
@@ -51,9 +54,12 @@ public class RepositorioTarefaORM : RepositorioBaseORM<Tarefa>, IRepositorioTare
             _ => null
         };
 
-        return [.. registros
+        if (statusAtual == null)
+            return [];
+
+        return registros
             .Where(t => t.Status.Equals(statusAtual))
-            .Include(t => t.Itens)];
+            .Include(t => t.Itens).ToList();
     }
 
     public void AtualizarStatusRegistros()

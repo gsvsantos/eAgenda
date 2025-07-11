@@ -15,6 +15,6 @@ public class RepositorioCategoriaORM : RepositorioBaseORM<Categoria>, IRepositor
 
     public override List<Categoria> SelecionarRegistros()
     {
-        return [.. registros.Include(c => c.Despesas)];
+        return registros.Include(c => c.Despesas).ToList();
     }
 }

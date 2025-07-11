@@ -15,7 +15,7 @@ public class RepositorioCompromissoORM : RepositorioBaseORM<Compromisso>, IRepos
 
     public override List<Compromisso> SelecionarRegistros()
     {
-        return [.. registros.Include(c => c.Contato)];
+        return registros.Include(c => c.Contato).ToList();
     }
 
     public bool TemConflito(Compromisso compromisso)
