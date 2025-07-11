@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using eAgenda.Dominio.ModuloCompromisso;
+﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.WebApp.Extensions;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace eAgenda.WebApp.Models;
 
@@ -12,28 +12,31 @@ public abstract class FormularioContatoViewModel
 
     [Required(ErrorMessage = "Insira um Nome.")]
     [DisplayName("Nome")]
-    [StringLength(100, MinimumLength = 2, ErrorMessage = "O nome do contato deve ter entre 2 e 100 caracteres.")]
+    [StringLength(255, MinimumLength = 2, ErrorMessage = "O nome do contato deve ter entre 2 e 255 caracteres.")]
     public string Nome { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Insira um Telefone.")]
     [DisplayName("Telefone")]
+    [StringLength(30, ErrorMessage = "O Telefone não pode conter mais que 30 caracteres.")]
     [RegularExpression("^\\(?\\d{2}\\)?\\s?(9\\d{4}|\\d{4})-?\\d{4}$", ErrorMessage = "Número inválido.")]
     public string Telefone { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Insira um Email.")]
     [DisplayName("Email")]
     [EmailAddress(ErrorMessage = "Insira um endereço de email válido.")]
+    [StringLength(254, MinimumLength = 6, ErrorMessage = "O email deve ter entre 6 e 254 caracteres.")]
     public string Email { get; set; } = string.Empty;
 
     [DisplayName("Cargo")]
-    [StringLength(100, MinimumLength = 2, ErrorMessage = "O nome do item deve ter entre 2 e 100 caracteres.")]
+    [StringLength(150, MinimumLength = 2, ErrorMessage = "O nome do item deve ter entre 2 e 150 caracteres.")]
     public string? Cargo { get; set; }
 
     [DisplayName("Empresa")]
-    [StringLength(100, MinimumLength = 2, ErrorMessage = "O nome do item deve ter entre 2 e 100 caracteres.")]
+    [StringLength(200, MinimumLength = 2, ErrorMessage = "O nome do item deve ter entre 2 e 200 caracteres.")]
     public string? Empresa { get; set; }
     public List<CompromissoContatoViewModel> Compromissos { get; set; } = [];
 }
+
 public class CadastrarContatoViewModel : FormularioContatoViewModel
 {
     public CadastrarContatoViewModel() { }

@@ -26,6 +26,10 @@ html, body {
     color: var(--cor-texto-principal);
 }
 
+.hidden {
+    display: none !important; 
+}
+
 .btn-primary {
     background-color: var(--cor-primaria);
     border-color: var(--cor-primaria);

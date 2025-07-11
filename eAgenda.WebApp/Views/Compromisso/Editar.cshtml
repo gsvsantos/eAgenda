@@ -91,14 +91,16 @@
             const inputLink = document.getElementById("inputLink");
 
             function alternarCampos() {
-                if (inputTipo.value === "0") { 
-                    inputLocal.style.setProperty('display', 'none', 'important');
-                    inputLink.style.setProperty('display', 'block', 'important');
+                if (inputTipo.value === "0") {
+                    inputLocal.value = "";
+                    inputLocal.classList.add('hidden');
+                    inputLink.classList.remove('hidden');
                 }
 
-                else { 
-                    inputLocal.style.setProperty('display', 'block', 'important');
-                    inputLink.style.setProperty('display', 'none', 'important');
+                else {
+                    inputLink.value = "";
+                    inputLink.classList.add('hidden');
+                    inputLocal.classList.remove('hidden');
                 }
             }
 
@@ -106,6 +108,5 @@
 
             inputTipo.addEventListener('change', alternarCampos);
         });
-        // inspired on Bruxo's script.
     </script>
 }

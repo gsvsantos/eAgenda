@@ -1,6 +1,6 @@
-﻿using System.Text.RegularExpressions;
-using eAgenda.Dominio.Compartilhado;
+﻿using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloCompromisso;
+using System.Text.RegularExpressions;
 
 namespace eAgenda.Dominio.ModuloContato
 {
@@ -30,6 +30,7 @@ namespace eAgenda.Dominio.ModuloContato
             Cargo = cargo;
             Empresa = empresa;
         }
+        protected Contato() { }
 
         public void AdicionarCompromisso(Compromisso compromisso)
         {

@@ -1,17 +1,21 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Infraestrutura.ORM.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace eAgenda.WebApp.Controllers;
 
 [Route("categorias")]
 public class CategoriaController : Controller
 {
+    private readonly EAgendaDbContext contexto;
     private readonly IRepositorioCategoria repositorioCategoria;
 
-    public CategoriaController(IRepositorioCategoria repositorioCategoria)
+    public CategoriaController(EAgendaDbContext contexto, IRepositorioCategoria repositorioCategoria)
     {
+        this.contexto = contexto;
         this.repositorioCategoria = repositorioCategoria;
     }
 
@@ -48,9 +52,25 @@ public class CategoriaController : Controller
         if (!ModelState.IsValid)
             return View(cadastrarVM);
 
-        Categoria entidade = cadastrarVM.ParaEntidade();
+        Categoria novaCategoria = cadastrarVM.ParaEntidade();
 
-        repositorioCategoria.CadastrarRegistro(entidade);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+        try
+        {
+            repositorioCategoria.CadastrarRegistro(novaCategoria);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -85,7 +105,22 @@ public class CategoriaController : Controller
 
         Categoria entidadeEditada = editarVM.ParaEntidade();
 
-        repositorioCategoria.EditarRegistro(id, entidadeEditada);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+        try
+        {
+            repositorioCategoria.EditarRegistro(id, entidadeEditada);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -121,7 +156,22 @@ public class CategoriaController : Controller
             return View("Excluir", excluirVM);
         }
 
-        repositorioCategoria.ExcluirRegistro(id);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
+
+        try
+        {
+            repositorioCategoria.ExcluirRegistro(id);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }

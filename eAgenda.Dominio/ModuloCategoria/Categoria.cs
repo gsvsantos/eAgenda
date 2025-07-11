@@ -16,6 +16,7 @@ public class Categoria : EntidadeBase<Categoria>
     {
         Id = id;
     }
+    protected Categoria() { }
 
     public void AderirDespesa(Despesa despesa)
     {

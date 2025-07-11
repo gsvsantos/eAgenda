@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using eAgenda.Dominio.Compartilhado;
+﻿using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloContato;
+using System.ComponentModel.DataAnnotations;
 
 namespace eAgenda.Dominio.ModuloCompromisso;
 
@@ -32,6 +32,7 @@ public class Compromisso : EntidadeBase<Compromisso>
     {
         Id = id;
     }
+    protected Compromisso() { }
 
     public void Iniciar()
     {

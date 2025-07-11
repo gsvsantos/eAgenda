@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using eAgenda.Dominio.ModuloTarefa;
+﻿using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.WebApp.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace eAgenda.WebApp.Models;
 
@@ -16,7 +16,8 @@ public abstract class FormularioTarefaViewModel
     public string Titulo { get; set; } = string.Empty;
 
     [DisplayName("Descrição")]
-    public string? Descricao { get; set; } = string.Empty;
+    [StringLength(1000, ErrorMessage = "A descrição da tarefa deve ter no máximo 1.000 caracteres.")]
+    public string? Descricao { get; set; }
 
     [Required(ErrorMessage = "Selecione uma prioridade.")]
     [DisplayName("Prioridade")]

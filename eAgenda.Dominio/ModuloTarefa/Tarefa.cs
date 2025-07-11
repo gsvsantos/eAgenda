@@ -33,6 +33,7 @@ public class Tarefa : EntidadeBase<Tarefa>
         DataConclusao = dataConclusao;
         Status = status;
     }
+    protected Tarefa() { }
 
     public void AdicionarItem(ItemTarefa item)
     {

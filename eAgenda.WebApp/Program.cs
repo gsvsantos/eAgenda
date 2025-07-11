@@ -4,13 +4,14 @@ using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.Arquivos.Compartilhado;
-using eAgenda.Infraestrutura.SQLServer.ModuloCategoria;
-using eAgenda.Infraestrutura.SQLServer.ModuloCompromisso;
-using eAgenda.Infraestrutura.SQLServer.ModuloContato;
-using eAgenda.Infraestrutura.SQLServer.ModuloDespesa;
-using eAgenda.Infraestrutura.SQLServer.ModuloTarefa;
+using eAgenda.Infraestrutura.ORM.ModuloCategoria;
+using eAgenda.Infraestrutura.ORM.ModuloCompromisso;
+using eAgenda.Infraestrutura.ORM.ModuloContato;
+using eAgenda.Infraestrutura.ORM.ModuloDespesa;
+using eAgenda.Infraestrutura.ORM.ModuloTarefa;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
+using eAgenda.WebApp.ORM;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -35,20 +36,32 @@ namespace eAgenda.WebApp
                 return new SqlConnection(connectionString);
             });
             builder.Services.AddScoped((IServiceProvider _) => new ContextoDados(true));
-            builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaSQL>();
-            builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoSQL>();
-            builder.Services.AddScoped<IRepositorioContato, RepositorioContatoSQL>();
-            builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaSQL>();
-            builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaSQL>();
+            builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoriaORM>();
+            builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoORM>();
+            builder.Services.AddScoped<IRepositorioContato, RepositorioContatoORM>();
+            builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesaORM>();
+            builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaORM>();
 
+            builder.Services.AddEntityFrameworkConfig(builder.Configuration);
             builder.Services.AddSerilogConfig(builder.Logging);
 
             WebApplication app = builder.Build();
 
+            bool applyMigrations = builder.Configuration.GetValue<bool>("ApplyMigrations");
+
+            if (applyMigrations)
+            {
+                app.ApplyMigrations();
+            }
+
             if (!app.Environment.IsDevelopment())
+            {
                 app.UseExceptionHandler("/erro");
+            }
             else
+            {
                 app.UseDeveloperExceptionPage();
+            }
 
             app.UseAntiforgery();
             app.UseHttpsRedirection();

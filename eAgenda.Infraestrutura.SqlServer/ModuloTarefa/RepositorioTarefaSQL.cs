@@ -437,7 +437,10 @@ public class RepositorioTarefaSQL : RepositorioBaseSQL<Tarefa>, IRepositorioTare
             Convert.ToString(leitor["TITULO"])!,
             (StatusItemTarefa)Convert.ToInt64(leitor["STATUS"]),
             tarefa
-        );
+        )
+        {
+            Tarefa = tarefa
+        };
     }
 
     private static void ConfigurarParametrosItemTarefa(ItemTarefa item, IDbCommand comando)
