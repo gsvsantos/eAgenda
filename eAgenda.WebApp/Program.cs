@@ -11,6 +11,7 @@ using eAgenda.Infraestrutura.ORM.ModuloDespesa;
 using eAgenda.Infraestrutura.ORM.ModuloTarefa;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
+using eAgenda.WebApp.ORM;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -46,10 +47,21 @@ namespace eAgenda.WebApp
 
             WebApplication app = builder.Build();
 
+            bool applyMigrations = builder.Configuration.GetValue<bool>("ApplyMigrations");
+
+            if (applyMigrations)
+            {
+                app.ApplyMigrations();
+            }
+
             if (!app.Environment.IsDevelopment())
+            {
                 app.UseExceptionHandler("/erro");
+            }
             else
+            {
                 app.UseDeveloperExceptionPage();
+            }
 
             app.UseAntiforgery();
             app.UseHttpsRedirection();
