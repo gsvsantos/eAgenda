@@ -8,7 +8,7 @@ public class Tarefa : EntidadeBase<Tarefa>
     public string Titulo { get; set; } = string.Empty;
     public string Descricao { get; set; } = string.Empty;
     public NivelPrioridade Prioridade { get; set; }
-    public DateTime DataCriacao { get; set; } = DateTime.Now;
+    public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
     public DateTime? DataConclusao { get; set; }
     public StatusTarefa Status { get; set; }
     public double PercentualConcluido { get; set; }
@@ -61,7 +61,7 @@ public class Tarefa : EntidadeBase<Tarefa>
             Status = ObterStatusParaPercentual(PercentualConcluido);
 
         if (Status == StatusTarefa.Concluida)
-            DataConclusao = DateTime.Now;
+            DataConclusao = DateTime.UtcNow;
 
         if (Status == StatusTarefa.Pendente || Status == StatusTarefa.EmAndamento)
             DataConclusao = null;
@@ -72,7 +72,7 @@ public class Tarefa : EntidadeBase<Tarefa>
         foreach (ItemTarefa item in Itens)
             item.Concluir();
 
-        DataConclusao = DateTime.Now;
+        DataConclusao = DateTime.UtcNow;
         AtualizarStatus();
     }
 

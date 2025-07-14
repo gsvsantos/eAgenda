@@ -36,12 +36,12 @@ public class Compromisso : EntidadeBase<Compromisso>
 
     public void Iniciar()
     {
-        HoraInicio = DateTime.Now.TimeOfDay;
+        HoraInicio = DateTime.UtcNow.TimeOfDay;
     }
 
     public void Terminar()
     {
-        HoraTermino = DateTime.Now.TimeOfDay;
+        HoraTermino = DateTime.UtcNow.TimeOfDay;
     }
 
     public override void AtualizarRegistro(Compromisso registroEditado)
@@ -55,7 +55,7 @@ public class Compromisso : EntidadeBase<Compromisso>
 
     public List<string> Validar()
     {
-        var erros = new List<string>();
+        List<string> erros = new List<string>();
         if (string.IsNullOrWhiteSpace(Assunto) || Assunto.Length < 2 || Assunto.Length > 100)
             erros.Add("Assunto deve ter entre 2 e 100 caracteres");
         if (DataOcorrencia < DateTime.Now)

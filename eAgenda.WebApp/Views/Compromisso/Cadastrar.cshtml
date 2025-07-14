@@ -31,7 +31,7 @@
 
                     <div class="form-group d-grid mt-2">
                         <label asp-for="DataOcorrencia" class="form-label fs-5">Data:</label>
-                        <input asp-for="DataOcorrencia" type="date" class="form-control" id="inputData" value="@DateTime.Today.ToString("yyyy-MM-dd")">
+                        <input asp-for="DataOcorrencia" type="date" class="form-control" id="inputData" value="@DateTime.UtcNow.Date.ToString("yyyy-MM-dd")">
                         <span asp-validation-for="DataOcorrencia" class="text-danger d-block mt-2"></span>
                     </div>
 

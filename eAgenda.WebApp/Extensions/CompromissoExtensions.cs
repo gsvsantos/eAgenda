@@ -8,9 +8,13 @@ public static class CompromissoExtensions
 {
     public static Compromisso ParaEntidade(this FormularioCompromissoViewModel formularioVM, Contato contato)
     {
+        DateTime dataUtc = formularioVM.DataOcorrencia.Kind == DateTimeKind.Utc
+                         ? formularioVM.DataOcorrencia
+                         : formularioVM.DataOcorrencia.ToUniversalTime();
+
         return new(
             formularioVM.Assunto,
-            formularioVM.DataOcorrencia,
+            dataUtc,
             formularioVM.HoraInicio,
             formularioVM.HoraTermino,
             formularioVM.TipoCompromisso,
