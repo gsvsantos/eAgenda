@@ -3,6 +3,7 @@ using eAgenda.Infraestrutura.ORM.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace eAgenda.WebApp.Controllers;
 
@@ -59,9 +60,22 @@ public class TarefaController : Controller
     {
         Tarefa novaTarefa = cadastrarVM.ParaEntidade();
 
-        repositorioTarefa.CadastrarRegistro(novaTarefa);
+        IDbContextTransaction transacao = this.contexto.Database.BeginTransaction();
 
-        contexto.SaveChanges();
+        try
+        {
+            repositorioTarefa.CadastrarRegistro(novaTarefa);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -89,9 +103,22 @@ public class TarefaController : Controller
     {
         Tarefa tarefaEditada = editarVM.ParaEntidade();
 
-        repositorioTarefa.EditarRegistro(id, tarefaEditada);
+        IDbContextTransaction transacao = this.contexto.Database.BeginTransaction();
 
-        this.contexto.SaveChanges();
+        try
+        {
+            repositorioTarefa.EditarRegistro(id, tarefaEditada);
+
+            this.contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         if (contexto == nameof(Detalhes))
             return RedirectToAction(nameof(Detalhes), new { id });
@@ -114,9 +141,22 @@ public class TarefaController : Controller
     [HttpPost("excluir/{id:guid}")]
     public IActionResult ExcluirConfirmado(Guid id)
     {
-        repositorioTarefa.ExcluirRegistro(id);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
-        contexto.SaveChanges();
+        try
+        {
+            repositorioTarefa.ExcluirRegistro(id);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -172,10 +212,23 @@ public class TarefaController : Controller
             itens));
         }
 
-        tarefaSelecionada.AdicionarItem(novoItem);
-        contexto.Itens.Add(novoItem);
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
-        contexto.SaveChanges();
+        try
+        {
+            tarefaSelecionada.AdicionarItem(novoItem);
+            contexto.Itens.Add(novoItem);
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         GerenciarItensViewModel gerenciarItensVM = new(
             tarefaSelecionada,
@@ -190,10 +243,23 @@ public class TarefaController : Controller
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem)!;
 
-        tarefaSelecionada.RemoverItem(itemSelecionado);
-        this.contexto.Itens.Remove(itemSelecionado);
+        IDbContextTransaction transacao = this.contexto.Database.BeginTransaction();
 
-        this.contexto.SaveChanges();
+        try
+        {
+            tarefaSelecionada.RemoverItem(itemSelecionado);
+            this.contexto.Itens.Remove(itemSelecionado);
+
+            this.contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(contexto, new { id });
     }
@@ -204,9 +270,22 @@ public class TarefaController : Controller
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem)!;
 
-        itemSelecionado.Concluir();
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
-        contexto.SaveChanges();
+        try
+        {
+            itemSelecionado.Concluir();
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         GerenciarItensViewModel gerenciarItensVM = new(
             tarefaSelecionada,
@@ -221,9 +300,22 @@ public class TarefaController : Controller
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
         ItemTarefa itemSelecionado = repositorioTarefa.SelecionarItem(tarefaSelecionada, idItem)!;
 
-        itemSelecionado.Reabrir();
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
-        contexto.SaveChanges();
+        try
+        {
+            itemSelecionado.Reabrir();
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         GerenciarItensViewModel gerenciarItensVM = new(
             tarefaSelecionada,
@@ -237,9 +329,22 @@ public class TarefaController : Controller
     {
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
-        tarefaSelecionada.Concluir();
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
-        contexto.SaveChanges();
+        try
+        {
+            tarefaSelecionada.Concluir();
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
 
@@ -251,9 +356,22 @@ public class TarefaController : Controller
     {
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
-        tarefaSelecionada.Reabrir();
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
-        contexto.SaveChanges();
+        try
+        {
+            tarefaSelecionada.Reabrir();
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
 
@@ -265,9 +383,22 @@ public class TarefaController : Controller
     {
         Tarefa tarefaSelecionada = repositorioTarefa.SelecionarRegistroPorId(id)!;
 
-        tarefaSelecionada.Cancelar();
+        IDbContextTransaction transacao = contexto.Database.BeginTransaction();
 
-        contexto.SaveChanges();
+        try
+        {
+            tarefaSelecionada.Cancelar();
+
+            contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception)
+        {
+            transacao.Rollback();
+
+            throw;
+        }
 
         DetalhesTarefaViewModel detalhesTarefaVM = tarefaSelecionada.ParaDetalhesVM();
 
