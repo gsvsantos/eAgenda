@@ -5,7 +5,9 @@
 ## Introdução
 A **Prototype E-Agenda** é um sistema eletrônico desenvolvido para organização pessoal e profissional, com foco em eficiência, clareza e confiabilidade. Sua estrutura modular permite o controle completo de compromissos, contatos, tarefas, despesas e categorias, mantendo o padrão visual e funcional das soluções corporativas da década. Projetada para ser prática e robusta, oferece ao usuário uma experiência consistente e intuitiva.
 
-***
+---
+
+[![wakatime](https://wakatime.com/badge/user/d66fe803-196c-4729-b330-f8a026db44ec/project/32e5d264-2725-4e19-aa23-904c6c765052.svg)](https://wakatime.com/badge/user/d66fe803-196c-4729-b330-f8a026db44ec/project/32e5d264-2725-4e19-aa23-904c6c765052)
 
 ## 🧩 Módulos e Funcionalidades
 
